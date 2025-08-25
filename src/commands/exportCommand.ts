@@ -228,7 +228,7 @@ async function getExportOptions(): Promise<ExportOptions | null> {
     theme: theme.value as MermaidTheme,
     width: 1200,
     height: 800,
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   };
 }
 

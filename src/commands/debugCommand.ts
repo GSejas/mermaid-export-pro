@@ -34,7 +34,7 @@ export async function runDebugExport(context: vscode.ExtensionContext): Promise<
     theme: 'default',
     width: 800,
     height: 600,
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   };
 
   // Create timestamped debug folder

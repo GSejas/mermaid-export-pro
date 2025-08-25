@@ -466,6 +466,7 @@ export class OnboardingManager {
           }
         }
       }
+      // If CLI is available, do nothing - no need to show "ready" messages after initial setup
     } catch (error) {
       ErrorHandler.logWarning(`Setup validation failed: ${error}`);
     }

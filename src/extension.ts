@@ -60,7 +60,6 @@ export async function activate(context: vscode.ExtensionContext) {
     await statusBarManager.refresh();
 
     ErrorHandler.logInfo('Mermaid Export Pro extension activated successfully');
-    vscode.window.showInformationMessage('Mermaid Export Pro is ready!');
 
   } catch (error) {
     await ErrorHandler.handleError(error instanceof Error ? error : new Error('Unknown activation error'), 'Extension Activation');
@@ -295,7 +294,7 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
       theme: (config.get('theme') as MermaidTheme) || 'default',
       width: (config.get('width') as number) || 800,
       height: (config.get('height') as number) || 600,
-      backgroundColor: (config.get('backgroundColor') as string) || 'white'
+      backgroundColor: (config.get('backgroundColor') as string) || 'transparent'
     };
 
   // Get output path based on user preference
@@ -623,7 +622,7 @@ async function exportFileUri(resource: vscode.Uri | undefined, context: vscode.E
     mermaidContent = content.trim();
   } else if (lower.endsWith('.md') || lower.endsWith('.markdown')) {
     const match = content.match(/```mermaid\s*([\s\S]*?)\s*```/);
-    if (match) mermaidContent = match[1].trim();
+    if (match) {mermaidContent = match[1].trim();}
   }
 
   if (!mermaidContent) {
@@ -641,7 +640,7 @@ async function exportFileUri(resource: vscode.Uri | undefined, context: vscode.E
     theme: (config.get('theme') as MermaidTheme) || 'default',
     width: (config.get('width') as number) || 800,
     height: (config.get('height') as number) || 600,
-    backgroundColor: (config.get('backgroundColor') as string) || 'white'
+    backgroundColor: (config.get('backgroundColor') as string) || 'transparent'
   };
 
   // Choose strategy

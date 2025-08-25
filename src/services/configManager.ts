@@ -37,7 +37,7 @@ export class ConfigManager implements ConfigurationManager {
   }
 
   getBackgroundColor(): string {
-    return this.getConfiguration().get<string>('backgroundColor', 'white');
+    return this.getConfiguration().get<string>('backgroundColor', 'transparent');
   }
 
   async updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void> {

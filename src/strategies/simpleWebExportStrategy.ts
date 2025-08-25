@@ -90,7 +90,7 @@ export class SimpleWebExportStrategy implements ExportStrategy {
 
   private getSimpleWebviewContent(diagramContent: string, options: ExportOptions): string {
     const theme = options.theme || 'default';
-    const backgroundColor = options.backgroundColor || 'white';
+    const backgroundColor = options.backgroundColor || 'transparent';
     const width = options.width || 800;
     const height = options.height || 600;
 

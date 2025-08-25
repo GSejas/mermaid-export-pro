@@ -10,6 +10,10 @@ import { MermaidTheme } from '../types';
 export class ThemeStatusBarManager {
   private statusBarItem: vscode.StatusBarItem;
   private context: vscode.ExtensionContext;
+  
+  // Debounce mechanism for notifications
+  private notificationTimer: NodeJS.Timeout | undefined;
+  private readonly NOTIFICATION_DEBOUNCE_MS = 3000;
 
   // Mermaid theme cycling order
   private readonly THEME_CYCLE: MermaidTheme[] = ['default', 'dark', 'forest', 'neutral'];
@@ -17,8 +21,8 @@ export class ThemeStatusBarManager {
   // Theme icon mapping
   private readonly THEME_ICONS = {
     default: '$(symbol-color)',     // Colorful - represents default vibrancy
-    dark: '$(moon)',               // Universal dark mode symbol  
-    forest: '$(tree)',             // Nature/organic feel
+    dark: '$(color-mode)',               // Universal dark mode symbol  
+    forest: '$(squirrel)',             // Nature/organic feel
     neutral: '$(circle-outline)'   // Minimal/clean
   };
 
@@ -33,10 +37,10 @@ export class ThemeStatusBarManager {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     
-    // Create status bar item (right side, after main mermaid status)
+    // Create status bar item (right side, adjacent to main status)
     this.statusBarItem = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right, 
-      99 // Priority - right of main status bar
+      199 // Priority - theme status bar (right of main, grouped together)
     );
     
     // Register click command
@@ -77,16 +81,32 @@ export class ThemeStatusBarManager {
     // Update configuration
     await config.update('theme', nextTheme, vscode.ConfigurationTarget.Workspace);
     
-    // Update display
+    // Update display immediately
     this.updateThemeDisplay();
     
-    // Show brief confirmation
-    const currentName = this.THEME_NAMES[currentTheme];
-    const nextName = this.THEME_NAMES[nextTheme];
-    vscode.window.showInformationMessage(
-      `Mermaid theme changed: ${currentName} → ${nextName}`,
-      { modal: false }
-    );
+    // Debounced notification to prevent spam
+    this.showDebouncedNotification(currentTheme, nextTheme);
+  }
+
+  /**
+   * Show debounced notification to prevent spam when rapidly cycling themes
+   */
+  private showDebouncedNotification(fromTheme: MermaidTheme, toTheme: MermaidTheme): void {
+    // Clear any existing timer
+    if (this.notificationTimer) {
+      clearTimeout(this.notificationTimer);
+    }
+    
+    // Set new timer
+    this.notificationTimer = setTimeout(() => {
+      const fromName = this.THEME_NAMES[fromTheme];
+      const toName = this.THEME_NAMES[toTheme];
+      vscode.window.showInformationMessage(
+        `Mermaid theme: ${toName}`,
+        { modal: false }
+      );
+      this.notificationTimer = undefined;
+    }, this.NOTIFICATION_DEBOUNCE_MS);
   }
 
   /**
@@ -106,20 +126,12 @@ export class ThemeStatusBarManager {
     this.statusBarItem.text = currentIcon;
     this.statusBarItem.tooltip = `Mermaid Theme: ${currentName} • Click to cycle → ${nextName}`;
     
-    // Add subtle color theming
-    switch (currentTheme) {
-      case 'dark':
-        this.statusBarItem.color = new vscode.ThemeColor('charts.purple');
-        break;
-      case 'forest':
-        this.statusBarItem.color = new vscode.ThemeColor('charts.green');
-        break;
-      case 'neutral':
-        this.statusBarItem.color = new vscode.ThemeColor('charts.gray');
-        break;
-      default:
-        this.statusBarItem.color = new vscode.ThemeColor('charts.blue');
-        break;
+    // Use default status bar color
+    this.statusBarItem.color = undefined;
+    
+    // Ensure status bar remains visible if we have mermaid content
+    if (this.hasMermaidContent()) {
+      this.statusBarItem.show();
     }
   }
 
@@ -152,7 +164,7 @@ export class ThemeStatusBarManager {
     // Check for markdown files with mermaid content
     if (fileName.endsWith('.md') || fileName.endsWith('.markdown')) {
       const content = document.getText();
-      return /```mermaid\s*([\s\S]*?)\s*```/.test(content);
+      return /```\s*mermaid[\s\S]*?```/gi.test(content);
     }
     
     return false;
@@ -163,6 +175,7 @@ export class ThemeStatusBarManager {
    */
   private updateVisibility(): void {
     if (this.hasMermaidContent()) {
+      this.updateThemeDisplay(); // Ensure text and styling is set
       this.statusBarItem.show();
     } else {
       this.statusBarItem.hide();
@@ -205,6 +218,12 @@ export class ThemeStatusBarManager {
    * Dispose of the status bar item
    */
   dispose(): void {
+    // Clear any pending notification timer
+    if (this.notificationTimer) {
+      clearTimeout(this.notificationTimer);
+      this.notificationTimer = undefined;
+    }
+    
     this.statusBarItem.dispose();
   }
 }

@@ -27,7 +27,7 @@ export class StatusBarManager {
     // Create status bar item (right side, before language mode)
     this.statusBarItem = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right, 
-      100 // Priority - higher number = more to the left
+      200 // Priority - main status bar (left of theme, higher priority for grouping)
     );
     
     this.currentState = { status: 'checking' };
@@ -131,17 +131,66 @@ export class StatusBarManager {
       return;
     }
 
+    // Get display format setting
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const displayFormat = config.get<string>('statusBarDisplayFormat', 'icon-count');
+    
     // Build status text based on configuration status and diagram count
+    const { statusText, tooltip, backgroundColor, color } = this.buildStatusBarContent(
+      diagramCount, 
+      fileName, 
+      displayFormat
+    );
+
+    this.statusBarItem.text = statusText;
+    this.statusBarItem.tooltip = tooltip;
+    this.statusBarItem.backgroundColor = backgroundColor;
+    this.statusBarItem.color = color;
+    this.statusBarItem.show();
+  }
+
+  /**
+   * Build status bar content based on state and display format
+   */
+  private buildStatusBarContent(diagramCount: number, fileName: string, displayFormat: string): {
+    statusText: string;
+    tooltip: string; 
+    backgroundColor: vscode.ThemeColor | undefined;
+    color: vscode.ThemeColor | undefined;
+  } {
+    const getStatusIcon = (status: string) => {
+      switch (status) {
+        case 'not-configured': return '$(alert)';
+        case 'cli-available': return '$(file-media)';
+        case 'web-only': return '$(globe)';
+        case 'checking': return '$(loading~spin)';
+        default: return '$(file-media)';
+      }
+    };
+
+    const getCountText = (count: number, format: string) => {
+      if (format === 'icon-only') {return '';}
+      if (format === 'icon-count') {return count > 0 ? ` ${count}` : '';}
+      if (format === 'text-count') {
+        if (count === 0) {return '';}
+        return count === 1 ? ` 1 Mermaid` : ` ${count} Mermaids`;
+      }
+      return '';
+    };
+
+    const icon = getStatusIcon(this.currentState.status);
+    const countText = getCountText(diagramCount, displayFormat);
+    
     let statusText = '';
     let tooltip = '';
     let backgroundColor: vscode.ThemeColor | undefined;
     let color: vscode.ThemeColor | undefined;
 
-  switch (this.currentState.status) {
+    switch (this.currentState.status) {
       case 'not-configured':
         statusText = diagramCount > 0
-          ? `$(alert) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''} - Setup`
-          : `$(alert) Mermaid Export Pro - Setup`;
+          ? `${icon}${countText} - Setup`
+          : `${icon} Mermaid Export Pro - Setup`;
         tooltip = diagramCount > 0
           ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to setup export tools`
           : `Mermaid Export Pro: No diagrams found in the active file. Click to setup export tools.`;
@@ -150,31 +199,22 @@ export class StatusBarManager {
         break;
 
       case 'cli-available':
-        statusText = diagramCount > 0
-          ? `$(file-media) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
-          : `$(file-media) Mermaid Export Pro`;
-        tooltip = diagramCount > 0
-          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with ${this.currentState.details || 'CLI'}`
-          : `Mermaid Export Pro: CLI available (${this.currentState.details}). Open a file with mermaid diagrams to export.`;
-        backgroundColor = undefined;
-        color = new vscode.ThemeColor('statusBarItem.prominentForeground');
-        break;
-
       case 'web-only':
+        const strategyName = this.currentState.status === 'cli-available' ? 'CLI' : 'Web';
         statusText = diagramCount > 0
-          ? `$(globe) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
-          : `$(globe) Mermaid Export Pro`;
+          ? `${icon}${countText}`
+          : `${icon} Mermaid Export Pro`;
         tooltip = diagramCount > 0
-          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with Web strategy`
-          : `Mermaid Export Pro: Web export configured. Open a file with mermaid diagrams to export.`;
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export all diagrams (${strategyName})`
+          : `Mermaid Export Pro: ${strategyName} export available. Open a file with mermaid diagrams to export.`;
         backgroundColor = undefined;
         color = new vscode.ThemeColor('statusBarItem.prominentForeground');
         break;
 
       case 'checking':
         statusText = diagramCount > 0
-          ? `$(loading~spin) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
-          : `$(loading~spin) Mermaid Export Pro`;
+          ? `${icon}${countText}`
+          : `${icon} Mermaid Export Pro`;
         tooltip = diagramCount > 0
           ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nChecking export tools...`
           : `Mermaid Export Pro: Checking export tools...`;
@@ -183,11 +223,7 @@ export class StatusBarManager {
         break;
     }
 
-    this.statusBarItem.text = statusText;
-    this.statusBarItem.tooltip = tooltip;
-    this.statusBarItem.backgroundColor = backgroundColor;
-    this.statusBarItem.color = color;
-    this.statusBarItem.show();
+    return { statusText, tooltip, backgroundColor, color };
   }
 
   /**
@@ -226,21 +262,10 @@ export class StatusBarManager {
    * Count mermaid blocks in markdown content
    */
   private countMermaidBlocksInMarkdown(content: string): number {
-    const lines = content.split('\n');
-    let count = 0;
-    let inMermaidBlock = false;
-    
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (trimmedLine === '```mermaid') {
-        inMermaidBlock = true;
-      } else if (trimmedLine === '```' && inMermaidBlock) {
-        inMermaidBlock = false;
-        count++;
-      }
-    }
-    
-    return count;
+    // Use regex to find all mermaid code blocks more reliably
+    const mermaidBlockRegex = /```\s*mermaid[\s\S]*?```/gi;
+    const matches = content.match(mermaidBlockRegex);
+    return matches ? matches.length : 0;
   }
 
   /**
@@ -295,8 +320,8 @@ export class StatusBarManager {
     }
 
     try {
-      // Use the existing export command
-      await vscode.commands.executeCommand('mermaidExportPro.exportCurrent');
+      // Use auto-save export command (no dialog)
+      await vscode.commands.executeCommand('mermaidExportPro.exportFile');
     } catch (error) {
       // If main export fails, show options
       await this.showConfiguredOptions();

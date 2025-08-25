@@ -102,8 +102,8 @@ export class CLIExportStrategy implements ExportStrategy {
       args.push('--height', options.height.toString());
     }
 
-    // Add background color
-    if (options.backgroundColor && options.backgroundColor !== 'transparent') {
+    // Add background color (including transparent)
+    if (options.backgroundColor) {
       args.push('--backgroundColor', options.backgroundColor);
     }
 

@@ -260,7 +260,7 @@ export class WebExportStrategy implements ExportStrategy {
     const nonce = this.generateNonce();
     
     // Styling options
-    const backgroundColor = options.backgroundColor || 'white';
+    const backgroundColor = options.backgroundColor || 'transparent';
     const width = options.width || 800;
     const height = options.height || 600;
 
@@ -365,7 +365,7 @@ export class WebExportStrategy implements ExportStrategy {
         format: options.format,
         width: options.width || 800,
         height: options.height || 600,
-        backgroundColor: options.backgroundColor || 'white'
+        backgroundColor: options.backgroundColor || 'transparent'
       });
     });
   }

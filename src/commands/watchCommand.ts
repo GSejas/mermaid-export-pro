@@ -127,7 +127,7 @@ class AutoExportWatcher {
         theme: config.get<MermaidTheme>('theme') || 'default',
         width: config.get<number>('width') || 800,
         height: config.get<number>('height') || 600,
-        backgroundColor: config.get<string>('backgroundColor') || 'white'
+        backgroundColor: config.get<string>('backgroundColor') || 'transparent'
       };
 
       // Determine output path
