@@ -2,11 +2,14 @@
   "name": "mermaid-export-pro",
   "displayName": "Mermaid Export Pro",
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
-  "version": "0.0.1",
-  "publisher": "your-publisher-name",
-  "icon": "media/icon.png",
+  "version": "1.0.0",
+  "publisher": "GSejas",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/vscode-mermaid-export-pro.git"
+  },
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.103.0"
   },
   "categories": [
     "Other",

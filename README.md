@@ -1,71 +1,100 @@
-# mermaid-export-pro README
+# Mermaid Export Pro
 
-This is the README for your extension "mermaid-export-pro". After writing up a brief description, we recommend including the following sections.
+Professional Mermaid diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### 🎯 Smart Status Bar Integration
+- **Real-time Diagram Count**: Shows number of mermaid diagrams in current file
+- **One-Click Export**: Click status bar to export directly when configured
+- **Visual Status Indicators**: Different icons for CLI/web/setup states
+- **Auto-hide**: Only appears when viewing files with mermaid content
 
-For example if there is an image subfolder under your extension project workspace:
+### 📊 Multiple Export Formats
+- **SVG**: Vector graphics with perfect scalability
+- **PNG**: High-quality raster with transparency support  
+- **JPG/JPEG**: Compressed images for web use
+- **PDF**: Document-ready format
+- **WebP**: Modern web format
 
-\!\[feature X\]\(images/feature-x.png\)
+### 🚀 Batch Operations  
+- **Folder Export**: Process entire directory structures
+- **Multi-diagram Support**: Handle multiple mermaid blocks per markdown file
+- **Progress Tracking**: Visual feedback for large operations
+- **Error Reporting**: Detailed logs of successful/failed exports
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### ⚡ Auto-Export on Save
+- **File Watcher**: Automatically export when files are saved
+- **Configurable**: Toggle on/off with workspace persistence
+- **Custom Output**: Configure export directory and naming
+- **Smart Detection**: Works with `.mmd` files and markdown blocks
+
+### 🎨 Enhanced Markdown Experience
+- **CodeLens**: Export buttons above mermaid code blocks
+- **Rich Hover**: Diagram info and export options on hover
+- **Command Links**: Direct export from tooltips
+- **Type Detection**: Identifies flowchart, sequence, class diagrams, etc.
+
+### 🔧 Dual Export Strategy
+- **CLI Export**: High-quality rendering via Mermaid CLI (@mermaid-js/mermaid-cli)
+- **Web Fallback**: Browser-based export when CLI unavailable
+- **Auto-detection**: Automatically selects best available method
+- **Cross-platform**: Windows, macOS, and Linux support
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Optional (Recommended)
+- **Node.js**: For CLI export strategy (best quality)
+- **@mermaid-js/mermaid-cli**: Automatically detected if globally installed
+
+The extension works without these dependencies using the web export strategy.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `mermaidExportPro.defaultFormat`: Default export format (svg, png, pdf, webp, jpg, jpeg)
+* `mermaidExportPro.theme`: Mermaid theme (default, dark, forest, neutral)
+* `mermaidExportPro.outputDirectory`: Custom output directory (relative or absolute)
+* `mermaidExportPro.autoExport`: Automatically export on file save
+* `mermaidExportPro.exportStrategy`: Export strategy preference (cli, web, auto)
+* `mermaidExportPro.width`: Default export width in pixels
+* `mermaidExportPro.height`: Default export height in pixels  
+* `mermaidExportPro.backgroundColor`: Background color for exports
 
-## Known Issues
+## Usage
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### Quick Start
+1. Open a file with mermaid diagrams (`.mmd` or markdown with mermaid blocks)
+2. Status bar will show diagram count - click to export
+3. Or use Command Palette: `Ctrl+Shift+P` → "Mermaid Export Pro"
+
+### Commands
+- **Export Current**: Export active file diagrams
+- **Batch Export**: Export all diagrams in folder
+- **Toggle Auto Export**: Enable/disable auto-export on save
+- **Setup Export Tools**: Configure CLI tools
+
+### Context Menus
+- Right-click `.mmd` files → Export Current
+- Right-click folders → Batch Export
+- CodeLens buttons above mermaid blocks in markdown
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
+Complete implementation of professional mermaid export workflows:
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- Smart status bar with diagram counting and one-click export
+- Comprehensive batch export with recursive directory support
+- Auto-export on save with file watcher integration
+- Enhanced markdown support with CodeLens and hover providers
+- Extended format support including JPG/JPEG
+- Dual export strategy (CLI + Web) for maximum compatibility
+- Complete configuration system with workspace persistence
+- Cross-platform path handling and error management
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy professional mermaid diagram workflows in VS Code!**
