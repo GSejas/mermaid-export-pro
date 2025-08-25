@@ -1,0 +1,7 @@
+graph TD
+    A[Start] --> B{Is CLI available?}
+    B -->|Yes| C[Use CLI Strategy]
+    B -->|No| D[Use Web Strategy]
+    C --> E[Export Successful]
+    D --> E
+    E --> F[End]

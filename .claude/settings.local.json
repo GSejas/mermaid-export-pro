@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run compile:*)",
+      "WebSearch",
+      "Bash(npm install:*)",
+      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ/**)",
+      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ/**)",
+      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\cli/**)",
+      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\web/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
