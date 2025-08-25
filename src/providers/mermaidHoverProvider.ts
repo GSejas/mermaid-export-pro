@@ -13,6 +13,7 @@ export class MermaidHoverProvider implements vscode.HoverProvider {
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+  console.log('[mermaidExportPro] MermaidHoverProvider constructed');
   }
 
   async provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Promise<vscode.Hover | undefined> {

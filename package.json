@@ -2,7 +2,7 @@
   "name": "mermaid-export-pro",
   "displayName": "Mermaid Export Pro",
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "GSejas",
   "repository": {
     "type": "git",
@@ -25,137 +25,185 @@
     "markdown"
   ],
   "activationEvents": [
+    "onCommand:mermaidExportPro.exportCurrent",
+    "onCommand:mermaidExportPro.exportAs",
+    "onStartupFinished",
+    "onLanguage:markdown",
     "onLanguage:mermaid"
   ],
   "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "mermaidExportPro.exportCurrent",
-        "title": "Export Current Diagram",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.exportAs",
-        "title": "Export As...",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.batchExport",
-        "title": "Batch Export",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.exportMarkdown",
-        "title": "Export Markdown Diagrams",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.toggleAutoExport",
-        "title": "Toggle Auto Export",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.showOutput",
-        "title": "Show Export Log",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.debugExport",
-        "title": "Debug: Export Hardcoded Diagram",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.runSetup",
-        "title": "Setup Export Tools",
-        "category": "Mermaid Export Pro"
-      }
-    ],
-    "menus": {
-      "explorer/context": [
+    "contributes": {
+      "commands": [
         {
           "command": "mermaidExportPro.exportCurrent",
-          "when": "resourceExtname == .mmd",
-          "group": "mermaid@1"
+          "title": "Export Current Diagram",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.exportAs",
+          "title": "Export Mermaid - Export As...",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.exportFile",
+          "title": "Export Mermaid (Auto-save — preferred format)",
+          "category": "Mermaid Export Pro"
         },
         {
           "command": "mermaidExportPro.batchExport",
-          "when": "explorerResourceIsFolder",
-          "group": "mermaid@2"
+          "title": "Batch Export",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.exportMarkdown",
+          "title": "Export Markdown Diagrams",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.toggleAutoExport",
+          "title": "Toggle Auto Export",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.showOutput",
+          "title": "Show Export Log",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.debugExport",
+          "title": "Debug: Export Hardcoded Diagram",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.runSetup",
+          "title": "Setup Export Tools",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.cycleTheme",
+          "title": "Cycle Mermaid Theme",
+          "category": "Mermaid Export Pro"
+        },
+        {
+          "command": "mermaidExportPro.showExportOptions",
+          "title": "Show Export Options",
+          "category": "Mermaid Export Pro"
         }
       ],
-      "editor/context": [
-        {
-          "command": "mermaidExportPro.exportCurrent",
-          "when": "resourceExtname == .mmd || resourceExtname == .md",
-          "group": "mermaid@1"
-        }
-      ]
-    },
-    "configuration": {
-      "title": "Mermaid Export Pro",
-      "properties": {
-        "mermaidExportPro.defaultFormat": {
-          "type": "string",
-          "enum": [
-            "svg",
-            "png",
-            "pdf",
-            "webp",
-            "jpg",
-            "jpeg"
-          ],
-          "default": "png",
-          "description": "Default export format"
-        },
-        "mermaidExportPro.theme": {
-          "type": "string",
-          "enum": [
-            "default",
-            "dark",
-            "forest",
-            "neutral"
-          ],
-          "default": "default",
-          "description": "Mermaid theme"
-        },
-        "mermaidExportPro.outputDirectory": {
-          "type": "string",
-          "default": "",
-          "description": "Custom output directory (relative to file location if not absolute)"
-        },
-        "mermaidExportPro.autoExport": {
-          "type": "boolean",
-          "default": false,
-          "description": "Automatically export on file save"
-        },
-        "mermaidExportPro.exportStrategy": {
-          "type": "string",
-          "enum": [
-            "cli",
-            "web",
-            "auto"
-          ],
-          "default": "auto",
-          "description": "Export strategy preference"
-        },
-        "mermaidExportPro.width": {
-          "type": "number",
-          "default": 800,
-          "description": "Default export width in pixels"
-        },
-        "mermaidExportPro.height": {
-          "type": "number",
-          "default": 600,
-          "description": "Default export height in pixels"
-        },
-        "mermaidExportPro.backgroundColor": {
-          "type": "string",
-          "default": "white",
-          "description": "Background color for exports"
+      "menus": {
+        "explorer/context": [
+          {
+            "command": "mermaidExportPro.exportFile",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@1"
+          },
+          {
+            "command": "mermaidExportPro.exportAs",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@2"
+          }
+        ],
+        "tab/context": [
+          {
+            "command": "mermaidExportPro.exportFile",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@1"
+          },
+          {
+            "command": "mermaidExportPro.exportAs",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@2"
+          }
+        ],
+        "editor/title/context": [
+          {
+            "command": "mermaidExportPro.exportFile",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@1"
+          },
+          {
+            "command": "mermaidExportPro.exportAs",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@2"
+          }
+        ],
+        "editor/context": [
+          {
+            "command": "mermaidExportPro.exportFile",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@1"
+          },
+          {
+            "command": "mermaidExportPro.exportAs",
+            "when": "resourceExtname == .mmd || resourceExtname == .md",
+            "group": "navigation@2"
+          }
+        ]
+      },
+      "configuration": {
+        "title": "Mermaid Export Pro",
+        "properties": {
+          "mermaidExportPro.defaultFormat": {
+            "type": "string",
+            "enum": [
+              "svg",
+              "png",
+              "pdf",
+              "webp",
+              "jpg",
+              "jpeg"
+            ],
+            "default": "png",
+            "description": "Default export format"
+          },
+          "mermaidExportPro.theme": {
+            "type": "string",
+            "enum": [
+              "default",
+              "dark",
+              "forest",
+              "neutral"
+            ],
+            "default": "default",
+            "description": "Mermaid theme"
+          },
+          "mermaidExportPro.outputDirectory": {
+            "type": "string",
+            "default": "",
+            "description": "Custom output directory (relative to file location if not absolute)"
+          },
+          "mermaidExportPro.autoExport": {
+            "type": "boolean",
+            "default": false,
+            "description": "Automatically export on file save"
+          },
+          "mermaidExportPro.exportStrategy": {
+            "type": "string",
+            "enum": [
+              "cli",
+              "web",
+              "auto"
+            ],
+            "default": "auto",
+            "description": "Export strategy preference"
+          },
+          "mermaidExportPro.width": {
+            "type": "number",
+            "default": 800,
+            "description": "Default export width in pixels"
+          },
+          "mermaidExportPro.height": {
+            "type": "number",
+            "default": 600,
+            "description": "Default export height in pixels"
+          },
+          "mermaidExportPro.backgroundColor": {
+            "type": "string",
+            "default": "white",
+            "description": "Background color for exports"
+          }
         }
       }
-    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

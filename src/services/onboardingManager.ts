@@ -28,8 +28,15 @@ export class OnboardingManager {
    * Check if user needs onboarding and show welcome if needed
    */
   async maybeShowWelcome(): Promise<void> {
+    // During development (Extension Development Host) global state may be reset between runs.
+    // Skip showing onboarding in dev mode to avoid repeated prompts while debugging.
+    if (this.context.extensionMode === vscode.ExtensionMode.Development) {
+      ErrorHandler.logInfo('Skipping onboarding in development mode');
+      return;
+    }
+
     const hasCompletedOnboarding = this.context.globalState.get(OnboardingManager.ONBOARDING_KEY, false);
-    
+
     if (!hasCompletedOnboarding) {
       await this.showWelcomeFlow();
     } else {

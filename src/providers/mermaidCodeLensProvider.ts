@@ -7,6 +7,8 @@
  */
 
 import * as vscode from 'vscode';
+import { FormatPreferenceManager } from '../services/formatPreferenceManager';
+import { ExportFormat } from '../types';
 
 interface MermaidBlock {
   content: string;
@@ -16,9 +18,12 @@ interface MermaidBlock {
 
 export class MermaidCodeLensProvider implements vscode.CodeLensProvider {
   private context: vscode.ExtensionContext;
+  private formatPreferenceManager: FormatPreferenceManager;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+    this.formatPreferenceManager = new FormatPreferenceManager(context);
+  console.log('[mermaidExportPro] MermaidCodeLensProvider constructed');
   }
 
   async provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<vscode.CodeLens[]> {
@@ -35,33 +40,55 @@ export class MermaidCodeLensProvider implements vscode.CodeLensProvider {
     const mermaidBlocks = this.findMermaidBlocks(document);
 
     for (const block of mermaidBlocks) {
-      // Add export commands above each mermaid block
+      // Get adaptive format ordering based on user preferences
+      const [topFormat, secondFormat] = await this.formatPreferenceManager.getTopTwoFormats();
+      
+      // Format display mapping
+      const formatIcons: Record<ExportFormat, string> = {
+        svg: '$(file-media)',
+        png: '$(device-camera)', 
+  jpg: '$(file-zip)',
+  jpeg: '$(file-zip)',
+        pdf: '$(file-pdf)',
+        webp: '$(globe)'
+      };
+
+      const formatLabels: Record<ExportFormat, string> = {
+        svg: 'SVG',
+        png: 'PNG',
+  jpg: 'JPG', 
+  jpeg: 'JPEG',
+        pdf: 'PDF',
+        webp: 'WebP'
+      };
+
+      // Adaptive export commands - top 2 formats + More Options
       const exportCommands = [
         {
-          title: '$(file-media) Export SVG',
+          title: `${formatIcons[topFormat]} Export ${formatLabels[topFormat]}`,
           command: 'mermaidExportPro.exportMarkdownBlock',
-          arguments: [document.uri, block.range, 'svg']
+          arguments: [document.uri, block.range, topFormat]
         },
         {
-          title: '$(device-camera) Export PNG',
-          command: 'mermaidExportPro.exportMarkdownBlock',
-          arguments: [document.uri, block.range, 'png']
+          title: `${formatIcons[secondFormat]} Export ${formatLabels[secondFormat]}`,
+          command: 'mermaidExportPro.exportMarkdownBlock', 
+          arguments: [document.uri, block.range, secondFormat]
         },
         {
-          title: '$(file-zip) Export JPG',
-          command: 'mermaidExportPro.exportMarkdownBlock',
-          arguments: [document.uri, block.range, 'jpg']
+          title: '$(gear) More Options',
+          command: 'mermaidExportPro.showExportOptions',
+          arguments: [document.uri, block.range]
         }
       ];
 
-      // Create CodeLens for each export option
+      // Create CodeLens for each option
       exportCommands.forEach((cmd, index) => {
         // Position CodeLens slightly offset so they appear side by side
         const range = new vscode.Range(
           block.range.start.line,
-          block.range.start.character + (index * 15),
+          block.range.start.character + (index * 18),
           block.range.start.line,
-          block.range.start.character + (index * 15) + 10
+          block.range.start.character + (index * 18) + 12
         );
 
         codeLenses.push(new vscode.CodeLens(range, cmd));

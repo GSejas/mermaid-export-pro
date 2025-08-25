@@ -6,24 +6,29 @@ import { ErrorHandler } from './ui/errorHandler';
 import { CLIExportStrategy } from './strategies/cliExportStrategy';
 import { WebExportStrategy } from './strategies/webExportStrategy';
 import { PathUtils } from './utils/pathUtils';
-import { ExportFormat } from './types';
+import { AutoNaming } from './utils/autoNaming';
+import { ExportFormat, MermaidTheme, ExportOptions } from './types';
 import { runDebugExport } from './commands/debugCommand';
 import { runExportCommand } from './commands/exportCommand';
 import { runBatchExport } from './commands/batchExportCommand';
 import { toggleAutoExport, initializeAutoExport, disposeAutoExport } from './commands/watchCommand';
 import { OnboardingManager } from './services/onboardingManager';
 import { StatusBarManager } from './ui/statusBarManager';
+import { ThemeStatusBarManager } from './ui/themeStatusBarManager';
 import { MermaidCodeLensProvider } from './providers/mermaidCodeLensProvider';
 import { MermaidHoverProvider } from './providers/mermaidHoverProvider';
+import { FormatPreferenceManager } from './services/formatPreferenceManager';
 
 // Extension state
 let configManager: ConfigManager;
 let cliStrategy: CLIExportStrategy;
 let onboardingManager: OnboardingManager;
 let statusBarManager: StatusBarManager;
+let themeStatusBarManager: ThemeStatusBarManager;
+let formatPreferenceManager: FormatPreferenceManager;
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.log('Activating Mermaid Export Pro extension...');
+  console.log('[mermaidExportPro] Activating extension...');
 
   try {
     // Initialize services
@@ -32,12 +37,18 @@ export async function activate(context: vscode.ExtensionContext) {
     cliStrategy = new CLIExportStrategy();
     onboardingManager = new OnboardingManager(context);
     statusBarManager = new StatusBarManager(context, onboardingManager);
+    themeStatusBarManager = new ThemeStatusBarManager(context);
+    formatPreferenceManager = new FormatPreferenceManager(context);
 
-    // Register commands
-    registerCommands(context);
+  // Register commands
+  console.log('[mermaidExportPro] registering commands');
+  registerCommands(context);
+  console.log('[mermaidExportPro] commands registered');
 
-    // Register providers
-    registerProviders(context);
+  // Register providers
+  console.log('[mermaidExportPro] registering providers');
+  registerProviders(context);
+  console.log('[mermaidExportPro] providers registered');
 
     // Show onboarding for new users (this will also check CLI availability)
     await onboardingManager.maybeShowWelcome();
@@ -60,9 +71,9 @@ function registerCommands(context: vscode.ExtensionContext): void {
   // Export current file command (with format selection)
   const exportCurrentCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportCurrent',
-    async () => {
+    async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context);
+        await runExportCommand(context, false, resource);
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export failed'), 'Export Current');
       }
@@ -72,9 +83,9 @@ function registerCommands(context: vscode.ExtensionContext): void {
   // Export as command (alias for exportCurrent - same functionality)
   const exportAsCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportAs',
-    async () => {
+    async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context);
+        await runExportCommand(context, true, resource);
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export As failed'), 'Export As');
       }
@@ -153,10 +164,10 @@ function registerCommands(context: vscode.ExtensionContext): void {
   // Export markdown diagrams command
   const exportMarkdownCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportMarkdown',
-    async () => {
+    async (resource?: vscode.Uri) => {
       try {
         // Use the main export command for now - it handles markdown files
-        await runExportCommand(context);
+        await runExportCommand(context, false, resource);
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Markdown export failed'), 'Markdown Export');
       }
@@ -175,6 +186,42 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
+  // Theme cycling command
+  const cycleThemeCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.cycleTheme',
+    async () => {
+      try {
+        await themeStatusBarManager.cycleTheme();
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Theme cycle failed'), 'Theme Cycling');
+      }
+    }
+  );
+
+  // Show export options command (for "More Options" CodeLens)
+  const showExportOptionsCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.showExportOptions',
+    async (documentUri: vscode.Uri, range: vscode.Range) => {
+      try {
+        await showExportOptionsModal(documentUri, range, context);
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export options failed'), 'Export Options');
+      }
+    }
+  );
+
+  // Export file from explorer/tab context
+  const exportFileCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.exportFile',
+    async (resource: vscode.Uri) => {
+      try {
+        await exportFileUri(resource, context);
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export file failed'), 'Export File');
+      }
+    }
+  );
+
   // Register all commands
   context.subscriptions.push(
     exportCurrentCommand,
@@ -186,30 +233,34 @@ function registerCommands(context: vscode.ExtensionContext): void {
     toggleAutoExportCommand,
     exportMarkdownBlockCommand,
     exportMarkdownCommand,
-    statusBarClickCommand
+    statusBarClickCommand,
+    cycleThemeCommand,
+    showExportOptionsCommand
+  , exportFileCommand
   );
 
   // Listen for configuration changes
   const configChangeListener = configManager.onConfigurationChanged(async () => {
     ErrorHandler.logInfo('Configuration changed - reloading settings');
     await statusBarManager.onConfigurationChanged();
+    themeStatusBarManager.onConfigurationChanged();
   });
 
   context.subscriptions.push(configChangeListener);
 }
 
 function registerProviders(context: vscode.ExtensionContext): void {
-  // Register CodeLens provider for markdown files
+  // Register CodeLens and Hover providers for markdown and mermaid files
   const codeLensProvider = new MermaidCodeLensProvider(context);
   const codeLensDisposable = vscode.languages.registerCodeLensProvider(
-    { language: 'markdown' },
+    [{ language: 'markdown' }, { language: 'mermaid' }],
     codeLensProvider
   );
 
-  // Register Hover provider for markdown files  
+  // Register Hover provider for markdown and mermaid files
   const hoverProvider = new MermaidHoverProvider(context);
   const hoverDisposable = vscode.languages.registerHoverProvider(
-    { language: 'markdown' },
+    [{ language: 'markdown' }, { language: 'mermaid' }],
     hoverProvider
   );
 
@@ -234,29 +285,25 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
       return;
     }
 
+    // Record format usage for adaptive learning
+    await formatPreferenceManager.recordUsage(format as ExportFormat, 'codelens');
+
     // Get export options
     const config = vscode.workspace.getConfiguration('mermaidExportPro');
-    const exportOptions = {
-      format: format as any,
-      theme: config.get('theme') || 'default',
-      width: config.get('width') || 800,
-      height: config.get('height') || 600,
-      backgroundColor: config.get('backgroundColor') || 'white'
-    } as any;
+    const exportOptions: ExportOptions = {
+      format: format as ExportFormat,
+      theme: (config.get('theme') as MermaidTheme) || 'default',
+      width: (config.get('width') as number) || 800,
+      height: (config.get('height') as number) || 600,
+      backgroundColor: (config.get('backgroundColor') as string) || 'white'
+    };
 
-    // Get output path
-    const fileName = path.basename(document.fileName, path.extname(document.fileName));
-    const outputFileName = `${fileName}-diagram.${format}`;
+  // Get output path based on user preference
+  // CodeLens-initiated export prefers auto-save next to the markdown file
+  const outputPath = await getSmartOutputPath(document, mermaidContent, format as ExportFormat, context, true);
     
-    const defaultUri = vscode.Uri.file(path.join(path.dirname(document.fileName), outputFileName));
-    const result = await vscode.window.showSaveDialog({
-      defaultUri,
-      filters: { [`${format.toUpperCase()} files`]: [format] },
-      title: `Save ${format.toUpperCase()} file`
-    });
-
-    if (!result) {
-      return;
+    if (!outputPath) {
+      return; // User cancelled
     }
 
     // Select strategy and export
@@ -271,10 +318,17 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
       cancellable: false
     }, async () => {
       const buffer = await strategy.export(mermaidContent, exportOptions);
-      await vscode.workspace.fs.writeFile(result, buffer);
+      
+      // Ensure directory exists for auto-save modes
+      const outputDir = path.dirname(outputPath);
+      await AutoNaming.ensureDirectory(outputDir);
+      
+      // Write file
+      await fs.promises.writeFile(outputPath, buffer);
     });
 
-    vscode.window.showInformationMessage(`Mermaid block exported to ${path.basename(result.fsPath)}`);
+    const fileName = path.basename(outputPath);
+    vscode.window.showInformationMessage(`Mermaid diagram exported to ${fileName}`);
     
   } catch (error) {
     vscode.window.showErrorMessage(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -283,8 +337,333 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
 
 // Old export functions removed - replaced by runExportCommand
 
+/**
+ * Show extended export options modal (triggered by "More Options" CodeLens)
+ */
+async function showExportOptionsModal(documentUri: vscode.Uri, range: vscode.Range, context: vscode.ExtensionContext): Promise<void> {
+  const onboardingKey = 'mermaidExportPro.firstMermaidFileOnboarding';
+  const hasSeenOnboarding = context.globalState.get(onboardingKey, false);
+
+  if (!hasSeenOnboarding) {
+    // First-time user - show onboarding workflow
+    await showFirstTimeExportOnboarding(documentUri, range, context);
+  } else {
+    // Experienced user - show format selection + settings
+    await showAdvancedExportOptions(documentUri, range, context);
+  }
+}
+
+/**
+ * First-time export onboarding workflow
+ */
+async function showFirstTimeExportOnboarding(documentUri: vscode.Uri, range: vscode.Range, context: vscode.ExtensionContext): Promise<void> {
+  const selection = await vscode.window.showQuickPick([
+    {
+      label: '💾 Choose Save Location',
+      description: 'Open save dialog for each export',
+      detail: 'Full control over where files are saved'
+    },
+    {
+      label: '⚡ Auto-save Next to File', 
+      description: 'Smart naming with sequence and hash',
+      detail: 'Saves automatically: diagram-01-a4b2c8ef.svg'
+    },
+    {
+      label: '📁 Auto-save to Specific Folder',
+      description: 'Set once, use forever',
+      detail: 'Configure a dedicated export folder'
+    }
+  ], {
+    placeHolder: '🌊 Welcome to Mermaid Export Pro! How would you like to save exports?',
+    ignoreFocusOut: true
+  });
+
+  if (!selection) {
+    return;
+  }
+
+  // Mark onboarding as completed
+  await context.globalState.update('mermaidExportPro.firstMermaidFileOnboarding', true);
+
+  let savePreference: string;
+  
+  if (selection.label.includes('Choose Save Location')) {
+    savePreference = 'dialog';
+  } else if (selection.label.includes('Auto-save Next to File')) {
+    savePreference = 'auto';
+  } else {
+    savePreference = 'folder';
+    // Show folder selection
+    const folderUri = await vscode.window.showOpenDialog({
+      canSelectFiles: false,
+      canSelectFolders: true,
+      canSelectMany: false,
+      title: 'Select Export Folder'
+    });
+    
+    if (folderUri && folderUri[0]) {
+      await context.workspaceState.update('mermaidExportPro.autoExportFolder', folderUri[0].fsPath);
+    } else {
+      // Fallback to auto if user cancels folder selection
+      savePreference = 'auto';
+    }
+  }
+
+  await context.workspaceState.update('mermaidExportPro.exportSavePreference', savePreference);
+
+  // Show success message and proceed with export
+  vscode.window.showInformationMessage('🎉 Setup complete! Your export preferences have been saved.');
+  
+  // Trigger format selection for immediate export
+  await showFormatSelectionAndExport(documentUri, range, context);
+}
+
+/**
+ * Advanced export options for experienced users
+ */
+async function showAdvancedExportOptions(documentUri: vscode.Uri, range: vscode.Range, context: vscode.ExtensionContext): Promise<void> {
+  const selection = await vscode.window.showQuickPick([
+    {
+      label: '🎨 All Export Formats',
+      description: 'Choose from SVG, PNG, JPG, PDF, WebP',
+      detail: 'Export this diagram in any format'
+    },
+    {
+      label: '📁 Change Export Folder',
+      description: 'Update auto-save folder location', 
+      detail: 'Configure where auto-exports are saved'
+    },
+    {
+      label: '💾 Switch to Save Dialog',
+      description: 'Choose location for each export',
+      detail: 'Change from auto-save to manual selection'
+    },
+    {
+      label: '⚙️ Extension Settings',
+      description: 'Open full settings panel',
+      detail: 'Configure themes, sizes, and advanced options'
+    }
+  ], {
+    placeHolder: 'Export Options',
+    ignoreFocusOut: true
+  });
+
+  if (!selection) {
+    return;
+  }
+
+  if (selection.label.includes('All Export Formats')) {
+    await showFormatSelectionAndExport(documentUri, range, context);
+  } else if (selection.label.includes('Change Export Folder')) {
+    await changeExportFolder(context);
+  } else if (selection.label.includes('Switch to Save Dialog')) {
+    await context.workspaceState.update('mermaidExportPro.exportSavePreference', 'dialog');
+    vscode.window.showInformationMessage('Export preference updated to save dialog');
+  } else if (selection.label.includes('Extension Settings')) {
+    await vscode.commands.executeCommand('workbench.action.openSettings', 'mermaidExportPro');
+  }
+}
+
+/**
+ * Show format selection and export
+ */
+async function showFormatSelectionAndExport(documentUri: vscode.Uri, range: vscode.Range, context: vscode.ExtensionContext): Promise<void> {
+  const formats = await formatPreferenceManager.getPreferredFormats();
+  
+  const formatOptions = formats.map(format => ({
+    label: format.toUpperCase(),
+    description: getFormatDescription(format),
+    value: format
+  }));
+
+  const selectedFormat = await vscode.window.showQuickPick(formatOptions, {
+    placeHolder: 'Select export format',
+    ignoreFocusOut: true
+  });
+
+  if (selectedFormat) {
+    // Record usage for learning
+    await formatPreferenceManager.recordUsage(selectedFormat.value as ExportFormat, 'codelens');
+    
+    // Export with selected format
+    await exportMarkdownBlock(documentUri, range, selectedFormat.value, context);
+  }
+}
+
+/**
+ * Change export folder setting
+ */
+async function changeExportFolder(context: vscode.ExtensionContext): Promise<void> {
+  const folderUri = await vscode.window.showOpenDialog({
+    canSelectFiles: false,
+    canSelectFolders: true,
+    canSelectMany: false,
+    title: 'Select New Export Folder'
+  });
+  
+  if (folderUri && folderUri[0]) {
+    await context.workspaceState.update('mermaidExportPro.autoExportFolder', folderUri[0].fsPath);
+    await context.workspaceState.update('mermaidExportPro.exportSavePreference', 'folder');
+    vscode.window.showInformationMessage(`Export folder updated: ${folderUri[0].fsPath}`);
+  }
+}
+
+/**
+ * Get user-friendly format descriptions
+ */
+function getFormatDescription(format: ExportFormat): string {
+  const descriptions: Record<ExportFormat, string> = {
+    svg: 'Vector graphics - best quality, scalable',
+    png: 'Raster image - universal compatibility',
+    jpg: 'Compressed image - smaller file size',
+    jpeg: 'Compressed image - smaller file size',
+    pdf: 'Document format - perfect for printing',
+    webp: 'Modern web format - excellent compression'
+  };
+  return descriptions[format] || 'Image format';
+}
+
+/**
+ * Get smart output path based on user preferences
+ */
+async function getSmartOutputPath(document: vscode.TextDocument, mermaidContent: string, format: ExportFormat, context: vscode.ExtensionContext, preferAuto = false): Promise<string | null> {
+  // If caller prefers auto (e.g., CodeLens), use auto as default when the user hasn't configured a preference
+  const defaultPref: 'dialog' | 'auto' | 'folder' = preferAuto ? 'auto' : 'dialog';
+  const savePreference = context.workspaceState.get<'dialog' | 'auto' | 'folder'>('mermaidExportPro.exportSavePreference', defaultPref);
+  const baseName = AutoNaming.getBaseName(document.fileName);
+  
+  switch (savePreference) {
+    case 'auto':
+      // Auto-save next to file with smart naming
+      const fileDirectory = path.dirname(document.fileName);
+      return await AutoNaming.generateSmartName({
+        baseName,
+        format,
+        content: mermaidContent,
+        outputDirectory: fileDirectory
+      });
+      
+    case 'folder':
+      // Auto-save to specific folder
+      const customFolder = context.workspaceState.get('mermaidExportPro.autoExportFolder');
+      if (customFolder && typeof customFolder === 'string') {
+        // Validate folder still exists
+        const validation = await AutoNaming.validateDirectory(customFolder);
+        if (!validation.valid) {
+          vscode.window.showWarningMessage(`Export folder invalid: ${validation.error}. Please reconfigure.`);
+          // Fall back to dialog
+          return await showSaveDialog(document, format);
+        }
+        
+        return await AutoNaming.generateSmartName({
+          baseName,
+          format, 
+          content: mermaidContent,
+          outputDirectory: customFolder
+        });
+      } else {
+        // No folder configured, show dialog
+        return await showSaveDialog(document, format);
+      }
+      
+    case 'dialog':
+    default:
+      // Traditional save dialog
+      return await showSaveDialog(document, format);
+  }
+}
+
+/**
+ * Show traditional save dialog
+ */
+async function showSaveDialog(document: vscode.TextDocument, format: ExportFormat): Promise<string | null> {
+  const baseName = AutoNaming.getBaseName(document.fileName);
+  const fileName = AutoNaming.generateDialogName(baseName, format);
+  
+  const defaultUri = vscode.Uri.file(path.join(path.dirname(document.fileName), fileName));
+  const result = await vscode.window.showSaveDialog({
+    defaultUri,
+    filters: { [`${format.toUpperCase()} files`]: [format] },
+    title: `Save ${format.toUpperCase()} file`
+  });
+
+  return result?.fsPath || null;
+}
+
 export function deactivate() {
   ErrorHandler.dispose();
   disposeAutoExport();
   console.log('Mermaid Export Pro extension deactivated');
+}
+
+/**
+ * Export a file resource (from explorer or tab context). Prefers auto-save next to the file.
+ */
+async function exportFileUri(resource: vscode.Uri | undefined, context: vscode.ExtensionContext): Promise<void> {
+  if (!resource) {
+    vscode.window.showErrorMessage('No file selected for export');
+    return;
+  }
+
+  const fsPath = resource.fsPath;
+  const lower = fsPath.toLowerCase();
+
+  // Load file content
+  let content: string;
+  try {
+    content = await fs.promises.readFile(fsPath, 'utf8');
+  } catch (err) {
+    vscode.window.showErrorMessage(`Failed to read file: ${fsPath}`);
+    return;
+  }
+
+  // Determine mermaid content
+  let mermaidContent: string | null = null;
+  if (lower.endsWith('.mmd')) {
+    mermaidContent = content.trim();
+  } else if (lower.endsWith('.md') || lower.endsWith('.markdown')) {
+    const match = content.match(/```mermaid\s*([\s\S]*?)\s*```/);
+    if (match) mermaidContent = match[1].trim();
+  }
+
+  if (!mermaidContent) {
+    vscode.window.showErrorMessage('No mermaid diagram found in the selected file');
+    return;
+  }
+
+  // Determine format (use configured default)
+  const config = vscode.workspace.getConfiguration('mermaidExportPro');
+  const format = (config.get('defaultFormat') as ExportFormat) || 'png';
+
+  // Build export options
+  const exportOptions: ExportOptions = {
+    format: format as ExportFormat,
+    theme: (config.get('theme') as MermaidTheme) || 'default',
+    width: (config.get('width') as number) || 800,
+    height: (config.get('height') as number) || 600,
+    backgroundColor: (config.get('backgroundColor') as string) || 'white'
+  };
+
+  // Choose strategy
+  const cli = new CLIExportStrategy();
+  const web = new WebExportStrategy(context);
+  const strategy = (await cli.isAvailable()) ? cli : web;
+
+  await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: `Exporting ${path.basename(fsPath)}...` }, async () => {
+    try {
+      const buffer = await strategy.export(mermaidContent!, exportOptions);
+
+      // Generate auto name next to the file
+      const outputDir = path.dirname(fsPath);
+      const smartPath = await AutoNaming.generateSmartName({ baseName: AutoNaming.getBaseName(fsPath), format: exportOptions.format, content: mermaidContent!, outputDirectory: outputDir });
+
+      // Ensure directory
+      await AutoNaming.ensureDirectory(path.dirname(smartPath));
+      await fs.promises.writeFile(smartPath, buffer);
+
+      vscode.window.showInformationMessage(`Exported to ${path.basename(smartPath)}`);
+    } catch (err) {
+      await ErrorHandler.handleError(err instanceof Error ? err : new Error('Export failed'), 'Export File');
+    }
+  });
 }

@@ -13,11 +13,19 @@ import { CLIExportStrategy } from '../strategies/cliExportStrategy';
 import { WebExportStrategy } from '../strategies/webExportStrategy';
 import { ErrorHandler } from '../ui/errorHandler';
 import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy } from '../types';
+import { AutoNaming } from '../utils/autoNaming';
+import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 
-export async function runExportCommand(context: vscode.ExtensionContext): Promise<void> {
+export async function runExportCommand(context: vscode.ExtensionContext, preferAuto = false, documentUri?: vscode.Uri): Promise<void> {
   ErrorHandler.logInfo('Starting export command...');
 
   try {
+    // If a document URI was provided (e.g., from Explorer context), open it so there's an active editor
+    if (documentUri) {
+      const doc = await vscode.workspace.openTextDocument(documentUri);
+      await vscode.window.showTextDocument(doc, { preview: false });
+    }
+
     // Get active document
     const activeEditor = vscode.window.activeTextEditor;
     if (!activeEditor) {
@@ -42,8 +50,23 @@ export async function runExportCommand(context: vscode.ExtensionContext): Promis
       return; // User cancelled
     }
 
-    // Get output path
-    const outputPath = await getOutputPath(document, exportOptions.format);
+    // Determine output path. Persist per-file format choice and optionally auto-save.
+    const formatPrefManager = new FormatPreferenceManager(context);
+
+    // Persist the user's chosen format for this file
+    await formatPrefManager.setFileFormatPreference(document.fileName, exportOptions.format);
+
+    let outputPath: string | null = null;
+
+    if (preferAuto) {
+      // Auto-generate smart name next to file (skip save dialog)
+      const outputDir = path.dirname(document.fileName);
+      outputPath = await AutoNaming.generateSmartName({ baseName: path.basename(document.fileName, path.extname(document.fileName)), format: exportOptions.format, content: mermaidContent, outputDirectory: outputDir });
+    } else {
+      // Fall back to save dialog
+      outputPath = await getOutputPath(document, exportOptions.format);
+    }
+
     if (!outputPath) {
       return; // User cancelled
     }
@@ -126,7 +149,8 @@ async function extractMermaidContent(document: vscode.TextDocument, selection: v
     
     // Extract from entire document
     const fullText = document.getText();
-    const mermaidMatch = fullText.match(/```mermaid\n([\s\S]*?)\n```/);
+    // More flexible regex to handle various spacing and newline combinations
+    const mermaidMatch = fullText.match(/```mermaid\s*([\s\S]*?)\s*```/);
     if (mermaidMatch) {
       return mermaidMatch[1].trim();
     }

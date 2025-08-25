@@ -1,8 +1,29 @@
 # Mermaid Export Pro
 
+
+![](media\mermaid-export-pro-banner.png)
+
 Professional Mermaid diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
-## Features
+- [Mermaid Export Pro](#mermaid-export-pro)
+    - [🎯 Smart Status Bar Integration](#-smart-status-bar-integration)
+    - [📊 Multiple Export Formats](#-multiple-export-formats)
+    - [🚀 Batch Operations](#-batch-operations)
+    - [⚡ Auto-Export on Save](#-auto-export-on-save)
+    - [🎨 Enhanced Markdown Experience](#-enhanced-markdown-experience)
+  - [Requirements](#requirements)
+    - [Optional (Recommended)](#optional-recommended)
+  - [Extension Settings](#extension-settings)
+    - [Quick Start](#quick-start)
+    - [Commands](#commands)
+    - [Context Menus](#context-menus)
+  - [Release Notes](#release-notes)
+    - [1.0.0](#100)
+
+
+![](media\features-overview-banner.png)
+
+---
 
 ### 🎯 Smart Status Bar Integration
 - **Real-time Diagram Count**: Shows number of mermaid diagrams in current file
@@ -35,11 +56,13 @@ Professional Mermaid diagram export extension for Visual Studio Code with compre
 - **Command Links**: Direct export from tooltips
 - **Type Detection**: Identifies flowchart, sequence, class diagrams, etc.
 
-### 🔧 Dual Export Strategy
+
+![](media\export-stragegies-banner.png)
+
 - **CLI Export**: High-quality rendering via Mermaid CLI (@mermaid-js/mermaid-cli)
 - **Web Fallback**: Browser-based export when CLI unavailable
 - **Auto-detection**: Automatically selects best available method
-- **Cross-platform**: Windows, macOS, and Linux support
+- **Cross-platform**: Windows, macOS, and Linux support **[UNTESTED: Need testers!!]**
 
 ## Requirements
 
@@ -62,7 +85,7 @@ This extension contributes the following settings:
 * `mermaidExportPro.height`: Default export height in pixels  
 * `mermaidExportPro.backgroundColor`: Background color for exports
 
-## Usage
+![](media\getting-started-banner.png)
 
 ### Quick Start
 1. Open a file with mermaid diagrams (`.mmd` or markdown with mermaid blocks)

@@ -9,7 +9,10 @@
       "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\cli/**)",
       "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\web/**)",
       "Bash(npm run *)",
-      "Bash(vsce package:*)"
+      "Bash(vsce package:*)",
+      "Bash(code:*)",
+      "Bash(node:*)",
+      "Bash(mmdc:*)"
     ],
     "deny": [],
     "ask": []

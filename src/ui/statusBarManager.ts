@@ -22,6 +22,7 @@ export class StatusBarManager {
   constructor(context: vscode.ExtensionContext, onboardingManager: OnboardingManager) {
     this.context = context;
     this.onboardingManager = onboardingManager;
+  console.log('[mermaidExportPro] StatusBarManager constructed');
     
     // Create status bar item (right side, before language mode)
     this.statusBarItem = vscode.window.createStatusBarItem(
@@ -50,9 +51,11 @@ export class StatusBarManager {
       })
     );
     
-    // Initial setup
-    this.checkStrategyStatus();
-    this.updateVisibility();
+  // Initial setup
+  console.log('[mermaidExportPro] StatusBarManager initial checkStrategyStatus()');
+  this.checkStrategyStatus();
+  console.log('[mermaidExportPro] StatusBarManager initial updateVisibility()');
+  this.updateVisibility();
   }
 
   /**
@@ -121,7 +124,9 @@ export class StatusBarManager {
     this.currentState.diagramCount = diagramCount;
     this.currentState.fileName = fileName;
 
-    if (diagramCount === 0) {
+    // If there's no active editor at all, hide the status item
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
       this.statusBarItem.hide();
       return;
     }
@@ -132,31 +137,47 @@ export class StatusBarManager {
     let backgroundColor: vscode.ThemeColor | undefined;
     let color: vscode.ThemeColor | undefined;
 
-    switch (this.currentState.status) {
+  switch (this.currentState.status) {
       case 'not-configured':
-        statusText = `$(alert) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''} - Setup`;
-        tooltip = `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to setup export tools`;
+        statusText = diagramCount > 0
+          ? `$(alert) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''} - Setup`
+          : `$(alert) Mermaid Export Pro - Setup`;
+        tooltip = diagramCount > 0
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to setup export tools`
+          : `Mermaid Export Pro: No diagrams found in the active file. Click to setup export tools.`;
         backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
         color = new vscode.ThemeColor('statusBarItem.warningForeground');
         break;
 
       case 'cli-available':
-        statusText = `$(file-media) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`;
-        tooltip = `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with ${this.currentState.details || 'CLI'}`;
+        statusText = diagramCount > 0
+          ? `$(file-media) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
+          : `$(file-media) Mermaid Export Pro`;
+        tooltip = diagramCount > 0
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with ${this.currentState.details || 'CLI'}`
+          : `Mermaid Export Pro: CLI available (${this.currentState.details}). Open a file with mermaid diagrams to export.`;
         backgroundColor = undefined;
         color = new vscode.ThemeColor('statusBarItem.prominentForeground');
         break;
 
       case 'web-only':
-        statusText = `$(globe) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`;
-        tooltip = `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with Web strategy`;
+        statusText = diagramCount > 0
+          ? `$(globe) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
+          : `$(globe) Mermaid Export Pro`;
+        tooltip = diagramCount > 0
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nClick to export with Web strategy`
+          : `Mermaid Export Pro: Web export configured. Open a file with mermaid diagrams to export.`;
         backgroundColor = undefined;
         color = new vscode.ThemeColor('statusBarItem.prominentForeground');
         break;
 
       case 'checking':
-        statusText = `$(loading~spin) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`;
-        tooltip = `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nChecking export tools...`;
+        statusText = diagramCount > 0
+          ? `$(loading~spin) ${diagramCount} Mermaid${diagramCount > 1 ? 's' : ''}`
+          : `$(loading~spin) Mermaid Export Pro`;
+        tooltip = diagramCount > 0
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} in ${fileName}\nChecking export tools...`
+          : `Mermaid Export Pro: Checking export tools...`;
         backgroundColor = undefined;
         color = undefined;
         break;
