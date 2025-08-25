@@ -1,9 +1,10 @@
 # Mermaid Export Pro
 
+> This extension is free, the name is mainly to set it appart from older unmaintained alternatives.
 
 ![](media\mermaid-export-pro-banner.png)
 
-Professional Mermaid diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
+Professional Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
 - [Mermaid Export Pro](#mermaid-export-pro)
     - [🎯 Smart Status Bar Integration](#-smart-status-bar-integration)
