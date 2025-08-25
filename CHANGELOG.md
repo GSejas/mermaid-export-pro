@@ -2,6 +2,50 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.4] - 2025-08-25
+
+### 🚀 Major Enhancements
+
+#### Status Bar System Overhaul
+- **Customizable Display Formats**: Choose between icon-only, icon+count, or icon+"N Mermaids" text
+- **Auto-Export Click**: Status bar click now automatically exports diagrams without save dialog
+- **Visual Grouping**: Theme and export status bars positioned adjacently for better UX cohesion
+- **Real-time Diagram Counting**: Improved regex-based detection for accurate mermaid block counting
+
+#### Theme Management Improvements  
+- **Debounced Notifications**: 3-second delay prevents notification spam during rapid theme cycling
+- **Consistent Styling**: Removed unnecessary color cycling from theme status bar
+- **Better Visibility**: Fixed theme status bar appearing/disappearing issues
+
+#### Transparent Background Support
+- **Universal Implementation**: Fixed transparent background support across all export strategies (CLI, Web, Simple Web)
+- **Default Configuration**: Changed default backgroundColor from 'white' to 'transparent'
+- **Consistent Behavior**: All export commands now properly respect transparent background setting
+
+#### Language Support Enhancement
+- **Native .mmd Support**: Added proper language definition for `.mmd` files
+- **Improved Detection**: Better hover provider and CodeLens activation for mermaid files
+- **File Association**: Proper syntax highlighting and language features for mermaid files
+
+### 🐛 Bug Fixes
+- Fixed status bar disappearing/appearing randomly with diagram counts
+- Resolved hardcoded 'white' background defaults throughout codebase
+- Fixed CLI strategy ignoring transparent background setting
+- Removed duplicate extension activation messages
+- Corrected status bar click handler to use 'exportFile' instead of 'exportCurrent' for auto-export
+
+### 🧪 Testing Infrastructure  
+- **Comprehensive Test Suite**: Added unit tests for StatusBarManager, ThemeStatusBarManager, and OnboardingManager
+- **Vitest Integration**: Modern test runner with proper VS Code API mocking
+- **Test Coverage**: Improved coverage tracking and reporting
+- **Mock Framework**: Robust VS Code API mocking for reliable unit testing
+
+### 🔧 Technical Improvements
+- Enhanced error handling and logging throughout the application
+- Better cross-platform path handling and file operations
+- Improved configuration management with proper fallbacks
+- More robust mermaid content detection using optimized regex patterns
+
 ## [1.0.0] - 2025-08-25
 
 ## [1.0.2] - 2025-08-25

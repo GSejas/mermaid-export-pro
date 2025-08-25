@@ -1,10 +1,14 @@
 # Mermaid Export Pro
 
-> This extension is free, the name is mainly to set it appart from older unmaintained alternatives.
+
+[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-75%25-yellow?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.4-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
+
+
+> This extension is free, the name is mainly to set it appart from older unmaintained alternatives. 
 
 ![](.\media\mermaid-export-pro-banner.png)
 
-Professional Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
+Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
 - [Mermaid Export Pro](#mermaid-export-pro)
     - [🎯 Smart Status Bar Integration](#-smart-status-bar-integration)
@@ -50,6 +54,8 @@ Professional Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram expor
 - **Configurable**: Toggle on/off with workspace persistence
 - **Custom Output**: Configure export directory and naming
 - **Smart Detection**: Works with `.mmd` files and markdown blocks
+
+![](2025-08-25-01-56-04.png)
 
 ### 🎨 Enhanced Markdown Experience
 - **CodeLens**: Export buttons above mermaid code blocks

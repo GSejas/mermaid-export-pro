@@ -1,0 +1,39 @@
+File Path,Category,Lines of Code,Current Coverage %,Has Tests,Test File,Priority,Recent Bugs,Complexity,Target Coverage %,Week 1,Week 2,Week 3,Week 4,Notes
+src/extension.ts,Core,100,5,Yes,src/test/extension.test.ts,High,Yes,High,90,✓,,,Dummy test only - needs rewrite
+src/types/index.ts,Core,50,0,No,,Low,No,Low,80,,,,Type definitions - less critical
+src/commands/exportCommand.ts,Commands,200,0,No,,Medium,No,Medium,85,,,✓,,"Main export logic, user-facing"
+src/commands/batchExportCommand.ts,Commands,180,0,No,,Medium,No,Medium,85,,,✓,,Batch operations
+src/commands/debugCommand.ts,Commands,120,0,No,,Low,No,Low,80,,,✓,,Debug functionality
+src/commands/watchCommand.ts,Commands,160,0,No,,Medium,No,Medium,85,,,✓,,Auto-export feature
+src/services/exportManager.ts,Services,250,0,No,,High,No,High,90,,✓,,,Export orchestration
+src/services/onboardingManager.ts,Services,300,85,Yes,src/test/unit/services/onboardingManager.test.ts,Critical,Yes,High,95,✓,,,,Welcome flow and setup completion tests
+src/services/configManager.ts,Services,150,0,No,,High,No,Medium,85,,✓,,,Configuration management
+src/services/fileProcessor.ts,Services,180,0,No,,Medium,No,Medium,80,,,✓,,File operations
+src/services/formatPreferenceManager.ts,Services,100,0,No,,Low,No,Low,75,,,✓,,Format selection
+src/strategies/cliExportStrategy.ts,Strategies,220,0,No,,Critical,No,High,95,,✓,,,CLI detection and execution
+src/strategies/webExportStrategy.ts,Strategies,280,0,No,,Critical,No,High,95,,✓,,,Webview export logic
+src/strategies/simpleWebExportStrategy.ts,Strategies,150,0,No,,Medium,No,Medium,85,,✓,,,Fallback strategy
+src/ui/statusBarManager.ts,UI,350,90,Yes,src/test/unit/ui/statusBarManager.test.ts,Critical,Yes,High,95,✓,,,,Display formats and click handling tests
+src/ui/themeStatusBarManager.ts,UI,200,95,Yes,src/test/unit/ui/themeStatusBarManager.test.ts,Critical,Yes,Medium,90,✓,,,,Theme cycling and debounced notifications tests
+src/ui/errorHandler.ts,UI,120,0,No,,Medium,No,Medium,80,,,✓,,Error handling
+src/ui/progressReporter.ts,UI,100,0,No,,Low,No,Low,75,,,✓,,Progress updates
+src/utils/pathUtils.ts,Utils,80,0,No,,Medium,No,Low,80,,,✓,,Cross-platform paths
+src/utils/validators.ts,Utils,60,0,No,,Medium,No,Low,80,,,✓,,Input validation
+src/utils/autoNaming.ts,Utils,90,0,No,,Low,No,Low,75,,,✓,,File naming logic
+src/utils/webviewUtils.ts,Utils,70,0,No,,Low,No,Low,75,,,✓,,Webview helpers
+src/providers/mermaidCodeLensProvider.ts,Providers,140,0,No,,Low,No,Medium,70,,,,✓,CodeLens integration
+src/providers/mermaidHoverProvider.ts,Providers,100,0,No,,Low,No,Medium,70,,,,✓,Hover information
+,,,,,,,,,,,,,
+Summary,All Categories,3190,32.5,4,4,,,,,,,
+Target Coverage by Week,Week 1,,,25,,,,,,✓,,,
+Target Coverage by Week,Week 2,,,50,,,,,,,✓,,
+Target Coverage by Week,Week 3,,,75,,,,,,,,✓,
+Target Coverage by Week,Week 4,,,90,,,,,,,,,✓
+,,,,,,,,,,,,,
+Priority Distribution,Critical,5,3,3,3,,,,,,,
+Priority Distribution,High,3,0,0,0,,,,,,,
+Priority Distribution,Medium,10,0,0,0,,,,,,,
+Priority Distribution,Low,6,0,0,0,,,,,,,
+,,,,,,,,,,,,,
+Bug Status,Files with Recent Bugs,4,3,3,3,Yes,,,,,,,Major status bar and onboarding issues resolved
+Bug Status,Files without Bugs,20,29.5,1,1,No,,,,,,,Extension.ts has dummy test
