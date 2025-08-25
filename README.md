@@ -2,7 +2,7 @@
 
 > This extension is free, the name is mainly to set it appart from older unmaintained alternatives.
 
-![](media\mermaid-export-pro-banner.png)
+![](.\media\mermaid-export-pro-banner.png)
 
 Professional Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
