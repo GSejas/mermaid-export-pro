@@ -4,6 +4,26 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ## [1.0.0] - 2025-08-25
 
+## [1.0.2] - 2025-08-25
+
+### 🐛 Fixes
+
+- Fix activation timing so Status Bar and Hover providers register on startup and on `mermaid` files.
+- Ensure Explorer/context commands open previewed files before exporting (no more "No active document").
+- Persist per-file export format preferences and auto-save behavior for `Export As`.
+
+### 📦 Packaging
+
+- Add `LICENSE` and update packaging workflow. Created `mermaid-export-pro-1.0.1.vsix` and installed locally.
+
+### 🔧 Developer
+
+- Register CodeLens/Hover providers for both `markdown` and `mermaid` language ids.
+- Minor lint and type fixes.
+
+---
+
+
 ### ✨ New Features
 
 #### Status Bar Integration
