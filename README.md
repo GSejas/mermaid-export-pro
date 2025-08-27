@@ -136,7 +136,8 @@ This extension contributes the following settings:
 - **Quality Comparison**: Side-by-side CLI vs Web export validation
 - **Enhanced Error Handling**: Better diagnostics and recovery for export failures
 - **Performance Optimization**: Improved export speeds and memory usage
-- **Cross-Platform Validation**: Tested on Windows, macOS, and Linux environments
+- **Cross-Platform Validation**: Tested on Windows
+  - Pending: macOS, and Linux environments
 
 ### 1.0.4
 
