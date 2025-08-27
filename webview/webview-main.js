@@ -45,14 +45,27 @@ function initializeMermaidWebview(diagramText, options = {}) {
             useMaxWidth: false,
             htmlLabels: true
         },
+        class: {
+            // Fix text overflow in class diagrams
+            useMaxWidth: false,
+            htmlLabels: true,
+            textHeight: 15,
+            curve: 'basis'
+        },
         themeVariables: {
-            background: options.backgroundColor || 'white',
-            primaryColor: '#fff',
-            primaryTextColor: '#333',
-            primaryBorderColor: '#333',
-            lineColor: '#333333',
-            secondaryColor: '#f4f4f4',
-            tertiaryColor: '#fff'
+            background: (options.backgroundColor === 'transparent') ? 'transparent' : (options.backgroundColor || '#ffffff'),
+            primaryColor: '#ffffff',
+            primaryTextColor: '#000000',
+            primaryBorderColor: '#000000',
+            lineColor: '#000000',
+            secondaryColor: '#f9f9f9',
+            tertiaryColor: '#ffffff',
+            // Class diagram specific theme variables
+            classText: '#000000',
+            classTitleColor: '#000000',
+            cScale0: '#ffffff',
+            cScale1: '#f9f9f9',
+            cScale2: '#e6f3ff'
         }
     };
 
@@ -79,10 +92,10 @@ function initializeMermaidWebview(diagramText, options = {}) {
                 
                 console.log('Mermaid render successful, SVG length:', renderResult.svg.length);
                 
-                // Clean SVG content - remove problematic attributes that might interfere
+                // Clean SVG content - keep important styling but remove problematic attributes
                 const cleanSvg = renderResult.svg
-                    .replace(/style="[^"]*"/g, '') // Remove inline styles
-                    .replace(/class="[^"]*node[^"]*"/g, '') // Remove mermaid node classes
+                    .replace(/class="[^"]*?react[^"]*?"/g, '') // Remove react-specific classes only
+                    .replace(/data-id="[^"]*"/g, '') // Remove data-id attributes
                     .trim();
                 
                 // Send success message with clean SVG
@@ -258,8 +271,45 @@ async function convertSvgToFormat(svgContent, format, width, height, backgroundC
         
         img.onload = () => {
             try {
-                // Draw SVG to canvas
-                ctx.drawImage(img, 0, 0, width, height);
+                // Calculate proper scaling to maintain aspect ratio
+                const imgAspectRatio = img.naturalWidth / img.naturalHeight;
+                const canvasAspectRatio = width / height;
+                
+                let drawWidth, drawHeight, offsetX, offsetY;
+                
+                if (imgAspectRatio > canvasAspectRatio) {
+                    // Image is wider - fit to width
+                    drawWidth = width;
+                    drawHeight = width / imgAspectRatio;
+                    offsetX = 0;
+                    offsetY = (height - drawHeight) / 2;
+                } else {
+                    // Image is taller - fit to height
+                    drawHeight = height;
+                    drawWidth = height * imgAspectRatio;
+                    offsetX = (width - drawWidth) / 2;
+                    offsetY = 0;
+                }
+                
+                // Clear canvas first
+                ctx.clearRect(0, 0, width, height);
+                
+                // Handle background color - JPG doesn't support transparency
+                let finalBackgroundColor = backgroundColor;
+                if (backgroundColor === 'transparent') {
+                    if (format.toLowerCase() === 'jpg' || format.toLowerCase() === 'jpeg') {
+                        finalBackgroundColor = '#ffffff'; // Default to white for JPG
+                    }
+                    // For PNG, leave transparent (no background fill)
+                } 
+                
+                if (finalBackgroundColor !== 'transparent') {
+                    ctx.fillStyle = finalBackgroundColor;
+                    ctx.fillRect(0, 0, width, height);
+                }
+                
+                // Draw SVG to canvas with proper scaling
+                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
                 
                 // Convert canvas to target format
                 let mimeType;
@@ -287,10 +337,9 @@ async function convertSvgToFormat(svgContent, format, width, height, backgroundC
             reject(new Error('Failed to load SVG into image'));
         };
         
-        // Convert SVG to data URL
-        const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-        const svgUrl = URL.createObjectURL(svgBlob);
-        img.src = svgUrl;
+        // Convert SVG to data URL - encode as base64 for better compatibility
+        const svgBase64 = btoa(unescape(encodeURIComponent(svgContent)));
+        img.src = `data:image/svg+xml;base64,${svgBase64}`;
     });
 }
 

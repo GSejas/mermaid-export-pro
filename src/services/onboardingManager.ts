@@ -249,7 +249,7 @@ export class OnboardingManager {
     const methodNames = {
       'local': 'Local Installation (workspace)',
       'global': 'Global Installation (system-wide)', 
-      'web-only': 'Web-only Mode (no downloads)'
+      'web-only': 'Web-only Mode (SVG, PNG, JPG exports - no CLI needed)'
     };
 
     message += `💡 Recommendation: ${methodNames[recommended]}\n\n`;
@@ -308,8 +308,8 @@ export class OnboardingManager {
 
     options.push({
       label: '🌐 Web-Only Mode',
-      description: 'No downloads required',
-      detail: 'Uses VS Code webview - Good for basic exports'
+      description: 'No Node.js/CLI installation needed',
+      detail: 'Instant exports: SVG, PNG, JPG supported. PDF requires CLI installation.'
     });
 
     options.push({
@@ -416,7 +416,7 @@ export class OnboardingManager {
     const messages = {
       'local': 'Local installation completed! Mermaid CLI is ready for this workspace.',
       'global': 'Global installation completed! Mermaid CLI is now available system-wide.',
-      'web-only': 'Web-only mode configured! You can export using VS Code\'s built-in webview.',
+      'web-only': 'Web-only mode configured! ✨ Instant exports to SVG, PNG, JPG formats. For PDF exports, install Mermaid CLI later.',
       'skip': 'Setup completed! Your existing Mermaid CLI installation is ready to use.'
     };
 

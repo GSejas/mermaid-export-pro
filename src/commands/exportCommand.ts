@@ -15,9 +15,19 @@ import { ErrorHandler } from '../ui/errorHandler';
 import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy } from '../types';
 import { AutoNaming } from '../utils/autoNaming';
 import { FormatPreferenceManager } from '../services/formatPreferenceManager';
+import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 
 export async function runExportCommand(context: vscode.ExtensionContext, preferAuto = false, documentUri?: vscode.Uri): Promise<void> {
   ErrorHandler.logInfo('Starting export command...');
+
+  // Check export throttling
+  const timeoutManager = OperationTimeoutManager.getInstance();
+  if (!timeoutManager.canStartExport()) {
+    const remainingMs = timeoutManager.getExportCooldownRemaining();
+    const remainingSeconds = Math.ceil(remainingMs / 1000);
+    vscode.window.showWarningMessage(`Please wait ${remainingSeconds}s before starting another export to prevent system overload.`);
+    return;
+  }
 
   try {
     // If a document URI was provided (e.g., from Explorer context), open it so there's an active editor
@@ -73,28 +83,86 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
 
     exportOptions.outputPath = outputPath;
 
-    // Select strategy and export
+    // Select strategy and export with timeout monitoring
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
       title: `Exporting to ${exportOptions.format.toUpperCase()}...`,
       cancellable: false
     }, async (progress) => {
+      const timeoutManager = OperationTimeoutManager.getInstance();
+      const operationId = `export-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Start timeout monitoring
+      timeoutManager.startOperation(
+        operationId,
+        `Export to ${exportOptions.format.toUpperCase()}`,
+        'export',
+        progress,
+        {
+          onSoftTimeout: () => {
+            ErrorHandler.logInfo(`Soft timeout warning for export operation`);
+          },
+          onMediumTimeout: async () => {
+            const choice = await vscode.window.showWarningMessage(
+              `Export is taking longer than expected (${exportOptions.format.toUpperCase()}). This might indicate:
+• Large/complex diagram
+• System resource constraints
+• CLI tool issues`,
+              { modal: false },
+              'Keep Waiting (30s more)',
+              'Cancel Export',
+              'Switch to Web Export'
+            );
+            
+            if (choice === 'Keep Waiting (30s more)') {
+              timeoutManager.updateProgress(operationId, 'Continuing export - please wait...');
+              return true;
+            } else if (choice === 'Switch to Web Export') {
+              // Try web strategy as fallback
+              timeoutManager.updateProgress(operationId, 'Switching to web export strategy...');
+              return true;
+            }
+            
+            return false; // Cancel
+          },
+          onHardTimeout: async () => {
+            ErrorHandler.logError(`Hard timeout: Export operation exceeded maximum time limit`);
+            // Force cleanup of any hanging processes
+            try {
+              // Kill any hanging CLI processes
+              if (process.platform === 'win32') {
+                require('child_process').exec('taskkill /f /im mmdc.exe /t', () => {});
+              } else {
+                require('child_process').exec('pkill -f mmdc', () => {});
+              }
+            } catch (e) {
+              // Ignore cleanup errors
+            }
+          },
+          onCleanup: async () => {
+            ErrorHandler.logInfo(`Cleaning up export operation ${operationId}`);
+          }
+        }
+      );
       try {
-        progress.report({ message: 'Selecting export strategy...' });
+        timeoutManager.updateProgress(operationId, 'Selecting export strategy...');
         
         const strategy = await selectBestStrategy(context);
         ErrorHandler.logInfo(`Using strategy: ${strategy.name}`);
         
-        progress.report({ message: `Exporting with ${strategy.name}...` });
+        timeoutManager.updateProgress(operationId, `Exporting with ${strategy.name}...`);
         
         const buffer = await strategy.export(mermaidContent, exportOptions);
         
-        progress.report({ message: 'Saving file...' });
+        timeoutManager.updateProgress(operationId, 'Saving file...');
         
         await fs.promises.writeFile(outputPath, buffer);
         
         const stats = await fs.promises.stat(outputPath);
         ErrorHandler.logInfo(`Export completed: ${outputPath} (${stats.size} bytes)`);
+        
+        // Mark operation as completed
+        timeoutManager.completeOperation(operationId);
         
         // Show success message with actions
         const action = await vscode.window.showInformationMessage(
@@ -114,6 +182,9 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
         }
 
       } catch (error) {
+        // Cancel timeout monitoring on error
+        timeoutManager.cancelOperation(operationId, 'timeout');
+        
         const errorMsg = error instanceof Error ? error.message : 'Unknown export error';
         ErrorHandler.logError(`Export failed: ${errorMsg}`);
         vscode.window.showErrorMessage(`Export failed: ${errorMsg}`);

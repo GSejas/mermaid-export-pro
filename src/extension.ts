@@ -10,14 +10,17 @@ import { AutoNaming } from './utils/autoNaming';
 import { ExportFormat, MermaidTheme, ExportOptions } from './types';
 import { runDebugExport } from './commands/debugCommand';
 import { runExportCommand } from './commands/exportCommand';
+import { runExportAllCommand } from './commands/exportAllCommand';
 import { runBatchExport } from './commands/batchExportCommand';
 import { toggleAutoExport, initializeAutoExport, disposeAutoExport } from './commands/watchCommand';
+import { runDiagnosticsCommand, runQuickHealthCheck } from './commands/diagnosticsCommand';
 import { OnboardingManager } from './services/onboardingManager';
 import { StatusBarManager } from './ui/statusBarManager';
 import { ThemeStatusBarManager } from './ui/themeStatusBarManager';
 import { MermaidCodeLensProvider } from './providers/mermaidCodeLensProvider';
 import { MermaidHoverProvider } from './providers/mermaidHoverProvider';
 import { FormatPreferenceManager } from './services/formatPreferenceManager';
+import { BackgroundHealthMonitor } from './services/backgroundHealthMonitor';
 
 // Extension state
 let configManager: ConfigManager;
@@ -26,6 +29,7 @@ let onboardingManager: OnboardingManager;
 let statusBarManager: StatusBarManager;
 let themeStatusBarManager: ThemeStatusBarManager;
 let formatPreferenceManager: FormatPreferenceManager;
+let backgroundHealthMonitor: BackgroundHealthMonitor;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('[mermaidExportPro] Activating extension...');
@@ -39,6 +43,7 @@ export async function activate(context: vscode.ExtensionContext) {
     statusBarManager = new StatusBarManager(context, onboardingManager);
     themeStatusBarManager = new ThemeStatusBarManager(context);
     formatPreferenceManager = new FormatPreferenceManager(context);
+    backgroundHealthMonitor = BackgroundHealthMonitor.getInstance(context);
 
   // Register commands
   console.log('[mermaidExportPro] registering commands');
@@ -58,6 +63,9 @@ export async function activate(context: vscode.ExtensionContext) {
     
     // Refresh status bar after onboarding
     await statusBarManager.refresh();
+
+    // Start background health monitoring
+    backgroundHealthMonitor.start();
 
     ErrorHandler.logInfo('Mermaid Export Pro extension activated successfully');
 
@@ -91,14 +99,26 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Batch export command
+  // Export All Diagrams command
+  const exportAllCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.exportAll',
+    async (documentUri?: vscode.Uri) => {
+      try {
+        await runExportAllCommand(context, documentUri);
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export all diagrams failed'), 'Export All');
+      }
+    }
+  );
+
+  // Mermaid Export Pro - Batch Export command
   const batchExportCommand = vscode.commands.registerCommand(
     'mermaidExportPro.batchExport',
-    async () => {
+    async (folderUri?: vscode.Uri) => {
       try {
-        await runBatchExport(context);
+        await runBatchExport(context, folderUri);
       } catch (error) {
-        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Batch export failed'), 'Batch Export');
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Mermaid Export Pro - Batch Export failed'), 'Mermaid Export Pro - Batch Export');
       }
     }
   );
@@ -221,10 +241,35 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
+  // Diagnostics command
+  const diagnosticsCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.diagnostics',
+    async () => {
+      try {
+        await runDiagnosticsCommand();
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Diagnostics failed'), 'Diagnostics');
+      }
+    }
+  );
+
+  // Quick health check command
+  const healthCheckCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.healthCheck',
+    async () => {
+      try {
+        await runQuickHealthCheck();
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Health check failed'), 'Health Check');
+      }
+    }
+  );
+
   // Register all commands
   context.subscriptions.push(
     exportCurrentCommand,
     exportAsCommand,
+    exportAllCommand,
     batchExportCommand,
     showOutputCommand,
     debugExportCommand,
@@ -234,8 +279,10 @@ function registerCommands(context: vscode.ExtensionContext): void {
     exportMarkdownCommand,
     statusBarClickCommand,
     cycleThemeCommand,
-    showExportOptionsCommand
-  , exportFileCommand
+    showExportOptionsCommand,
+    exportFileCommand,
+    diagnosticsCommand,
+    healthCheckCommand
   );
 
   // Listen for configuration changes
@@ -604,65 +651,6 @@ async function exportFileUri(resource: vscode.Uri | undefined, context: vscode.E
     return;
   }
 
-  const fsPath = resource.fsPath;
-  const lower = fsPath.toLowerCase();
-
-  // Load file content
-  let content: string;
-  try {
-    content = await fs.promises.readFile(fsPath, 'utf8');
-  } catch (err) {
-    vscode.window.showErrorMessage(`Failed to read file: ${fsPath}`);
-    return;
-  }
-
-  // Determine mermaid content
-  let mermaidContent: string | null = null;
-  if (lower.endsWith('.mmd')) {
-    mermaidContent = content.trim();
-  } else if (lower.endsWith('.md') || lower.endsWith('.markdown')) {
-    const match = content.match(/```mermaid\s*([\s\S]*?)\s*```/);
-    if (match) {mermaidContent = match[1].trim();}
-  }
-
-  if (!mermaidContent) {
-    vscode.window.showErrorMessage('No mermaid diagram found in the selected file');
-    return;
-  }
-
-  // Determine format (use configured default)
-  const config = vscode.workspace.getConfiguration('mermaidExportPro');
-  const format = (config.get('defaultFormat') as ExportFormat) || 'png';
-
-  // Build export options
-  const exportOptions: ExportOptions = {
-    format: format as ExportFormat,
-    theme: (config.get('theme') as MermaidTheme) || 'default',
-    width: (config.get('width') as number) || 800,
-    height: (config.get('height') as number) || 600,
-    backgroundColor: (config.get('backgroundColor') as string) || 'transparent'
-  };
-
-  // Choose strategy
-  const cli = new CLIExportStrategy();
-  const web = new WebExportStrategy(context);
-  const strategy = (await cli.isAvailable()) ? cli : web;
-
-  await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: `Exporting ${path.basename(fsPath)}...` }, async () => {
-    try {
-      const buffer = await strategy.export(mermaidContent!, exportOptions);
-
-      // Generate auto name next to the file
-      const outputDir = path.dirname(fsPath);
-      const smartPath = await AutoNaming.generateSmartName({ baseName: AutoNaming.getBaseName(fsPath), format: exportOptions.format, content: mermaidContent!, outputDirectory: outputDir });
-
-      // Ensure directory
-      await AutoNaming.ensureDirectory(path.dirname(smartPath));
-      await fs.promises.writeFile(smartPath, buffer);
-
-      vscode.window.showInformationMessage(`Exported to ${path.basename(smartPath)}`);
-    } catch (err) {
-      await ErrorHandler.handleError(err instanceof Error ? err : new Error('Export failed'), 'Export File');
-    }
-  });
+  // Delegate to exportAll command - it handles all the logic for multiple diagrams
+  await runExportAllCommand(context, resource);
 }

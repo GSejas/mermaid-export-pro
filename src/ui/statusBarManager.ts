@@ -320,8 +320,9 @@ export class StatusBarManager {
     }
 
     try {
-      // Use auto-save export command (no dialog)
-      await vscode.commands.executeCommand('mermaidExportPro.exportFile');
+      // Use export all command - it will handle single diagrams gracefully too
+      // Pass the active document URI so the export command knows which file to process
+      await vscode.commands.executeCommand('mermaidExportPro.exportAll', editor.document.uri);
     } catch (error) {
       // If main export fails, show options
       await this.showConfiguredOptions();

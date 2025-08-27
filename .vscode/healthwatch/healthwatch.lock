@@ -1,8 +1,8 @@
 {
-  "leaderId": "hw-1756101906470-hy76fob69-59112",
-  "processId": 59112,
-  "acquiredAt": 1756101906471,
+  "leaderId": "hw-1756277176597-ms92txt3q-1040",
+  "processId": 1040,
+  "acquiredAt": 1756277176649,
   "workspacePath": "c:\\Users\\delir\\Documents\\repos\\vscode-mermaid-export-pro\\mermaid-export-pro",
-  "version": "1.0.12",
-  "lastHeartbeat": 1756102436929
+  "version": "1.0.13",
+  "lastHeartbeat": 1756277415399
 }

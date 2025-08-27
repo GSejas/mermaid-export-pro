@@ -1,13 +1,38 @@
+
+
 /**
- * Mermaid Export Pro - Web Export Strategy
+ * Web-based export strategy for rendering Mermaid diagrams using VS Code's webview and bundled Mermaid.js.
  * 
- * Purpose: VS Code webview-based mermaid diagram export with bundled dependencies
- * Author: Claude Code Assistant
- * Date: 2025-08-24
+ * This strategy leverages a headless webview to render diagrams without requiring external dependencies,
+ * supporting export to SVG, PNG, JPG, and JPEG formats. It employs a robust handshake protocol for
+ * communication between the extension host and the webview to ensure reliable rendering.
  * 
- * Security: Nonce-based CSP, bundled mermaid.js, no external CDN dependencies
- * Performance: Robust handshake protocol with timeout and retry logic
- * Error Handling: Comprehensive diagnostics and graceful degradation
+ * Key features:
+ * - No external dependencies: Uses bundled Mermaid.js and webview scripts.
+ * - Secure rendering: Implements proper CSP and nonce-based script loading.
+ * - Format conversion: Converts SVG to raster formats using canvas rendering in the webview.
+ * - Error handling: Comprehensive logging and timeout management for reliability.
+ * 
+ * @example
+ * ```typescript
+ * const strategy = new WebExportStrategy(context);
+ * const svgBuffer = await strategy.export(diagramText, { format: 'svg', theme: 'default' });
+ * ```
+ * 
+ * @example
+ * ```typescript
+ * // Export to PNG with custom dimensions
+ * const pngBuffer = await strategy.export(diagramText, {
+ *   format: 'png',
+ *   theme: 'dark',
+ *   width: 1200,
+ *   height: 800,
+ *   backgroundColor: '#ffffff'
+ * });
+ * ```
+ * 
+ * @implements {ExportStrategy}
+ * @since 1.0.0
  */
 
 import * as vscode from 'vscode';
@@ -15,6 +40,16 @@ import * as fs from 'fs';
 import { ExportOptions, ExportStrategy } from '../types';
 import { ErrorHandler } from '../ui/errorHandler';
 
+/**
+ * Represents a message sent between the webview and the extension.
+ *
+ * @property type - The type of message, which can be 'ready', 'svg', or 'error'.
+ * @property svg - (Optional) The SVG content as a string, present when type is 'svg'.
+ * @property error - (Optional) Error message, present when type is 'error'.
+ * @property stack - (Optional) Stack trace for debugging, present when type is 'error'.
+ * @property metadata - (Optional) Additional metadata related to the message.
+ * @property diagramText - (Optional) The original diagram text, if applicable.
+ */
 interface WebviewMessage {
   type: 'ready' | 'svg' | 'error';
   svg?: string;
@@ -24,13 +59,21 @@ interface WebviewMessage {
   diagramText?: string;
 }
 
+
 /**
- * Web-based export strategy using VS Code webview + bundled mermaid.js
+ * Implements an export strategy for Mermaid diagrams using VS Code's webview API.
+ * This strategy bundles Mermaid.js and renders diagrams in a headless webview,
+ * supporting export to SVG, PNG, JPG, and JPEG formats without external dependencies.
+ * 
+ * The webview-based approach ensures accurate rendering by leveraging browser capabilities,
+ * including theme application and canvas-based format conversion for raster images.
+ * 
+ * @implements {ExportStrategy}
  * 
  * @example
  * ```typescript
  * const strategy = new WebExportStrategy(context);
- * const svgBuffer = await strategy.export(diagramText, { format: 'svg', theme: 'default' });
+ * const buffer = await strategy.export(diagramContent, { format: 'png', theme: 'dark' });
  * ```
  */
 export class WebExportStrategy implements ExportStrategy {
@@ -44,6 +87,14 @@ export class WebExportStrategy implements ExportStrategy {
    */
   getRequiredDependencies(): string[] {
     return []; // No external dependencies - uses bundled mermaid.js
+  }
+
+  /**
+   * Get supported export formats for web strategy
+   * @returns {string[]} List of supported formats
+   */
+  getSupportedFormats(): string[] {
+    return ['svg', 'png', 'jpg', 'jpeg'];
   }
 
   /**
@@ -75,6 +126,16 @@ export class WebExportStrategy implements ExportStrategy {
     ErrorHandler.logInfo('Starting web export strategy with bundled mermaid.js');
 
     try {
+      // Validate format support
+      if (options.format === 'pdf') {
+        throw new Error('PDF export requires Mermaid CLI installation. Web-only mode supports SVG, PNG, and JPG formats only.');
+      }
+      
+      const supportedFormats = ['svg', 'png', 'jpg', 'jpeg'];
+      if (!supportedFormats.includes(options.format.toLowerCase())) {
+        throw new Error(`Unsupported format '${options.format}'. Web-only mode supports: ${supportedFormats.join(', ')}`);
+      }
+
       // Validate and clean input
       const cleanContent = content.trim();
       if (!cleanContent) {

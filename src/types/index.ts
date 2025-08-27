@@ -15,6 +15,7 @@ export interface ExportOptions {
   cssFile?: string;
   configFile?: string;
   outputPath?: string;
+  mermaidConfig?: any; // Allow custom mermaid configuration
 }
 
 export interface ExportStrategy {

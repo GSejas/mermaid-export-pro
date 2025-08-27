@@ -27,7 +27,7 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 
 1. Create or open a `.mmd` file or Markdown file with Mermaid diagrams
 2. Right-click in the editor or file explorer
-3. Select "Export Mermaid (Auto-save — preferred format)"
+3. Select "Export Mermaid Pro - Auto Save"
 4. Your diagram will be exported in the configured format
 
 ## 📖 Commands Overview
@@ -39,7 +39,7 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 | **Export Current Diagram** | Export the active Mermaid file | Command Palette: `Mermaid Export Pro: Export Current Diagram` |
 | **Export As...** | Choose format and location interactively | Right-click menu, Command Palette |
 | **Export Mermaid (Auto-save)** | Quick export with default settings | Right-click menu (primary option) |
-| **Batch Export** | Export multiple files at once | Command Palette: `Mermaid Export Pro: Batch Export` |
+| **Mermaid Export Pro - Batch Export** | Export multiple files at once | Command Palette: `Mermaid Export Pro: Mermaid Export Pro - Batch Export` |
 | **Export Markdown Diagrams** | Extract and export diagrams from Markdown | Command Palette: `Mermaid Export Pro: Export Markdown Diagrams` |
 
 ### Utility Commands
@@ -58,7 +58,7 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 ### Flow 1: Quick Single File Export
 ```
 1. Open .mmd file or Markdown with Mermaid diagrams
-2. Right-click in editor → "Export Mermaid (Auto-save — preferred format)"
+2. Right-click in editor → "Export Mermaid Pro - Auto Save"
 3. File exported to same directory with default format (PNG)
 ```
 
@@ -71,9 +71,9 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 5. File exported with chosen settings
 ```
 
-### Flow 3: Batch Export Workflow
+### Flow 3: Mermaid Export Pro - Batch Export Workflow
 ```
-1. Command Palette → "Mermaid Export Pro: Batch Export"
+1. Command Palette → "Mermaid Export Pro: Mermaid Export Pro - Batch Export"
 2. Select folder containing Mermaid files
 3. Choose export format and settings
 4. All compatible files exported automatically
@@ -237,7 +237,7 @@ graph TD
 
 ### Workflow Tips
 - Set up auto-export for active development
-- Use batch export for project documentation
+- Use Mermaid Export Pro - Batch Export for project documentation
 - Configure output directory for organized exports
 
 ### Quality Tips

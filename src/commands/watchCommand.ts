@@ -1,9 +1,24 @@
 /**
- * Mermaid Export Pro - Auto Export Watch Command
+ * Auto Export Watch Command - Smart auto-export on file save
  * 
- * Purpose: Toggle auto-export on save functionality
+ * Purpose: Automatically export all mermaid diagrams when files are saved
+ * Features:
+ * - Watches .mmd, .md, and .markdown files
+ * - Exports ALL diagrams in a file (with numbered suffixes for multiple)
+ * - Uses smart format preferences (file-specific > most-used > default)
+ * - Always uses current theme setting
+ * - Configurable output directory
+ * - Toggle on/off with workspace persistence
+ * 
+ * Architecture:
+ * - Singleton AutoExportWatcher class manages file watching
+ * - Integrates with FormatPreferenceManager for smart format selection
+ * - Uses best available export strategy (CLI > Web)
+ * - Provides subtle progress feedback and success notifications
+ * 
  * Author: Claude Code Assistant
- * Date: 2025-08-24
+ * Version: 1.0.4
+ * Date: 2025-08-27
  */
 
 import * as vscode from 'vscode';
@@ -12,7 +27,18 @@ import { CLIExportStrategy } from '../strategies/cliExportStrategy';
 import { WebExportStrategy } from '../strategies/webExportStrategy';
 import { ErrorHandler } from '../ui/errorHandler';
 import { ExportOptions, ExportStrategy, ExportFormat, MermaidTheme } from '../types';
+import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 
+/**
+ * Auto Export Watcher - Singleton class for managing automatic export on save
+ * 
+ * Responsibilities:
+ * - File system watching for mermaid-related file changes
+ * - Smart format preference management
+ * - Multi-diagram export coordination
+ * - Progress and success feedback
+ * - Workspace configuration persistence
+ */
 class AutoExportWatcher {
   private static instance: AutoExportWatcher;
   private fileWatcher: vscode.Disposable | null = null;
@@ -120,40 +146,64 @@ class AutoExportWatcher {
 
       ErrorHandler.logInfo(`Auto-export triggered for ${path.basename(document.fileName)}`);
 
-      // Get export options from configuration
+      // Get export options with smart format selection
       const config = vscode.workspace.getConfiguration('mermaidExportPro');
+      const formatPreferenceManager = new FormatPreferenceManager(this.context);
+      
+      // Try to use last format for this file, then most used format, then default
+      let format: ExportFormat;
+      const fileFormatPreference = await formatPreferenceManager.getFileFormatPreference(document.fileName);
+      if (fileFormatPreference) {
+        format = fileFormatPreference;
+        ErrorHandler.logInfo(`Using last used format for this file: ${format}`);
+      } else {
+        format = await formatPreferenceManager.getMostUsedFormat();
+        ErrorHandler.logInfo(`Using most used format: ${format}`);
+      }
+
       const exportOptions: ExportOptions = {
-        format: config.get<ExportFormat>('defaultFormat') || 'png',
-        theme: config.get<MermaidTheme>('theme') || 'default',
+        format,
+        theme: config.get<MermaidTheme>('theme') || 'default', // Always use current theme
         width: config.get<number>('width') || 800,
         height: config.get<number>('height') || 600,
         backgroundColor: config.get<string>('backgroundColor') || 'transparent'
       };
 
-      // Determine output path
-      const outputDirectory = config.get<string>('outputDirectory') || '';
-      const outputPath = await this.generateOutputPath(document.fileName, exportOptions.format, outputDirectory);
-
-      exportOptions.outputPath = path.dirname(outputPath);
-
       // Select strategy and export
       const strategy = await this.selectBestStrategy();
       
       // Show brief progress indication
+      const exportedPaths: string[] = [];
       await vscode.window.withProgress({
         location: vscode.ProgressLocation.Window,
-        title: `Auto-exporting ${path.basename(document.fileName)}...`,
+        title: `Auto-exporting ${mermaidContent.length} diagram${mermaidContent.length > 1 ? 's' : ''} from ${path.basename(document.fileName)}...`,
         cancellable: false
       }, async () => {
-        for (const content of mermaidContent) {
+        // Export each diagram with numbered suffix if multiple
+        for (let i = 0; i < mermaidContent.length; i++) {
+          const content = mermaidContent[i];
+          
+          // Generate unique output path for each diagram
+          const outputDirectory = config.get<string>('outputDirectory') || '';
+          const outputPath = await this.generateOutputPath(
+            document.fileName, 
+            exportOptions.format, 
+            outputDirectory,
+            mermaidContent.length > 1 ? i + 1 : undefined
+          );
+          
           const buffer = await strategy.export(content, exportOptions);
           await vscode.workspace.fs.writeFile(vscode.Uri.file(outputPath), buffer);
+          exportedPaths.push(outputPath);
         }
       });
 
       // Show subtle success notification
-      vscode.window.setStatusBarMessage(`✅ Exported ${path.basename(outputPath)}`, 3000);
-      ErrorHandler.logInfo(`Auto-export completed: ${outputPath}`);
+      const message = mermaidContent.length === 1 
+        ? `✅ Exported ${path.basename(exportedPaths[0])}`
+        : `✅ Exported ${mermaidContent.length} diagrams`;
+      vscode.window.setStatusBarMessage(message, 3000);
+      ErrorHandler.logInfo(`Auto-export completed: ${exportedPaths.join(', ')}`);
 
     } catch (error) {
       ErrorHandler.logError(`Auto-export failed: ${error}`);
@@ -197,9 +247,11 @@ class AutoExportWatcher {
     return mermaidBlocks;
   }
 
-  private async generateOutputPath(inputPath: string, format: ExportFormat, outputDirectory: string): Promise<string> {
+  private async generateOutputPath(inputPath: string, format: ExportFormat, outputDirectory: string, diagramNumber?: number): Promise<string> {
     const fileName = path.basename(inputPath, path.extname(inputPath));
-    const outputFileName = `${fileName}.${format}`;
+    const outputFileName = diagramNumber 
+      ? `${fileName}-${diagramNumber}.${format}`
+      : `${fileName}.${format}`;
 
     if (outputDirectory) {
       // Use configured output directory

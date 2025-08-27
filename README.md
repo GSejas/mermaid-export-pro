@@ -1,10 +1,11 @@
 # Mermaid Export Pro
 
 
-[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-75%25-yellow?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.4-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
+[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.5-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
 
 
 > This extension is free, the name is mainly to set it appart from older unmaintained alternatives. 
+> This extension is in BETA Mode, please report issues @ `jsequeira03@gmail.com`. This extension counts on the user having `Node` installed, and onboards the user through installing the CLI. If not installed, we fallback to a minimal mermaid internal implementation.`
 
 ![](.\media\mermaid-export-pro-banner.png)
 
@@ -16,6 +17,8 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
     - [🚀 Batch Operations](#-batch-operations)
     - [⚡ Auto-Export on Save](#-auto-export-on-save)
     - [🎨 Enhanced Markdown Experience](#-enhanced-markdown-experience)
+    - [🧪 Comprehensive Testing](#-comprehensive-testing)
+    - [🎬 Demo and Testing Files](#-demo-and-testing-files)
   - [Requirements](#requirements)
     - [Optional (Recommended)](#optional-recommended)
   - [Extension Settings](#extension-settings)
@@ -63,6 +66,20 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 - **Command Links**: Direct export from tooltips
 - **Type Detection**: Identifies flowchart, sequence, class diagrams, etc.
 
+### 🧪 Comprehensive Testing
+- **Debug Command**: Test all export strategies with quality comparison
+- **60 Test Combinations**: 10 diagram types × 2 complexity levels × 3 formats × 2 strategies
+- **Quality Validation**: Side-by-side CLI vs Web export comparison
+- **Performance Metrics**: Export timing and file size analysis
+- **Error Reporting**: Detailed success/failure logs with diagnostics
+
+### 🎬 Demo and Testing Files
+- **Complete Test Suite**: `demo/04-all-diagram-types.md` with all 10 mermaid diagram types
+- **Focused Testing**: Individual files for flowcharts, sequences, and class diagrams
+- **Edge Cases**: Stress tests, Unicode support, and error scenarios
+- **GIF Scenarios**: 8 documented scenarios for creating demonstration GIFs
+- **Testing Guidelines**: Comprehensive manual and automated testing instructions
+
 
 ![](media\export-stragegies-banner.png)
 
@@ -101,23 +118,47 @@ This extension contributes the following settings:
 
 ### Commands
 - **Export Current**: Export active file diagrams
-- **Batch Export**: Export all diagrams in folder
+- **Mermaid Export Pro - Batch Export**: Export all diagrams in folder
 - **Toggle Auto Export**: Enable/disable auto-export on save
 - **Setup Export Tools**: Configure CLI tools
+- **Debug Export**: Run comprehensive test suite with quality comparison
+- **Export As**: Choose specific format and options for current file
 
 ### Context Menus
 - Right-click `.mmd` files → Export Current
-- Right-click folders → Batch Export
+- Right-click folders → Mermaid Export Pro - Batch Export
 - CodeLens buttons above mermaid blocks in markdown
 
 ## Release Notes
 
+### 1.0.5 (Latest)
+
+**Major Quality and Testing Improvements:**
+
+- **Fixed JPG Background Issue**: JPG exports now default to white background instead of black
+- **Comprehensive Testing Suite**: Added debug command testing all 10 mermaid diagram types
+- **Demo Folder**: Complete test scenarios in `./demo/` with GIF recording guidelines
+- **Quality Comparison**: Side-by-side CLI vs Web export validation
+- **Enhanced Error Handling**: Better diagnostics and recovery for export failures
+- **Performance Optimization**: Improved export speeds and memory usage
+- **Cross-Platform Validation**: Tested on Windows, macOS, and Linux environments
+
+### 1.0.4
+
+**Status Bar and Theme Enhancements:**
+
+- Customizable status bar display formats (icon-only, icon+count, icon+text)
+- Auto-export click functionality from status bar
+- Universal transparent background support across all strategies
+- Native .mmd file support with proper language definition
+- Comprehensive unit test suite with Vitest integration
+
 ### 1.0.0
 
-Complete implementation of professional mermaid export workflows:
+**Foundation Release:**
 
 - Smart status bar with diagram counting and one-click export
-- Comprehensive batch export with recursive directory support
+- Comprehensive Mermaid Export Pro - Batch Export with recursive directory support
 - Auto-export on save with file watcher integration
 - Enhanced markdown support with CodeLens and hover providers
 - Extended format support including JPG/JPEG

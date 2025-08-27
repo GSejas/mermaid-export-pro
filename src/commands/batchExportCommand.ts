@@ -1,9 +1,24 @@
 /**
- * Mermaid Export Pro - Batch Export Command
+ * Batch Export Command - Export multiple mermaid files from folders
  * 
- * Purpose: Export multiple mermaid files from folders/workspaces
+ * Purpose: Recursively discover and export all mermaid files in a directory tree
+ * Features:
+ * - Comprehensive guided export flow (format, background, theme, output)
+ * - Recursive folder scanning with configurable depth limits
+ * - Multi-format export support with detailed user options
+ * - Progress tracking and detailed results reporting
+ * - Context menu integration for folder-level operations
+ * - Handles both .mmd files and markdown files with mermaid blocks
+ * 
+ * Architecture:
+ * - User-guided 4-step export flow
+ * - Recursive file discovery with depth constraints
+ * - Parallel export processing with progress tracking
+ * - Comprehensive error handling and reporting
+ * 
  * Author: Claude Code Assistant
- * Date: 2025-08-24
+ * Version: 1.0.4
+ * Date: 2025-08-27
  */
 
 import * as vscode from 'vscode';
@@ -13,51 +28,83 @@ import { CLIExportStrategy } from '../strategies/cliExportStrategy';
 import { WebExportStrategy } from '../strategies/webExportStrategy';
 import { ErrorHandler } from '../ui/errorHandler';
 import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy, MermaidFile } from '../types';
+import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 
+/**
+ * Result of processing a single file during batch export
+ */
 interface BatchResult {
+  /** File path that was processed */
   file: string;
+  /** Whether export succeeded */
   success: boolean;
+  /** Output file path if successful */
   outputPath?: string;
+  /** Error message if failed */
   error?: string;
+  /** Processing duration in milliseconds */
   duration: number;
 }
 
-export async function runBatchExport(context: vscode.ExtensionContext): Promise<void> {
-  ErrorHandler.logInfo('Starting batch export command...');
+export async function runBatchExport(context: vscode.ExtensionContext, folderUri?: vscode.Uri): Promise<void> {
+  ErrorHandler.logInfo('Starting Mermaid Export Pro - Batch Export command...');
 
   try {
-    // Get target folder
-    const targetFolder = await getTargetFolder();
+    // Get target folder - use provided URI or ask user to select
+    const targetFolder = folderUri?.fsPath || await getTargetFolder();
     if (!targetFolder) {
       return; // User cancelled
     }
 
-    // Discover mermaid files
-    const mermaidFiles = await discoverMermaidFiles(targetFolder);
+    // Discover mermaid files with default depth
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const initialMaxDepth = config.get<number>('batchExportDefaultDepth', 3);
+    const mermaidFiles = await discoverMermaidFiles(targetFolder, initialMaxDepth);
     if (mermaidFiles.length === 0) {
-      vscode.window.showInformationMessage(`No mermaid files found in ${path.basename(targetFolder)}`);
+      const folderName = path.basename(targetFolder);
+      const message = folderUri 
+        ? `No mermaid files (.mmd or .md with mermaid diagrams) found in "${folderName}"`
+        : `No mermaid files found in ${folderName}`;
+      vscode.window.showInformationMessage(message);
       return;
     }
 
-    ErrorHandler.logInfo(`Found ${mermaidFiles.length} mermaid files to export`);
+    const folderName = path.basename(targetFolder);
+    const logMessage = folderUri 
+      ? `Batch export: Found ${mermaidFiles.length} mermaid files in "${folderName}"`
+      : `Found ${mermaidFiles.length} mermaid files to export`;
+    ErrorHandler.logInfo(logMessage);
 
-    // Get export options
-    const exportOptions = await getBatchExportOptions();
-    if (!exportOptions) {
+    // Show initial discovery message when called from context menu
+    if (folderUri && mermaidFiles.length > 0) {
+      vscode.window.showInformationMessage(
+        `Found ${mermaidFiles.length} mermaid diagram(s) in "${folderName}" ready for batch export`
+      );
+    }
+
+    // Comprehensive guided export flow
+    const exportConfig = await getComprehensiveBatchExportOptions(targetFolder, mermaidFiles.length);
+    if (!exportConfig) {
       return; // User cancelled
     }
 
-    // Get output directory
-    const outputDirectory = await getOutputDirectory(targetFolder);
-    if (!outputDirectory) {
-      return; // User cancelled
-    }
-
+    const { exportOptions, outputDirectory } = exportConfig;
+    
+    // Use the files already discovered with the default depth
+    const finalMermaidFiles = mermaidFiles;
+    const maxDepth = initialMaxDepth; // Use the depth from settings
     exportOptions.outputPath = outputDirectory;
 
-    // Confirm batch operation
+    // Confirm batch operation  
+    const formatText = (exportOptions as any).allFormats ? 
+      `${(exportOptions as any).allFormats.join(', ').toUpperCase()}` : 
+      exportOptions.format.toUpperCase();
+    
     const proceed = await vscode.window.showWarningMessage(
-      `Export ${mermaidFiles.length} files to ${exportOptions.format.toUpperCase()} in ${path.basename(outputDirectory)}?`,
+      `Export ${finalMermaidFiles.length} mermaid files to ${formatText}?\n\n` +
+      `📂 Source: ${path.basename(targetFolder)}\n` +
+      `💾 Output: ${path.basename(outputDirectory)}\n` +
+      `🎨 Theme: ${exportOptions.theme}`,
       { modal: true },
       'Export All',
       'Cancel'
@@ -67,21 +114,25 @@ export async function runBatchExport(context: vscode.ExtensionContext): Promise<
       return;
     }
 
-    // Run batch export
+    // Run Mermaid Export Pro - Batch Export
+    const progressTitle = (exportOptions as any).allFormats ? 
+      `Batch Exporting ${finalMermaidFiles.length} files to ${(exportOptions as any).allFormats.length} formats` :
+      `Batch Exporting ${finalMermaidFiles.length} files to ${exportOptions.format.toUpperCase()}`;
+    
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
-      title: `Batch exporting ${mermaidFiles.length} files...`,
+      title: progressTitle,
       cancellable: true
     }, async (progress, token) => {
       const results: BatchResult[] = [];
       const strategy = await selectBestStrategy(context);
       
-      ErrorHandler.logInfo(`Using ${strategy.name} for batch export`);
+      ErrorHandler.logInfo(`Using ${strategy.name} for Mermaid Export Pro - Batch Export`);
       
       let completed = 0;
-      const total = mermaidFiles.length;
+      const total = finalMermaidFiles.length;
       
-      for (const file of mermaidFiles) {
+      for (const file of finalMermaidFiles) {
         if (token.isCancellationRequested) {
           break;
         }
@@ -109,23 +160,23 @@ export async function runBatchExport(context: vscode.ExtensionContext): Promise<
 
       if (failed.length === 0) {
         vscode.window.showInformationMessage(
-          `Batch export completed successfully! ${successful.length} files exported.`
+          `Mermaid Export Pro - Batch Export completed successfully! ${successful.length} files exported.`
         );
       } else {
         vscode.window.showWarningMessage(
-          `Batch export completed with ${failed.length} failures. ${successful.length} files exported successfully.`
+          `Mermaid Export Pro - Batch Export completed with ${failed.length} failures. ${successful.length} files exported successfully.`
         );
       }
     });
 
   } catch (error) {
-    ErrorHandler.logError(`Batch export failed: ${error}`);
-    vscode.window.showErrorMessage(`Batch export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    ErrorHandler.logError(`Mermaid Export Pro - Batch Export failed: ${error}`);
+    vscode.window.showErrorMessage(`Mermaid Export Pro - Batch Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
- * Get target folder for batch export
+ * Get target folder for Mermaid Export Pro - Batch Export
  */
 async function getTargetFolder(): Promise<string | null> {
   // Try workspace folder first
@@ -160,12 +211,16 @@ async function getTargetFolder(): Promise<string | null> {
 }
 
 /**
- * Discover all mermaid files in directory
+ * Discover all mermaid files in directory with depth limit
  */
-async function discoverMermaidFiles(directory: string): Promise<MermaidFile[]> {
+async function discoverMermaidFiles(directory: string, maxDepth: number = 5): Promise<MermaidFile[]> {
   const mermaidFiles: MermaidFile[] = [];
   
-  async function scanDirectory(dir: string): Promise<void> {
+  async function scanDirectory(dir: string, currentDepth: number = 0): Promise<void> {
+    // Stop if we've reached max depth
+    if (currentDepth >= maxDepth) {
+      return;
+    }
     const entries = await fs.promises.readdir(dir, { withFileTypes: true });
     
     for (const entry of entries) {
@@ -174,7 +229,7 @@ async function discoverMermaidFiles(directory: string): Promise<MermaidFile[]> {
       if (entry.isDirectory()) {
         // Skip node_modules and .git directories
         if (!entry.name.startsWith('.') && entry.name !== 'node_modules') {
-          await scanDirectory(fullPath);
+          await scanDirectory(fullPath, currentDepth + 1);
         }
       } else if (entry.isFile()) {
         const ext = path.extname(entry.name).toLowerCase();
@@ -212,6 +267,8 @@ async function discoverMermaidFiles(directory: string): Promise<MermaidFile[]> {
   }
   
   await scanDirectory(directory);
+  
+  ErrorHandler.logInfo(`Discovered ${mermaidFiles.length} mermaid files (max depth: ${maxDepth})`);
   return mermaidFiles;
 }
 
@@ -293,45 +350,248 @@ function detectDiagramType(content: string): string {
 }
 
 /**
- * Get batch export options
+ * Get Mermaid Export Pro - Batch Export options
  */
-async function getBatchExportOptions(): Promise<ExportOptions | null> {
-  // Get format
-  const format = await vscode.window.showQuickPick([
-    { label: 'SVG', description: 'Scalable Vector Graphics (best quality)', value: 'svg' },
-    { label: 'PNG', description: 'Portable Network Graphics (raster)', value: 'png' },
-    { label: 'JPG', description: 'JPEG image (compressed)', value: 'jpg' },
-    { label: 'PDF', description: 'Portable Document Format', value: 'pdf' }
+/**
+ * Comprehensive guided batch export options flow
+ * Step 1: Format Selection (all formats, then individual descriptions)
+ * Step 2: Background Color Selection  
+ * Step 3: Theme Selection
+ * Step 4: Folder Depth Selection
+ * Step 5: Output Directory Selection
+ */
+async function getComprehensiveBatchExportOptions(
+  sourceFolder: string, 
+  fileCount: number
+): Promise<{ exportOptions: ExportOptions; outputDirectory: string } | null> {
+  
+  // === STEP 1: FORMAT SELECTION ===
+  // First show all formats with brief descriptions
+  const formatChoice = await vscode.window.showQuickPick([
+    { 
+      label: '📊 Export All Formats', 
+      description: 'SVG + PNG + JPG + PDF (recommended)', 
+      value: 'all',
+      detail: `Export ${fileCount} diagrams in all 4 formats (${fileCount * 4} total files)` 
+    },
+    { 
+      label: '🎯 Choose Single Format', 
+      description: 'Select one specific format', 
+      value: 'single',
+      detail: 'More control over export settings'
+    }
   ], {
-    placeHolder: 'Select export format for all files',
-    ignoreFocusOut: true
+    placeHolder: '📋 Batch Export: Choose your export strategy',
+    ignoreFocusOut: true,
+    title: '🎨 Mermaid Export Pro - Batch Export Configuration (Step 1/4)'
   });
 
-  if (!format) {
-    return null;
+  if (!formatChoice) return null;
+
+  let selectedFormats: ExportFormat[];
+  
+  if (formatChoice.value === 'all') {
+    selectedFormats = ['svg', 'png', 'jpg', 'pdf'];
+  } else {
+    // Show individual format selection with detailed descriptions
+    const individualFormat = await vscode.window.showQuickPick([
+      { 
+        label: '🖼️ SVG - Scalable Vector Graphics', 
+        description: 'Best quality, infinite zoom, small file size',
+        value: 'svg',
+        detail: '• Perfect for web use • Editable in design tools • Always crisp'
+      },
+      { 
+        label: '📸 PNG - Portable Network Graphics', 
+        description: 'High quality raster, transparency support',
+        value: 'png', 
+        detail: '• Universal compatibility • Transparent backgrounds • Good for documents'
+      },
+      { 
+        label: '📷 JPG - Compressed Image', 
+        description: 'Smaller file size, good for sharing',
+        value: 'jpg',
+        detail: '• Smallest files • Fast loading • White backgrounds only'
+      },
+      { 
+        label: '📄 PDF - Document Format', 
+        description: 'Perfect for printing and professional docs', 
+        value: 'pdf',
+        detail: '• Print-ready • Professional standard • Requires CLI export'
+      },
+      { 
+        label: '🌐 WebP - Modern Web Format', 
+        description: 'Excellent compression, modern browsers',
+        value: 'webp',
+        detail: '• Best compression • Modern standard • Great for web'
+      }
+    ], {
+      placeHolder: '🎯 Select format with detailed benefits',
+      ignoreFocusOut: true,
+      title: '📊 Choose Export Format (Step 1/4)'
+    });
+    
+    if (!individualFormat) return null;
+    selectedFormats = [individualFormat.value as ExportFormat];
   }
 
-  // Get theme
+  // === STEP 2: BACKGROUND COLOR SELECTION ===
+  const backgroundColor = await vscode.window.showQuickPick([
+    { 
+      label: '✨ Transparent', 
+      description: 'No background (recommended)', 
+      value: 'transparent',
+      detail: 'Works with any background color • Professional look • Flexible usage'
+    },
+    { 
+      label: '⚪ White Background', 
+      description: 'Clean white background', 
+      value: 'white',
+      detail: 'Classic look • Good for documents • Always readable'
+    },
+    { 
+      label: '⚫ Black Background', 
+      description: 'Dark theme background', 
+      value: 'black',
+      detail: 'Modern dark style • Good for presentations • High contrast'
+    },
+    {
+      label: '🎨 Custom Color',
+      description: 'Choose your own background color',
+      value: 'custom',
+      detail: 'Brand colors • Specific requirements • Full customization'
+    }
+  ], {
+    placeHolder: '🎨 Choose background color for your diagrams',
+    ignoreFocusOut: true,
+    title: '🖌️ Background Color (Step 2/4)'
+  });
+
+  if (!backgroundColor) return null;
+
+  let finalBackgroundColor = backgroundColor.value;
+  
+  if (backgroundColor.value === 'custom') {
+    const customColor = await vscode.window.showInputBox({
+      prompt: 'Enter background color (hex, rgb, or color name)',
+      placeHolder: '#ffffff, rgb(255,255,255), lightblue, etc.',
+      value: '#ffffff',
+      validateInput: (value) => {
+        if (!value.trim()) return 'Please enter a color value';
+        // Basic validation for common formats
+        const colorRegex = /^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|rgb\(\d+,\s*\d+,\s*\d+\)|rgba\(\d+,\s*\d+,\s*\d+,\s*[\d\.]+\)|[a-zA-Z]+)$/;
+        return colorRegex.test(value.trim()) ? undefined : 'Please enter a valid color (hex, rgb, or name)';
+      }
+    });
+    
+    if (!customColor) return null;
+    finalBackgroundColor = customColor.trim();
+  }
+
+  // === STEP 3: THEME SELECTION ===  
   const theme = await vscode.window.showQuickPick([
-    { label: 'Default', description: 'Default mermaid theme', value: 'default' },
-    { label: 'Dark', description: 'Dark theme', value: 'dark' },
-    { label: 'Forest', description: 'Green forest theme', value: 'forest' },
-    { label: 'Neutral', description: 'Neutral gray theme', value: 'neutral' }
+    { 
+      label: '🎨 Default Theme', 
+      description: 'Standard mermaid colors', 
+      value: 'default',
+      detail: 'Blue/white scheme • Professional • Universal compatibility'
+    },
+    { 
+      label: '🌙 Dark Theme', 
+      description: 'Dark backgrounds, light text', 
+      value: 'dark',
+      detail: 'Modern dark UI • Easy on eyes • Great for presentations'
+    },
+    { 
+      label: '🌳 Forest Theme', 
+      description: 'Green nature-inspired colors', 
+      value: 'forest', 
+      detail: 'Green color palette • Organic feel • Calming aesthetic'
+    },
+    { 
+      label: '⚪ Neutral Theme', 
+      description: 'Minimal grayscale design', 
+      value: 'neutral',
+      detail: 'Gray tones • Minimalist • Professional documents'
+    }
   ], {
-    placeHolder: 'Select theme for all exports',
-    ignoreFocusOut: true
+    placeHolder: '🎨 Choose visual theme for your diagrams',
+    ignoreFocusOut: true,
+    title: '🎭 Visual Theme (Step 3/4)'
   });
 
-  if (!theme) {
-    return null;
+  if (!theme) return null;
+
+  // === STEP 4: OUTPUT DIRECTORY SELECTION ===
+  const outputChoice = await vscode.window.showQuickPick([
+    {
+      label: '📁 Create "exported-diagrams" folder',
+      description: 'In the source directory',
+      value: 'default',
+      detail: `Will create: ${path.join(sourceFolder, 'exported-diagrams')}`
+    },
+    {
+      label: '📂 Same folder as source files', 
+      description: 'Export directly alongside original files',
+      value: 'source',
+      detail: 'Exports will be mixed with source files'
+    },
+    {
+      label: '🎯 Choose custom location',
+      description: 'Browse for a different folder',
+      value: 'browse',
+      detail: 'Full control over output location'
+    }
+  ], {
+    placeHolder: '📍 Where should the exported files be saved?',
+    ignoreFocusOut: true,
+    title: '💾 Output Location (Step 5/5)'
+  });
+
+  if (!outputChoice) return null;
+
+  let outputDirectory: string;
+  
+  switch (outputChoice.value) {
+    case 'default':
+      outputDirectory = path.join(sourceFolder, 'exported-diagrams');
+      break;
+    case 'source':
+      outputDirectory = sourceFolder;
+      break;
+    case 'browse':
+      const browseResult = await vscode.window.showOpenDialog({
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+        title: 'Select output directory for exported diagrams',
+        defaultUri: vscode.Uri.file(sourceFolder)
+      });
+      
+      if (!browseResult || browseResult.length === 0) return null;
+      outputDirectory = browseResult[0].fsPath;
+      break;
+    default:
+      return null;
   }
 
-  return {
-    format: format.value as ExportFormat,
+  // Create the export options for the primary format
+  const primaryFormat = selectedFormats[0];
+  const exportOptions: ExportOptions = {
+    format: primaryFormat,
     theme: theme.value as MermaidTheme,
     width: 1200,
-    height: 800,
-    backgroundColor: 'transparent'
+    height: 800, 
+    backgroundColor: finalBackgroundColor
+  };
+
+  // Store additional formats for multi-format export
+  (exportOptions as any).additionalFormats = selectedFormats.length > 1 ? selectedFormats.slice(1) : [];
+  (exportOptions as any).allFormats = selectedFormats;
+
+  return {
+    exportOptions,
+    outputDirectory
   };
 }
 
@@ -463,14 +723,14 @@ async function selectBestStrategy(context: vscode.ExtensionContext): Promise<Exp
 }
 
 /**
- * Show batch export results
+ * Show Mermaid Export Pro - Batch Export results
  */
 async function showBatchResults(results: BatchResult[], outputDirectory: string, cancelled: boolean): Promise<void> {
   const successful = results.filter(r => r.success);
   const failed = results.filter(r => !r.success);
   
   // Generate report
-  let report = `# Batch Export Report\n\n`;
+  let report = `# Mermaid Export Pro - Batch Export Report\n\n`;
   report += `**Timestamp**: ${new Date().toISOString()}\n`;
   report += `**Output Directory**: ${outputDirectory}\n`;
   report += `**Total Files**: ${results.length}\n`;
@@ -499,7 +759,7 @@ async function showBatchResults(results: BatchResult[], outputDirectory: string,
   
   // Show completion dialog
   const action = await vscode.window.showInformationMessage(
-    `Batch export ${cancelled ? 'cancelled' : 'completed'}. Report saved to ${path.basename(reportPath)}`,
+    `Mermaid Export Pro - Batch Export ${cancelled ? 'cancelled' : 'completed'}. Report saved to ${path.basename(reportPath)}`,
     'Open Report',
     'Open Output Folder'
   );

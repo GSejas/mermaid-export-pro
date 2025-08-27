@@ -2,6 +2,53 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.5] - 2025-08-27
+
+### 🚀 Major Quality and Testing Enhancements
+
+#### Comprehensive Testing Infrastructure
+- **Debug Command Expansion**: Added testing for all 10 mermaid diagram types (flowchart, sequence, class, state, entity-relationship, user-journey, gantt, pie, gitgraph, mindmap)
+- **Test Matrix Coverage**: 60 test combinations (10 diagrams × 2 complexity × 3 formats × 2 strategies)
+- **Quality Comparison**: Side-by-side CLI vs Web export validation with detailed metrics
+- **Performance Analysis**: Export timing measurements and file size optimization tracking
+
+#### Demo and Documentation Suite
+- **Complete Demo Folder**: Created `./demo/` with comprehensive test scenarios
+- **GIF Recording Guidelines**: 8 documented scenarios for creating demonstration materials
+- **Test File Organization**: Focused test files for each diagram type with simple and complex variants
+- **Edge Case Testing**: Unicode support, large diagrams, and error recovery scenarios
+
+#### Export Quality Improvements
+- **JPG Background Fix**: Resolved black background issue - JPG exports now default to white background when transparency requested
+- **Format Consistency**: Improved background color handling across all export formats and strategies
+- **Canvas Rendering**: Enhanced SVG-to-raster conversion with proper transparency handling
+- **Cross-Platform Validation**: Verified export quality across Windows, macOS, and Linux
+
+#### Feature Management
+- **Premium Feature Flag**: Implemented feature flag system for optional visual enhancements
+- **Focused Approach**: Disabled premium features to maintain "do one thing well" philosophy
+- **Architecture Documentation**: Documented design decisions in `docs/developers/`
+- **Clean Codebase**: Streamlined feature set for better maintainability
+
+### 🐛 Critical Fixes
+- Fixed JPG exports rendering with black backgrounds instead of white
+- Resolved canvas transparency handling for all raster formats
+- Improved error handling for malformed mermaid diagrams
+- Enhanced cross-platform file path handling
+
+### 🔧 Technical Improvements
+- Expanded debug command to cover all mermaid diagram types
+- Added comprehensive test documentation and guidelines
+- Implemented feature flag architecture for optional functionality
+- Enhanced logging and diagnostics for troubleshooting
+- Optimized memory usage for large diagram processing
+
+### 📚 Documentation
+- Created comprehensive demo folder with all test scenarios
+- Added GIF recording guidelines for marketing materials
+- Documented premium feature architecture decisions
+- Updated README with latest capabilities and testing infrastructure
+
 ## [1.0.4] - 2025-08-25
 
 ### 🚀 Major Enhancements
@@ -76,7 +123,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 - **Real-time Updates**: Diagram count updates automatically as you edit
 - **Visual Status Indicators**: Different icons for CLI-available, web-only, and setup-needed states
 
-#### Batch Export System
+#### Mermaid Export Pro - Batch Export System
 - **Recursive Directory Scanning**: Export all mermaid files in folder structure
 - **Multi-Diagram Support**: Handle multiple mermaid blocks per markdown file
 - **Progress Tracking**: Visual progress indication for large batch operations
@@ -127,7 +174,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ### 📋 Menu Integrations
 
-- **Explorer Context**: Right-click folders to batch export
+- **Explorer Context**: Right-click folders to Mermaid Export Pro - Batch Export
 - **Editor Context**: Right-click mermaid files to export
 - **Command Palette**: All commands available via Ctrl+Shift+P
 
@@ -140,4 +187,10 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ---
 
-*This release represents a complete implementation of all planned features for Mermaid Export Pro, transforming it from a basic export tool to a comprehensive diagram workflow solution for VS Code.*
+## [1.0.5] Summary
+
+*This release focuses on quality, reliability, and comprehensive testing. With fixes for critical export issues and a complete testing infrastructure covering all 10 mermaid diagram types, version 1.0.5 establishes Mermaid Export Pro as a professional-grade, well-tested VS Code extension that reliably exports mermaid diagrams across all platforms and scenarios.*
+
+---
+
+*Previous releases established the foundation - version 1.0.5 ensures it works flawlessly in all real-world scenarios.*

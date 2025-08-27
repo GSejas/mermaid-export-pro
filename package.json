@@ -55,12 +55,17 @@
       },
       {
         "command": "mermaidExportPro.exportAs",
-        "title": "Export Mermaid - Export As...",
+        "title": "Export Mermaid Pro - Export As...",
         "category": "Mermaid Export Pro"
       },
       {
         "command": "mermaidExportPro.exportFile",
-        "title": "Export Mermaid (Auto-save — preferred format)",
+        "title": "Export Mermaid Pro - Auto Save",
+        "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.exportAll",
+        "title": "Export All Diagrams in File",
         "category": "Mermaid Export Pro"
       },
       {
@@ -102,6 +107,16 @@
         "command": "mermaidExportPro.showExportOptions",
         "title": "Show Export Options",
         "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.diagnostics",
+        "title": "Show Diagnostics & Health Report",
+        "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.healthCheck",
+        "title": "Quick Health Check",
+        "category": "Mermaid Export Pro"
       }
     ],
     "menus": {
@@ -115,6 +130,11 @@
           "command": "mermaidExportPro.exportAs",
           "when": "resourceExtname == .mmd || resourceExtname == .md",
           "group": "navigation@2"
+        },
+        {
+          "command": "mermaidExportPro.batchExport",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@3"
         }
       ],
       "tab/context": [
@@ -225,6 +245,20 @@
           ],
           "default": "icon-count",
           "description": "Status bar display format: icon-only (just icon), icon-count (icon + number), text-count (icon + 'N Mermaids')"
+        },
+        "mermaidExportPro.batchExportMaxDepth": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Maximum folder depth to scan during batch export (1-20, default: 5)"
+        },
+        "mermaidExportPro.batchExportDefaultDepth": {
+          "type": "number",
+          "default": 3,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Default folder depth for batch export when not specified (1-20, default: 3)"
         }
       }
     }

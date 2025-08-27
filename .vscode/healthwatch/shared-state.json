@@ -1,9 +1,9 @@
 {
   "channelStates": {},
-  "lastUpdate": 1756101906535,
+  "lastUpdate": 1756277176871,
   "leader": {
-    "id": "hw-1756101906470-hy76fob69-59112",
-    "processId": 59112,
-    "version": "1.0.12"
+    "id": "hw-1756277176597-ms92txt3q-1040",
+    "processId": 1040,
+    "version": "1.0.13"
   }
 }

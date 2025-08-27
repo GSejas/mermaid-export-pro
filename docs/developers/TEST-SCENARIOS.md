@@ -4,6 +4,8 @@
 
 ## 🎬 GIF Recording Scenarios
 
+### o. **mermaid-lens.gif**
+
 ### 1. **quick-export.gif**
 **Duration**: ~8 seconds  
 **Steps**:
@@ -39,7 +41,7 @@
 **Duration**: ~15 seconds  
 **Steps**:
 1. Show folder with 3-4 `.mmd` files
-2. Command Palette → "Batch Export"  
+2. Command Palette → "Mermaid Export Pro - Batch Export"  
 3. Select folder
 4. Choose PNG format
 5. Show multiple files exported
@@ -88,28 +90,45 @@
 
 ## 📸 Static Screenshots
 
+![](../../media/2025-08-26-23-38-39.png)
+
 ### 1. **status-bar-showcase.png**
 - Show both status bars active with different states
 - Capture: "🔧 2 Mermaids - Setup" + "🌙" (Dark theme icon)
+
+![](../../media/2025-08-26-23-39-11.png)
 
 ### 2. **right-click-menu.png**  
 - Right-click context menu on `.mmd` file
 - Show export options in context menu
 
+![](../../media/2025-08-26-23-39-36.png)
+
 ### 3. **command-palette.png**
 - Command Palette open with "Mermaid Export Pro" commands visible
 - Show all 11 commands listed
+
+![](../../media/2025-08-26-23-40-27.png)
 
 ### 4. **settings-panel.png**
 - VS Code settings with Mermaid Export Pro section expanded
 - Show all configuration options
 
+
+![In progress](../../media/2025-08-26-23-41-04.png)
+
+![In progress](../../media/2025-08-26-23-41-23.png)
+
+![Error handling - Export progress when a few fail](../../media/2025-08-26-23-41-40.png)
+
 ### 5. **export-progress.png**
 - Progress notification during export
 - Show "Exporting diagram..." with progress bar
 
+![](../../media/2025-08-26-23-43-09.png)
+
 ### 6. **batch-export-picker.png**
-- Folder picker dialog for batch export
+- Folder picker dialog for Mermaid Export Pro - Batch Export
 - Show file selection interface
 
 ## 📋 Required Demo Files
