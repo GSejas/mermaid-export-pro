@@ -4,7 +4,7 @@
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
   "version": "1.0.5",
   "publisher": "GSejas",
-  "icon": "media/logo-dark.png",
+  "icon": "media/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/GSejas/mermaid-export-pro.git"
