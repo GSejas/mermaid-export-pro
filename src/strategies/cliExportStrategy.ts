@@ -8,6 +8,9 @@ import { ExportStrategy, ExportOptions, MermaidExportError } from '../types';
 import { PathUtils } from '../utils/pathUtils';
 import { ErrorHandler } from '../ui/errorHandler';
 
+
+
+
 export class CLIExportStrategy implements ExportStrategy {
   readonly name = 'CLI Export Strategy';
   private readonly cliCommand = 'mmdc';
@@ -106,8 +109,16 @@ export class CLIExportStrategy implements ExportStrategy {
     }
 
     // Add background color (including transparent)
-    if (options.backgroundColor) {
-      args.push('--backgroundColor', options.backgroundColor);
+    if (options.backgroundColor !== undefined) {
+      if (options.backgroundColor === '' || options.backgroundColor === 'transparent') {
+        ErrorHandler.logInfo(`CLI Export: Setting transparent background (original: "${options.backgroundColor}")`);
+        args.push('--backgroundColor', 'transparent');
+      } else {
+        ErrorHandler.logInfo(`CLI Export: Setting background color: "${options.backgroundColor}"`);
+        args.push('--backgroundColor', options.backgroundColor);
+      }
+    } else {
+      ErrorHandler.logInfo('CLI Export: No background color specified (undefined)');
     }
 
     // Add custom CSS file
@@ -131,6 +142,7 @@ export class CLIExportStrategy implements ExportStrategy {
         break;
     }
 
+    ErrorHandler.logInfo(`CLI Export: Complete command args: ${this.cliCommand} ${args.join(' ')}`);
     return args;
   }
 

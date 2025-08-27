@@ -40,6 +40,88 @@ export interface PostProcessor {
   process: (svg: string, options: VisualEnhancementOptions) => string;
 }
 
+
+
+
+/**
+ * Manages visual enhancement settings and applies them to Mermaid export options and generated SVGs.
+ *
+ * This service reads user-configured visual enhancements from the workspace configuration
+ * and exposes helpers to:
+ * - Retrieve the current enhancement options.
+ * - Enumerate available theme packs (predefined palettes, typography and post-processing rules).
+ * - Merge enhancement settings into a base set of export options (mermaid configuration).
+ * - Post-process an exported SVG by applying theme-specific post-processors (filters, gradients,
+ *   rounded corners, sketch effects, etc.) in sequence.
+ *
+ * Key behaviors
+ * - The manager respects a top-level "enabled" flag in the enhancement options: when disabled,
+ *   enhanceExportOptions returns the provided base options unchanged and postProcessSvg returns
+ *   the unmodified SVG.
+ * - When enabled, enhanceExportOptions merges:
+ *   - the base mermaidConfig (if any),
+ *   - the selected theme pack's mermaidConfig,
+ *   - typography overrides derived from the selected typography preset, and
+ *   - an optional custom color palette (applied only when customPalette is true).
+ * - postProcessSvg retrieves the theme pack matching the selected style and applies each of its
+ *   postProcessors in order; each processor receives the SVG text and the active options and must
+ *   return the transformed SVG text.
+ *
+ * Theme packs
+ * - The manager ships several built-in packs (Modern, Corporate, Artistic, Minimal, Sketch).
+ *   Each pack provides:
+ *   - name, description and preview text,
+ *   - a mermaidConfig block (themeVariables, flowchart settings, etc.),
+ *   - an ordered array of postProcessors that implement visual transformations on the raw SVG.
+ *
+ * Implementation notes
+ * - The class stores a configuration key constant for persistence/lookup but reads runtime options
+ *   from the workspace configuration ("mermaidExportPro.visualEnhancements").
+ * - The public API is intentionally small: retrieving options, listing theme packs, enhancing options,
+ *   and post-processing SVG output. The rest of the functionality (processor factories, palette and
+ *   typography lookups, and theme pack construction) is encapsulated as private helpers.
+ *
+ * Constructor
+ * @param context - The extension context (vscode.ExtensionContext). Stored for potential future
+ *   persistence or resource management related to enhancement state.
+ *
+ * Methods
+ * @method getEnhancementOptions
+ * @returns The current VisualEnhancementOptions object (enabled, style, animations, customPalette,
+ *   typography, effects, iconSet). If fields are missing in configuration sensible defaults are used.
+ *
+ * @method getAvailableThemePacks
+ * @returns An array of ThemePack objects describing the available presets. Each ThemePack contains
+ *   mermaid configuration and postProcessors appropriate for the visual style.
+ *
+ * @method enhanceExportOptions
+ * @param baseOptions - The original ExportOptions object that will be merged with enhancement settings.
+ * @returns A new ExportOptions object with an enhanced mermaidConfig when enhancements are enabled;
+ *   otherwise returns the original baseOptions unchanged. The merge preserves base settings while
+ *   layering themeVariables, typography and optional custom palette values on top.
+ *
+ * @method postProcessSvg
+ * @param svg - The raw exported SVG string to be transformed.
+ * @param options - The VisualEnhancementOptions controlling which theme and processors to apply.
+ * @returns A Promise that resolves to the transformed SVG string. If enhancements are disabled,
+ *   the original svg is returned immediately.
+ *
+ * Example
+ * ```ts
+ * // Constructing and using the manager
+ * const manager = new VisualEnhancementManager(context);
+ * const opts = manager.getEnhancementOptions();
+ * const enhanced = manager.enhanceExportOptions(baseExportOptions);
+ * const finalSvg = await manager.postProcessSvg(rawSvg, opts);
+ * ```
+ *
+ * Thread-safety & performance
+ * - All public methods are synchronous except postProcessSvg (returns a Promise). Post-processors
+ *   operate on string transformations and are applied sequentially; expensive or asynchronous
+ *   processors should be implemented accordingly.
+ *
+ * @public
+ */
 export class VisualEnhancementManager {
   private static readonly ENHANCEMENT_KEY = 'mermaidExportPro.visualEnhancements';
   
@@ -136,7 +218,7 @@ export class VisualEnhancementManager {
           lineColor: '#4F46E5',              // Purple-blue connections
           secondaryColor: '#DBEAFE',         // Light blue backgrounds
           tertiaryColor: '#93C5FD',          // Medium blue accents
-          background: 'transparent',
+          // Background handled by CLI backgroundColor argument
           
           // Enhanced contrast and modern styling
           cScale0: '#2563EB',
@@ -184,7 +266,7 @@ export class VisualEnhancementManager {
           lineColor: '#475569',
           secondaryColor: '#F8FAFC',
           tertiaryColor: '#E2E8F0',
-          background: 'transparent',
+          // Background handled by CLI backgroundColor argument
           
           // Professional styling
           fontFamily: '"Roboto", "Arial", sans-serif',
@@ -214,7 +296,7 @@ export class VisualEnhancementManager {
           lineColor: '#7209B7',              // Deep purple lines
           secondaryColor: '#FFD23F',         // Bright yellow
           tertiaryColor: '#FB5607',          // Orange-red
-          background: 'transparent',
+          // Background handled by CLI backgroundColor argument
           
           // Rainbow color scale for variety
           cScale0: '#FF006E',  // Hot pink

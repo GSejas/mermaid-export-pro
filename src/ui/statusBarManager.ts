@@ -1,3 +1,64 @@
+/**
+ * Manages the Mermaid Export Pro status bar item and coordinates UI feedback,
+ * availability probing and user interactions related to exporting Mermaid diagrams.
+ *
+ * Responsibilities:
+ * - Creates and controls a single VS Code StatusBarItem that reflects the current
+ *   export strategy state (CLI available, web-only, not-configured, or checking).
+ * - Inspects the active editor to detect Mermaid diagrams (both .mmd files and
+ *   fenced "```mermaid" blocks in Markdown) and exposes the diagram count and
+ *   file information in the status bar text and tooltip.
+ * - Probes available export strategies using CLIExportStrategy and updates the
+ *   displayed status accordingly; respects explicit user configuration (web-only).
+ * - Reacts to editor and document change events to update visibility and content.
+ * - Handles user interactions on the status bar:
+ *     - When configured (CLI or web) triggers an export of the active file.
+ *     - When unconfigured offers a setup/onboarding flow or refresh options.
+ * - Delegates onboarding/setup flows to the provided OnboardingManager.
+ * - Exposes lifecycle helpers for external callers (refresh, onConfigurationChanged,
+ *   show/hide and dispose).
+ *
+ * Behavior and lifecycle notes:
+ * - Intended to be instantiated once during extension activation and disposed with
+ *   the extension context. The created StatusBarItem is pushed into the provided
+ *   ExtensionContext.subscriptions for automatic disposal.
+ * - Listens to vscode.window.onDidChangeActiveTextEditor and
+ *   vscode.workspace.onDidChangeTextDocument to keep the status display in sync
+ *   with the active editor and file contents.
+ * - The status bar display format is configurable via the
+ *   'mermaidExportPro.statusBarDisplayFormat' setting (e.g. 'icon-only', 'icon-count',
+ *   'text-count'). Other presentation aspects (colors, tooltip content) adapt to the
+ *   current state and detected diagram count.
+ * - The status bar item exposes a click command id ('mermaidExportPro.statusBarClick')
+ *   which should be wired to call the instance.handleClick() action by the extension's
+ *   command registration (or the extension can register the same command to call into
+ *   this instance).
+ *
+ * Usage example:
+ * - Instantiate during activation:
+ *   const statusBarManager = new StatusBarManager(context, onboardingManager);
+ *   // Optionally register a command that delegates to statusBarManager.handleClick
+ *   context.subscriptions.push(
+ *     vscode.commands.registerCommand('mermaidExportPro.statusBarClick', () => statusBarManager.handleClick())
+ *   );
+ *
+ * Public API:
+ * - constructor(context, onboardingManager)
+ * - checkStrategyStatus(): Promise<void> — probe available export strategies and update UI
+ * - handleClick(): Promise<void> — invoked when the user clicks the status item; starts
+ *   export or setup flows depending on current state
+ * - refresh(): Promise<void> — public method to force a status re-check
+ * - onConfigurationChanged(): Promise<void> — call when extension settings change
+ * - show(): void — show the status bar item
+ * - hide(): void — hide the status bar item
+ * - dispose(): void — dispose of internal resources and the status bar item
+ *
+ * @public
+ * @param context - The VS Code extension context used for resource lifecycle and subscriptions.
+ * @param onboardingManager - Manager responsible for running onboarding / setup flows
+ *                            (e.g. CLI installation, configuration).
+ */
+
 import * as vscode from 'vscode';
 import { CLIExportStrategy } from '../strategies/cliExportStrategy';
 import { ErrorHandler } from './errorHandler';
@@ -13,6 +74,24 @@ interface StatusBarState {
   fileName?: string;
 }
 
+/**
+ * Manages the VS Code status bar item for the Mermaid Export Pro extension.
+ *
+ * Responsibilities:
+ * - Create, show/hide and dispose a StatusBarItem.
+ * - Inspect the active editor for Mermaid diagrams and compute diagram counts.
+ * - Probe available export strategies (CLI or web) and maintain the current state.
+ * - Update the status bar text, tooltip and styling based on state, file content and user preferences.
+ * - Handle user interactions on the status bar to trigger exports or onboarding/setup flows.
+ *
+ * Remarks:
+ * - Listens to active editor and document change events; intended to be instantiated once during extension activation.
+ * - Delegates onboarding/setup flows to the provided OnboardingManager instance.
+ * - Uses CLIExportStrategy to probe the availability/version of native export tools.
+ * - The status bar display format can be configured via 'mermaidExportPro.statusBarDisplayFormat'.
+ *
+ * @public
+ */
 export class StatusBarManager {
   private statusBarItem: vscode.StatusBarItem;
   private currentState: StatusBarState;
@@ -194,7 +273,7 @@ export class StatusBarManager {
         tooltip = diagramCount > 0
           ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to setup export tools`
           : `Mermaid Export Pro: No diagrams found in the active file. Click to setup export tools.`;
-        backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+        backgroundColor = undefined;
         color = new vscode.ThemeColor('statusBarItem.warningForeground');
         break;
 

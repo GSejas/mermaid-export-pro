@@ -1,8 +1,62 @@
+
 /**
- * Background Health Monitor - Passive monitoring for hung operations
- * 
- * This service runs in the background and periodically checks for stuck operations
- * without being intrusive to the user experience.
+ * BackgroundHealthMonitor
+ *
+ * Monitors long-running export operations and memory pressure in the background for the extension.
+ * This class is implemented as a singleton and is intended to be started once (via start()) and
+ * stopped when the extension is deactivated (stop()). When started it schedules periodic, silent
+ * health checks and may surface non-blocking user notifications with actions when problems are
+ * detected.
+ *
+ * Responsibilities
+ * - Periodically poll an OperationTimeoutManager for active operations and detect "stuck" operations
+ *   that exceed a configured duration threshold.
+ * - Detect elevated memory usage (heap or RSS) and present an optional, discreet notification to the user.
+ * - Provide actions on notifications such as showing diagnostics, triggering an emergency cleanup or
+ *   suggesting/performing garbage collection when available.
+ * - Track when it has already notified about a particular issue to avoid spamming the user (cooldown).
+ * - Expose a lightweight synchronous health snapshot for external callers (getHealthStatus).
+ *
+ * Behavior and side-effects
+ * - Uses a setInterval-based timer to run checks at CHECK_INTERVAL_MS intervals while started.
+ * - Registers a disposable with the provided vscode.ExtensionContext to ensure stop() is called on disposal.
+ * - Logs informational/warning/error messages via an ErrorHandler.
+ * - Shows non-modal vscode warning messages for stuck operations and memory pressure. These messages
+ *   can trigger commands: 'mermaidExportPro.diagnostics' and OperationTimeoutManager.emergencyCleanup().
+ * - May call global.gc() if available after performing emergency cleanup.
+ *
+ * Threading / concurrency
+ * - Designed for use on the Node.js single-threaded event loop used by VS Code extensions. All internal
+ *   state mutations are performed synchronously inside the scheduled check or action handlers.
+ *
+ * Public API
+ * - static getInstance(context): returns the singleton instance; the context is used to register disposal.
+ * - start(): begins periodic monitoring. Safe to call multiple times; subsequent calls are no-ops while running.
+ * - stop(): stops periodic monitoring and clears the interval timer.
+ * - async forceHealthCheck(): immediately performs the health checks (same logic as the scheduled checks).
+ * - getHealthStatus(): returns a synchronous snapshot object:
+ *     - isHealthy: boolean indicating whether any issues were detected
+ *     - activeOperations: number of currently tracked operations
+ *     - memoryUsageMB: approximate heap usage in MB
+ *     - issues: array of human-readable issue summaries (e.g. "1 stuck operation(s)", "High memory usage (120MB)")
+ *
+ * Configuration (see source constants)
+ * - CHECK_INTERVAL_MS: how often checks run (default: 30s)
+ * - LONG_RUNNING_THRESHOLD: duration after which an operation is considered stuck (default: 90s)
+ * - NOTIFICATION_COOLDOWN_MS: cooldown between user notifications (default: 5 minutes)
+ *
+ * Notes
+ * - The monitor intentionally keeps user-facing prompts non-modal to avoid interrupting workflows.
+ * - The class relies on OperationTimeoutManager.getActiveOperations() for operation metadata; each operation
+ *   is expected to contain at least { id: string, duration: number }.
+ * - Memory thresholds are conservative for an extension host; adjust constants if different trade-offs are required.
+ *
+ * Example
+ * const monitor = BackgroundHealthMonitor.getInstance(context);
+ * monitor.start();
+ *
+ * @remarks This TSDoc block documents the externally visible behavior and public API. Implementation
+ * details such as private helper methods are intentionally omitted from the public surface documentation.
  */
 
 import * as vscode from 'vscode';

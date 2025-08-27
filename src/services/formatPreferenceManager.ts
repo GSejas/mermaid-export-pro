@@ -12,7 +12,31 @@ interface FormatUsage {
   timestamp: number;
   source: 'codelens' | 'command' | 'statusbar';
 }
-
+  /**
+   * Storage key for persisting the user's format preference usage history.
+   *
+   * This key is used to read/write a JSON-serialised record that tracks how
+   * often (and optionally when) each output format has been selected. The data
+   * is used to rank or surface frequently used formats in the UI.
+   *
+   * Remarks:
+   * - The value stored under this key is expected to be a JSON string.
+   * - Recommended shape:
+   *   {
+   *     "<formatId>": { "count": number, "lastUsed": string (ISO date) },
+   *     ...
+   *   }
+   * - Implementations should be defensive when reading (handle missing keys,
+   *   malformed JSON, and migration between shape changes).
+   *
+   * Example:
+   * {
+   *   "png": { "count": 12, "lastUsed": "2025-08-27T12:34:56.789Z" },
+   *   "svg": { "count": 5, "lastUsed": "2025-08-20T09:10:11.123Z" }
+   * }
+   *
+   * @internal For internal extension use only — do not expose this key externally.
+   */
 export class FormatPreferenceManager {
   private static readonly USAGE_HISTORY_KEY = 'mermaidExportPro.formatUsageHistory';
   private static readonly FILE_FORMAT_MAP_KEY = 'mermaidExportPro.fileFormatMap';

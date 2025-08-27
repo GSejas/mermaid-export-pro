@@ -7,6 +7,22 @@
 import * as vscode from 'vscode';
 import { MermaidTheme } from '../types';
 
+
+
+/**
+ * Status bar item that displays the current Mermaid theme and provides quick access to theme-related actions.
+ *
+ * The item is created by the ThemeStatusBarManager (typically via vscode.window.createStatusBarItem),
+ * updated whenever the active theme or relevant configuration changes, and disposed when the manager is
+ * disposed. Its text, tooltip and command are controlled by the manager; callers should not mutate it
+ * directly and should guard against it being uninitialized before use.
+ *
+ * @remarks
+ * - Managed lifecycle: create -> show/update -> hide/dispose.
+ * - Intended to be visible only when the extension is active and theme information is available.
+ *
+ * @see {@link https://code.visualstudio.com/api/references/vscode-api#StatusBarItem}
+ */
 export class ThemeStatusBarManager {
   private statusBarItem: vscode.StatusBarItem;
   private context: vscode.ExtensionContext;

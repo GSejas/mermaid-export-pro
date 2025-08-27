@@ -3,6 +3,7 @@
 
 [![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.5-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
 
+![](media/mermaid-lens_temp_128.gif)
 
 > This extension is free, the name is mainly to set it appart from older unmaintained alternatives. 
 > This extension is in BETA Mode, please report issues @ `jsequeira03@gmail.com`. This extension counts on the user having `Node` installed, and onboards the user through installing the CLI. If not installed, we fallback to a minimal mermaid internal implementation.`
@@ -11,33 +12,20 @@
 
 Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
 
-- [Mermaid Export Pro](#mermaid-export-pro)
-    - [🎯 Smart Status Bar Integration](#-smart-status-bar-integration)
-    - [📊 Multiple Export Formats](#-multiple-export-formats)
-    - [🚀 Batch Operations](#-batch-operations)
-    - [⚡ Auto-Export on Save](#-auto-export-on-save)
-    - [🎨 Enhanced Markdown Experience](#-enhanced-markdown-experience)
-    - [🧪 Comprehensive Testing](#-comprehensive-testing)
-    - [🎬 Demo and Testing Files](#-demo-and-testing-files)
-  - [Requirements](#requirements)
-    - [Optional (Recommended)](#optional-recommended)
-  - [Extension Settings](#extension-settings)
-    - [Quick Start](#quick-start)
-    - [Commands](#commands)
-    - [Context Menus](#context-menus)
-  - [Release Notes](#release-notes)
-    - [1.0.0](#100)
 
-
-![](media\features-overview-banner.png)
+![](media/features-overview-banner.png)
 
 ---
+![](media/status-bar_128colors_32colors.gif)
 
 ### 🎯 Smart Status Bar Integration
 - **Real-time Diagram Count**: Shows number of mermaid diagrams in current file
 - **One-Click Export**: Click status bar to export directly when configured
 - **Visual Status Indicators**: Different icons for CLI/web/setup states
 - **Auto-hide**: Only appears when viewing files with mermaid content
+
+
+![](media/export-as_128colors_32colors.gif)
 
 ### 📊 Multiple Export Formats
 - **SVG**: Vector graphics with perfect scalability
@@ -46,11 +34,16 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 - **PDF**: Document-ready format
 - **WebP**: Modern web format
 
+
+![](media/)
+
 ### 🚀 Batch Operations  
 - **Folder Export**: Process entire directory structures
 - **Multi-diagram Support**: Handle multiple mermaid blocks per markdown file
 - **Progress Tracking**: Visual feedback for large operations
 - **Error Reporting**: Detailed logs of successful/failed exports
+
+![](media/auto-export_32colors_128colors.gif)
 
 ### ⚡ Auto-Export on Save
 - **File Watcher**: Automatically export when files are saved
@@ -81,7 +74,7 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 - **Testing Guidelines**: Comprehensive manual and automated testing instructions
 
 
-![](media\export-stragegies-banner.png)
+![](media/export-stragegies-banner.png)
 
 - **CLI Export**: High-quality rendering via Mermaid CLI (@mermaid-js/mermaid-cli)
 - **Web Fallback**: Browser-based export when CLI unavailable

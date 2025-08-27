@@ -11,12 +11,13 @@ import { ExportFormat, MermaidTheme, ExportOptions } from './types';
 import { runDebugExport } from './commands/debugCommand';
 import { runExportCommand } from './commands/exportCommand';
 import { runExportAllCommand } from './commands/exportAllCommand';
-import { runBatchExport } from './commands/batchExportCommand';
+import { runBatchExport } from './commands/batchExportCommand.v2';
 import { toggleAutoExport, initializeAutoExport, disposeAutoExport } from './commands/watchCommand';
 import { runDiagnosticsCommand, runQuickHealthCheck } from './commands/diagnosticsCommand';
 import { OnboardingManager } from './services/onboardingManager';
 import { StatusBarManager } from './ui/statusBarManager';
 import { ThemeStatusBarManager } from './ui/themeStatusBarManager';
+import { batchExportStatusBar } from './ui/batchExportStatusBarManager';
 import { MermaidCodeLensProvider } from './providers/mermaidCodeLensProvider';
 import { MermaidHoverProvider } from './providers/mermaidHoverProvider';
 import { FormatPreferenceManager } from './services/formatPreferenceManager';
@@ -156,6 +157,14 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
+  // Cancel batch export command (called from status bar)
+  const cancelBatchExportCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.cancelBatchExport',
+    () => {
+      batchExportStatusBar.cancelBatchExport();
+    }
+  );
+
   // Toggle auto-export command
   const toggleAutoExportCommand = vscode.commands.registerCommand(
     'mermaidExportPro.toggleAutoExport',
@@ -274,6 +283,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     showOutputCommand,
     debugExportCommand,
     setupCommand,
+    cancelBatchExportCommand,
     toggleAutoExportCommand,
     exportMarkdownBlockCommand,
     exportMarkdownCommand,
@@ -293,6 +303,9 @@ function registerCommands(context: vscode.ExtensionContext): void {
   });
 
   context.subscriptions.push(configChangeListener);
+  
+  // Register status bar managers for proper cleanup
+  context.subscriptions.push(batchExportStatusBar);
 }
 
 function registerProviders(context: vscode.ExtensionContext): void {

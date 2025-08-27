@@ -47,6 +47,21 @@ class AutoExportWatcher {
 
   private constructor(context: vscode.ExtensionContext) {
     this.context = context;
+    // Initialize state based on configuration setting
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const configEnabled = config.get<boolean>('autoExport', false);
+    
+    console.log(`[AutoExport] Initializing watcher - Config setting: ${configEnabled}`);
+    
+    if (configEnabled) {
+      // If config says enabled, set up the file watcher
+      this.isEnabled = true;
+      this.setupFileWatcher();
+      console.log(`[AutoExport] Watcher initialized and enabled`);
+    } else {
+      this.isEnabled = false;
+      console.log(`[AutoExport] Watcher initialized but disabled`);
+    }
   }
 
   static getInstance(context: vscode.ExtensionContext): AutoExportWatcher {
@@ -54,6 +69,16 @@ class AutoExportWatcher {
       AutoExportWatcher.instance = new AutoExportWatcher(context);
     }
     return AutoExportWatcher.instance;
+  }
+
+  private setupFileWatcher(): void {
+    if (this.fileWatcher) {
+      return; // Already set up
+    }
+    
+    this.fileWatcher = vscode.workspace.onDidSaveTextDocument(async (document) => {
+      await this.handleFileSave(document);
+    });
   }
 
   async toggle(): Promise<void> {
@@ -66,17 +91,18 @@ class AutoExportWatcher {
 
   private async enable(): Promise<void> {
     if (this.isEnabled) {
+      console.log(`[AutoExport] Enable called but already enabled`);
       return;
     }
 
     try {
+      console.log(`[AutoExport] Enabling auto export...`);
+      
       // Get configuration
       const config = vscode.workspace.getConfiguration('mermaidExportPro');
       
       // Set up file watcher
-      this.fileWatcher = vscode.workspace.onDidSaveTextDocument(async (document) => {
-        await this.handleFileSave(document);
-      });
+      this.setupFileWatcher();
 
       this.isEnabled = true;
       
@@ -102,10 +128,13 @@ class AutoExportWatcher {
 
   private async disable(): Promise<void> {
     if (!this.isEnabled) {
+      console.log(`[AutoExport] Disable called but already disabled`);
       return;
     }
 
     try {
+      console.log(`[AutoExport] Disabling auto export...`);
+      
       // Clean up file watcher
       if (this.fileWatcher) {
         this.fileWatcher.dispose();
@@ -285,6 +314,16 @@ class AutoExportWatcher {
   }
 
   isAutoExportEnabled(): boolean {
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const configEnabled = config.get<boolean>('autoExport', false);
+    
+    console.log(`[AutoExport] State check - Watcher: ${this.isEnabled}, Config: ${configEnabled}, FileWatcher: ${!!this.fileWatcher}`);
+    
+    // If states are out of sync, log a warning
+    if (this.isEnabled !== configEnabled) {
+      console.warn(`[AutoExport] State mismatch! Watcher: ${this.isEnabled}, Config: ${configEnabled}`);
+    }
+    
     return this.isEnabled;
   }
 

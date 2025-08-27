@@ -27,6 +27,8 @@
 
 **Files needed**: `diagram.mmd`
 
+![](../../media/2025-08-27-02-15-06.png)
+
 ### 3. **theme-cycle.gif**
 **Duration**: ~10 seconds  
 **Steps**:
@@ -36,6 +38,8 @@
 4. Export one diagram to show theme applied
 
 **Files needed**: `sample-chart.mmd`
+
+![](../../media/2025-08-27-02-14-08.png)
 
 ### 4. **batch-export.gif**
 **Duration**: ~15 seconds  

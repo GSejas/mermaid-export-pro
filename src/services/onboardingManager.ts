@@ -18,6 +18,87 @@ interface SystemCapabilities {
 
 export type InstallMethod = 'local' | 'global' | 'web-only' | 'skip';
 
+/**
+ * Manages the onboarding and setup experience for the Mermaid Export Pro extension.
+ *
+ * Responsibilities
+ * - Detects system capabilities (Node.js, npm/yarn, Mermaid CLI, workspace package.json).
+ * - Shows a welcome/onboarding flow for first-time users (Quick Setup, Custom Setup, Skip).
+ * - Recommends and optionally executes an installation strategy (local, global, web-only).
+ * - Persists onboarding completion and chosen setup preference to extension global state.
+ * - Validates existing setup on subsequent activations and offers remediation if a previously
+ *   selected CLI-based setup is no longer available.
+ *
+ * Key side effects
+ * - Displays UI dialogs and notifications (vscode.window.showInformationMessage, showWarningMessage,
+ *   showQuickPick).
+ * - Opens a terminal and sends installation commands for local/global installation flows.
+ * - Updates extension configuration (e.g. sets exportStrategy = 'web' in web-only mode).
+ * - Persists state to the extension context globalState via keys:
+ *     - mermaidExportPro.onboardingCompleted
+ *     - mermaidExportPro.setupPreference
+ *
+ * Usage
+ * - Instantiate with the active vscode.ExtensionContext and call maybeShowWelcome() during activation
+ *   to trigger the onboarding flow if required.
+ * - The runSetup() method is provided to re-run the setup flow from the command palette.
+ *
+ * Notes & behavior details
+ * - Onboarding is skipped automatically while the extension is running in Development mode to avoid
+ *   repetitive prompts during extension development.
+ * - Quick Setup:
+ *     - Runs a system analysis, recommends a method, and (if confirmed) drives install actions inside
+ *       a progress notification.
+ *     - The quick flow attempts to automatically detect and choose a reasonable default (local if a
+ *       workspace package.json exists and Node/npm are present; global otherwise; web-only as a fallback).
+ * - Custom Setup:
+ *     - Shows a detailed capability summary then presents explicit installation options for the user
+ *       to choose (e.g., Local / Global / Web-only / Skip).
+ * - Installation actions:
+ *     - Local installation opens a terminal in the workspace root and runs `npm install @mermaid-js/mermaid-cli`.
+ *     - Global installation opens a terminal and runs `npm install -g @mermaid-js/mermaid-cli`.
+ *     - Web-only configuration updates extension settings to prefer the web export strategy.
+ *   Note: The implementation currently enqueues terminal commands and resolves shortly after showing
+ *   the terminal; a full implementation could monitor completion and parse output.
+ *
+ * Error handling and resiliency
+ * - System detection uses best-effort checks and logs warnings via ErrorHandler when detection fails.
+ * - Command availability checks gate the recommendation logic and time out after ~3s.
+ * - validateExistingSetup() performs a silent CLI availability check on subsequent runs and prompts
+ *   the user to reinstall or switch to web-only if a CLI-based preference is no longer valid.
+ *
+ * Constructor
+ * @param context - The extension context used to read/write global state and access workspace info.
+ *
+ * Public API (intended for extension activation / commands)
+ * - maybeShowWelcome(): Promise<void>
+ *     Checks whether onboarding should run (skipping in development), then either starts the welcome
+ *     flow or validates existing setup.
+ *
+ * - runSetup(): Promise<void>
+ *     Allows manual triggering of the Quick / Custom / Reset flows from the command palette.
+ *
+ * Persistence keys (globalState)
+ * - mermaidExportPro.onboardingCompleted (boolean)
+ * - mermaidExportPro.setupPreference (InstallMethod: 'local' | 'global' | 'web-only' | 'skip')
+ *
+ * Types used (referenced)
+ * - SystemCapabilities: structure describing hasNodeJs, nodeVersion, hasNpm, hasYarn, hasMermaidCli,
+ *   mermaidVersion, workspaceHasPackageJson, canInstallGlobally, etc.
+ * - InstallMethod: union of allowed install choices ('local' | 'global' | 'web-only' | 'skip').
+ *
+ * Example
+ * ```
+ * // In extension activation
+ * const onboarding = new OnboardingManager(context);
+ * await onboarding.maybeShowWelcome();
+ * ```
+ *
+ * Implementation detail reminder
+ * - Many helper methods are implemented as private (detectSystemCapabilities, getRecommendedMethod,
+ *   showAnalysisResults, installLocal/Global, configureWebOnly, completeOnboarding, resetOnboarding, etc.).
+ * - The class interacts with a CLIExportStrategy abstraction for checking and querying the Mermaid CLI.
+ */
 export class OnboardingManager {
   private static readonly ONBOARDING_KEY = 'mermaidExportPro.onboardingCompleted';
   private static readonly SETUP_PREFERENCE_KEY = 'mermaidExportPro.setupPreference';
