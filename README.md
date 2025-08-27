@@ -35,7 +35,7 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 - **WebP**: Modern web format
 
 
-![](media/)
+![](media\batch-export_128colors_32colors.gif)
 
 ### 🚀 Batch Operations  
 - **Folder Export**: Process entire directory structures
@@ -90,6 +90,8 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 The extension works without these dependencies using the web export strategy.
 
 ## Extension Settings
+
+![](media/settings_128colors_32colors.gif)
 
 This extension contributes the following settings:
 
