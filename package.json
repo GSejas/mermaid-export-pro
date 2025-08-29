@@ -2,7 +2,7 @@
   "name": "mermaid-export-pro",
   "displayName": "Mermaid Export Pro",
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "publisher": "GSejas",
   "icon": "media/icon.png",
   "repository": {
@@ -71,11 +71,6 @@
       {
         "command": "mermaidExportPro.batchExport",
         "title": "Batch Export",
-        "category": "Mermaid Export Pro"
-      },
-      {
-        "command": "mermaidExportPro.exportMarkdown",
-        "title": "Export Markdown Diagrams",
         "category": "Mermaid Export Pro"
       },
       {

@@ -97,7 +97,6 @@ const commands = [
   'mermaidExportPro.exportCurrent',      // Export active file
   'mermaidExportPro.exportAs',           // Export with format selection
   'mermaidExportPro.batchExport',        // Export folder/workspace
-  'mermaidExportPro.exportMarkdown',     // Process markdown files
   'mermaidExportPro.toggleAutoExport',   // Auto-export on save
   'mermaidExportPro.showOutput',         // Show export log
 ];

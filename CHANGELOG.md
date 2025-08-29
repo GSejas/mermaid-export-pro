@@ -2,6 +2,25 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.6] - 2025-08-28
+
+### 🐛 Critical Fixes
+
+#### Auto-Save Functionality Restored
+- **Fixed Right-Click "Auto Save"**: Resolved issue where right-click "Export Mermaid Pro - Auto Save" was incorrectly showing save dialog instead of auto-generating filenames
+- **Command Consolidation**: Removed redundant `exportMarkdown` command that was duplicating `exportCurrent` functionality
+- **Proper Auto-Naming**: Right-click auto-save now correctly uses smart filename generation next to source files
+
+#### Code Cleanup and Optimization
+- **Removed Dead Commands**: Eliminated unused `mermaidExportPro.exportMarkdown` command from codebase
+- **Updated Documentation**: Cleaned up references to removed commands in CLAUDE.md and project documentation
+- **Command Analysis**: Comprehensive audit identified and removed redundant functionality
+
+### 🔧 Technical Improvements
+- **Streamlined Command Set**: Reduced command complexity while maintaining all functionality
+- **Better Architecture**: Cleaner separation between dialog-based and auto-save export modes
+- **Documentation Updates**: Updated internal documentation to reflect command consolidation
+
 ## [1.0.5] - 2025-08-27
 
 ### 🚀 Major Quality and Testing Enhancements

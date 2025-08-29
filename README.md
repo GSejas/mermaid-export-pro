@@ -6,7 +6,7 @@
 ![](media/mermaid-lens_temp_128.gif)
 
 > This extension is free, the name is mainly to set it appart from older unmaintained alternatives. 
-> This extension is in BETA Mode, please report issues @ `jsequeira03@gmail.com`. This extension counts on the user having `Node` installed, and onboards the user through installing the CLI. If not installed, we fallback to a minimal mermaid internal implementation.`
+> This extension is in BETA Mode, please report issues @ `jsequeira03@gmail.com`. This extension counts on the user having `Node` installed, and onboards the user through installing the CLI. 
 
 ![](.\media\mermaid-export-pro-banner.png)
 

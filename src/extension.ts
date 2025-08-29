@@ -189,18 +189,6 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Export markdown diagrams command
-  const exportMarkdownCommand = vscode.commands.registerCommand(
-    'mermaidExportPro.exportMarkdown',
-    async (resource?: vscode.Uri) => {
-      try {
-        // Use the main export command for now - it handles markdown files
-        await runExportCommand(context, false, resource);
-      } catch (error) {
-        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Markdown export failed'), 'Markdown Export');
-      }
-    }
-  );
 
   // Status bar click command
   const statusBarClickCommand = vscode.commands.registerCommand(
@@ -286,7 +274,6 @@ function registerCommands(context: vscode.ExtensionContext): void {
     cancelBatchExportCommand,
     toggleAutoExportCommand,
     exportMarkdownBlockCommand,
-    exportMarkdownCommand,
     statusBarClickCommand,
     cycleThemeCommand,
     showExportOptionsCommand,
@@ -664,6 +651,6 @@ async function exportFileUri(resource: vscode.Uri | undefined, context: vscode.E
     return;
   }
 
-  // Delegate to exportAll command - it handles all the logic for multiple diagrams
-  await runExportAllCommand(context, resource);
+  // Use auto-save export command (preferAuto = true) to avoid save dialog
+  await runExportCommand(context, true, resource);
 }
