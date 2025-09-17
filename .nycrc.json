@@ -1,0 +1,10 @@
+{
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/test/**",
+    "**/webview/**",
+    "**/*.min.js"
+  ],
+  "extension": [".ts"],
+  "reporter": ["lcov", "text"]
+}

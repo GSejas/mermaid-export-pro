@@ -1,0 +1,39 @@
+name: CI Tests
+on:
+  push: {}
+  pull_request: {}
+
+env:
+  VSCODE_TEST_VERSION: 1.85.0
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache VS Code test and node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.vscode-test
+            node_modules
+          key: ${{ runner.os }}-vscode-${{ env.VSCODE_TEST_VERSION }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (compile tests and extension)
+        run: npm run compile-tests
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration

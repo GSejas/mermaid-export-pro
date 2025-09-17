@@ -8,7 +8,7 @@
  * - Detailed error reporting and diagnostics
  * - System health monitoring and alerting
  * 
- * @author Claude Code Assistant
+ * @author Claude/Jorge
  * @version 2.0.0
  * @date 2025-08-27
  */

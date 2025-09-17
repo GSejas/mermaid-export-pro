@@ -2,7 +2,7 @@
  * Mermaid Export Pro - Main Export Command
  * 
  * Purpose: Export current mermaid file or active selection to various formats
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Date: 2025-08-24
  */
 

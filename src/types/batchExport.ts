@@ -4,7 +4,7 @@
  * This module provides comprehensive type definitions for the new batch export system
  * with support for multi-format exports, progress tracking, error handling, and testability.
  * 
- * @author Claude Code Assistant
+ * @author Claude/Jorge
  * @version 2.0.0
  * @date 2025-08-27
  */

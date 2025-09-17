@@ -118,7 +118,7 @@ suite('OnboardingManager Tests', () => {
       sinon.assert.called(showMessageStub);
       const message = showMessageStub.getCall(0).args[0];
       assert.ok(message.includes('Web-only mode configured'));
-      assert.ok(message.includes('webview'));
+      assert.ok(message.includes('Instant exports'));
     });
   });
 

@@ -9,7 +9,7 @@
  * - Generates numbered output files for multiple diagrams
  * - Integrates with timeout management system
  * 
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Version: 1.0.4
  * Date: 2025-08-27
  */

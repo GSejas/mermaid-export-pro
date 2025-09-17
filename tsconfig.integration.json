@@ -1,0 +1,21 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"types": ["mocha", "node"]
+	},
+	"include": [
+		"src/test/integration/**/*",
+		"src/types/**/*",
+		"src/services/**/*",
+		"src/commands/**/*",
+		"src/providers/**/*",
+		"src/strategies/**/*",
+		"src/ui/**/*",
+		"src/utils/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"src/test/unit/**/*",
+		"vitest.config.ts"
+	]
+}

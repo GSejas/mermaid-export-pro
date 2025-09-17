@@ -200,7 +200,7 @@ suite('StatusBarManager Tests', () => {
       (statusBarManager as any).currentState = { status: 'cli-available' };
 
       // Mock active editor
-      const mockEditor = { document: { fileName: 'test.mmd' } };
+      const mockEditor = { document: { fileName: 'test.mmd', uri: { fsPath: 'test.mmd' } } };
       sinon.stub(vscode.window, 'activeTextEditor').value(mockEditor);
 
       // Mock executeCommand
@@ -209,8 +209,8 @@ suite('StatusBarManager Tests', () => {
       // Handle click
       await statusBarManager.handleClick();
 
-      // Should execute exportFile command
-      sinon.assert.calledWith(executeCommandStub, 'mermaidExportPro.exportFile');
+      // Should execute exportAll command
+      sinon.assert.calledWith(executeCommandStub, 'mermaidExportPro.exportAll', mockEditor.document.uri);
     });
 
     test('shows setup options when not configured', async () => {

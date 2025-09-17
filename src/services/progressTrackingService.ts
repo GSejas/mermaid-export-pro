@@ -8,7 +8,7 @@
  * - Event-driven architecture for UI updates
  * - Memory efficient tracking with automatic cleanup
  * 
- * @author Claude Code Assistant
+ * @author Jorge Sequeira
  * @version 2.0.0
  * @date 2025-08-27
  */
@@ -70,9 +70,7 @@ const DEFAULT_CONFIG: ProgressConfig = {
   memoryWarningThresholdMB: 256 // Warn if memory usage > 256MB
 };
 
-/**
- * Implementation of progress tracking service
- */
+
 export class ProgressTrackingServiceImpl extends EventEmitter implements ProgressTrackingService {
   private progressStates = new Map<string, ProgressState>();
   private config: ProgressConfig;

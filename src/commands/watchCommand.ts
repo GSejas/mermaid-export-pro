@@ -16,7 +16,7 @@
  * - Uses best available export strategy (CLI > Web)
  * - Provides subtle progress feedback and success notifications
  * 
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Version: 1.0.4
  * Date: 2025-08-27
  */

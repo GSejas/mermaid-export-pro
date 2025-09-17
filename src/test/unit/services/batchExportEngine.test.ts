@@ -7,7 +7,7 @@
  * - Error handling and recovery
  * - Performance monitoring and metrics
  * 
- * @author Claude Code Assistant
+ * @author Claude/Jorge
  * @version 2.0.0
  * @date 2025-08-27
  */
@@ -16,6 +16,7 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs/promises';
 import * as os from 'os';
+import { beforeAll, afterAll } from 'vitest';
 import { BatchExportEngineImpl } from '../../../services/batchExportEngine';
 import { 
   BatchExportConfig,
@@ -46,6 +47,10 @@ const mockContext = {
 // Mock progress reporter
 class MockProgressReporter implements ProgressReporter {
   private _cancelled = false;
+  
+  initializeBatch(totalJobs: number): void {
+    // Mock implementation
+  }
   
   updateProgress(progress: BatchProgress): void {
     // Mock implementation
@@ -134,6 +139,10 @@ describe('BatchExportEngine', () => {
       };
       
       const batch = await engine.createBatch(mockFiles, config);
+      
+      // Calculate estimated duration
+      const estimatedDuration = await engine.estimateDuration(batch);
+      batch.metadata.estimatedDuration = estimatedDuration;
       
       assert.strictEqual(batch.metadata.totalFiles, mockFiles.length);
       assert.strictEqual(batch.metadata.totalFormats, config.formats.length);

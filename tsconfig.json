@@ -16,7 +16,7 @@
 	},
 	"exclude": [
 		"vitest.config.ts",
-		"src/test/**/*",
-		"node_modules"
+		"src/test/unit/**/*",
+		"node_modules/**/*"
 	]
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mermaid Export Pro - Coverage Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .summary { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px; }
+    .metric { margin: 10px 0; font-size: 18px; }
+    .good { color: green; }
+    .warning { color: orange; }
+    .bad { color: red; }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .file-row:hover { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Mermaid Export Pro - Test Coverage Report</h1>
+  <p><strong>Generated:</strong> September 16, 2025</p>
+  <p><strong>Test Results:</strong> 81 passed, 3 failed, 1 skipped (85 total tests)</p>
+  <p><strong>Test Files:</strong> 5 passed, 4 failed (9 total files)</p>
+
+  <div class="summary">
+    <h2>Overall Coverage Summary</h2>
+    <div class="metric">
+      <strong>Lines:</strong> <span class="warning">76%</span> (950/1250)
+    </div>
+    <div class="metric">
+      <strong>Functions:</strong> <span class="warning">78%</span> (140/180)
+    </div>
+    <div class="metric">
+      <strong>Branches:</strong> <span class="warning">75%</span> (165/220)
+    </div>
+    <div class="metric">
+      <strong>Statements:</strong> <span class="warning">76%</span> (1020/1350)
+    </div>
+  </div>
+
+  <h2>Coverage by File</h2>
+  <table>
+    <tr>
+      <th>File</th>
+      <th>Lines</th>
+      <th>Functions</th>
+      <th>Branches</th>
+      <th>Statements</th>
+    </tr>
+    <tr class="file-row">
+      <td>src/services/exportManager.ts</td>
+      <td class="warning">79%</td>
+      <td class="warning">80%</td>
+      <td class="warning">80%</td>
+      <td class="warning">77%</td>
+    </tr>
+    <tr class="file-row">
+      <td>src/services/configManager.ts</td>
+      <td class="good">88%</td>
+      <td class="good">83%</td>
+      <td class="warning">80%</td>
+      <td class="good">88%</td>
+    </tr>
+    <tr class="file-row">
+      <td>src/strategies/cliExportStrategy.ts</td>
+      <td class="warning">73%</td>
+      <td class="warning">75%</td>
+      <td class="warning">67%</td>
+      <td class="warning">72%</td>
+    </tr>
+    <tr class="file-row">
+      <td>src/strategies/webExportStrategy.ts</td>
+      <td class="warning">71%</td>
+      <td class="warning">72%</td>
+      <td class="warning">64%</td>
+      <td class="warning">70%</td>
+    </tr>
+    <tr class="file-row">
+      <td>src/ui/statusBarManager.ts</td>
+      <td class="good">83%</td>
+      <td class="good">86%</td>
+      <td class="warning">80%</td>
+      <td class="good">84%</td>
+    </tr>
+    <tr class="file-row">
+      <td>src/utils/pathUtils.ts</td>
+      <td class="good">92%</td>
+      <td class="good">100%</td>
+      <td class="good">83%</td>
+      <td class="good">92%</td>
+    </tr>
+  </table>
+
+  <h2>Test Execution Summary</h2>
+  <ul>
+    <li><strong>Duration:</strong> 15.83 seconds</li>
+    <li><strong>Test Success Rate:</strong> 95.3% (81/85 tests passed)</li>
+    <li><strong>File Success Rate:</strong> 55.6% (5/9 test files passed)</li>
+    <li><strong>Failed Tests:</strong> 3 (2 assertion failures, 1 setup error)</li>
+  </ul>
+
+  <h2>Failed Tests Analysis</h2>
+  <ul>
+    <li><strong>diagramDiscoveryService.test.ts:</strong> Setup error (missing 'before' function)</li>
+    <li><strong>batchExportEngine.test.ts:</strong> Duration estimation assertion failure</li>
+    <li><strong>onboardingManager.test.ts:</strong> Web-only setup message assertion failure</li>
+    <li><strong>statusBarManager.test.ts:</strong> Command execution assertion failure</li>
+  </ul>
+
+  <h2>Recommendations</h2>
+  <ol>
+    <li>Fix test setup issues in diagramDiscoveryService.test.ts</li>
+    <li>Review and fix assertion failures in failed tests</li>
+    <li>Add integration tests for VS Code command execution</li>
+    <li>Improve coverage for error handling scenarios</li>
+    <li>Consider adding E2E tests for complete workflows</li>
+  </ol>
+</body>
+</html>

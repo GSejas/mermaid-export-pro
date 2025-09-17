@@ -2,7 +2,7 @@
  * Mermaid Export Pro - Hover Provider for Markdown Files
  * 
  * Purpose: Show export actions and diagram info on hover over mermaid blocks
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Date: 2025-08-24
  */
 

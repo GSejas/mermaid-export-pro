@@ -16,7 +16,7 @@
  * - Parallel export processing with progress tracking
  * - Comprehensive error handling and reporting
  * 
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Version: 1.0.4
  * Date: 2025-08-27
  */

@@ -2,7 +2,7 @@
  * Mermaid Export Pro - CodeLens Provider for Markdown Files
  * 
  * Purpose: Show export actions above mermaid code blocks in markdown files
- * Author: Claude Code Assistant
+ * Author: Claude/Jorge
  * Date: 2025-08-24
  */
 

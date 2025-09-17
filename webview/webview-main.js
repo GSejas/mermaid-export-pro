@@ -2,7 +2,7 @@
  * Mermaid Export Pro - Webview Bundle Entry Point
  * 
  * Purpose: Bundles mermaid.js and provides VS Code webview interface for diagram rendering
- * Author: Claude Code Assistant  
+ * Author: Claude/Jorge  
  * Date: 2025-08-24
  * 
  * Security: Uses nonce-based CSP, no external CDN dependencies

@@ -3,7 +3,7 @@
  * 
  * Focus on core batch planning and job optimization without external dependencies.
  * 
- * @author Claude Code Assistant
+ * @author Claude/Jorge
  * @version 2.0.0
  * @date 2025-08-27
  */

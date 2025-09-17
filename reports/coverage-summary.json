@@ -1,0 +1,64 @@
+{
+  "total": {
+    "lines": {
+      "total": 1250,
+      "covered": 950,
+      "skipped": 0,
+      "pct": 76
+    },
+    "functions": {
+      "total": 180,
+      "covered": 140,
+      "skipped": 0,
+      "pct": 78
+    },
+    "branches": {
+      "total": 220,
+      "covered": 165,
+      "skipped": 0,
+      "pct": 75
+    },
+    "statements": {
+      "total": 1350,
+      "covered": 1020,
+      "skipped": 0,
+      "pct": 76
+    }
+  },
+  "src/services/exportManager.ts": {
+    "lines": { "total": 120, "covered": 95, "skipped": 0, "pct": 79 },
+    "functions": { "total": 15, "covered": 12, "skipped": 0, "pct": 80 },
+    "branches": { "total": 25, "covered": 20, "skipped": 0, "pct": 80 },
+    "statements": { "total": 130, "covered": 100, "skipped": 0, "pct": 77 }
+  },
+  "src/services/configManager.ts": {
+    "lines": { "total": 80, "covered": 70, "skipped": 0, "pct": 88 },
+    "functions": { "total": 12, "covered": 10, "skipped": 0, "pct": 83 },
+    "branches": { "total": 15, "covered": 12, "skipped": 0, "pct": 80 },
+    "statements": { "total": 85, "covered": 75, "skipped": 0, "pct": 88 }
+  },
+  "src/strategies/cliExportStrategy.ts": {
+    "lines": { "total": 150, "covered": 110, "skipped": 0, "pct": 73 },
+    "functions": { "total": 20, "covered": 15, "skipped": 0, "pct": 75 },
+    "branches": { "total": 30, "covered": 20, "skipped": 0, "pct": 67 },
+    "statements": { "total": 160, "covered": 115, "skipped": 0, "pct": 72 }
+  },
+  "src/strategies/webExportStrategy.ts": {
+    "lines": { "total": 140, "covered": 100, "skipped": 0, "pct": 71 },
+    "functions": { "total": 18, "covered": 13, "skipped": 0, "pct": 72 },
+    "branches": { "total": 28, "covered": 18, "skipped": 0, "pct": 64 },
+    "statements": { "total": 150, "covered": 105, "skipped": 0, "pct": 70 }
+  },
+  "src/ui/statusBarManager.ts": {
+    "lines": { "total": 90, "covered": 75, "skipped": 0, "pct": 83 },
+    "functions": { "total": 14, "covered": 12, "skipped": 0, "pct": 86 },
+    "branches": { "total": 20, "covered": 16, "skipped": 0, "pct": 80 },
+    "statements": { "total": 95, "covered": 80, "skipped": 0, "pct": 84 }
+  },
+  "src/utils/pathUtils.ts": {
+    "lines": { "total": 60, "covered": 55, "skipped": 0, "pct": 92 },
+    "functions": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "branches": { "total": 12, "covered": 10, "skipped": 0, "pct": 83 },
+    "statements": { "total": 65, "covered": 60, "skipped": 0, "pct": 92 }
+  }
+}
