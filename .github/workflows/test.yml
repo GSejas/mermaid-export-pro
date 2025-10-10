@@ -15,6 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     strategy:
+      fail-fast: false  # Don't cancel other jobs on first failure
       matrix:
         os: [ubuntu-latest, windows-latest]
         node-version: [18.x, 20.x]
@@ -48,11 +49,12 @@ jobs:
         run: npm run lint
         continue-on-error: true  # Don't fail build on lint warnings
 
-      - name: Build (compile tests and extension)
-        run: npm run compile-tests
+      - name: Build extension (compile source for integration tests)
+        run: npm run compile
 
       - name: Run unit tests with coverage
-        run: npm run test:unit -- --coverage
+        run: npm run test:unit -- --coverage --reporter=verbose
+        continue-on-error: false
 
       - name: Run integration tests
         run: npm run test:integration
