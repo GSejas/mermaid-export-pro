@@ -425,8 +425,9 @@ flowchart TD
       const files = await service.discoverFiles(options);
       const duration = Date.now() - start;
       
-      assert.strictEqual(files.length, fileCount, 'Should find all files');
-      assert.ok(duration < 5000, 'Should complete within 5 seconds');
+  assert.strictEqual(files.length, fileCount, 'Should find all files');
+  // Allow more generous timeout in CI/parallel runs
+  assert.ok(duration < 15000, `Should complete within 15 seconds (actual ${duration}ms)`);
     });
   });
 

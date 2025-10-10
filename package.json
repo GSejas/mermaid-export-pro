@@ -272,6 +272,7 @@
     "lint": "eslint src",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "vitest run",
+  "test:unit:coverage": "vitest run --coverage --reporter=verbose --threads=false",
     "test:integration": "node ./scripts/test-integration.js",
     "test:coverage": "nyc npm run test:unit",
     "test:watch": "vitest"

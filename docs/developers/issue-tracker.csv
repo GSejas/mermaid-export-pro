@@ -1,6 +1,6 @@
 IssueID,Component,Severity,Description,Status,Assignee,ETA,Impact
-ISS001,Testing,Critical,"Missing integration tests for VS Code commands",In Progress,DevTeam,1 week,High
-ISS002,Coverage,High,"Coverage below 80% threshold (currently 76%)",In Progress,DevTeam,3 days,Medium
+ISS001,Testing,Critical,"Missing integration tests for VS Code commands",Resolved,DevTeam,0 days,High
+ISS002,Coverage,High,"Coverage well below 80% threshold (measured 16.52% statements via Vitest V8) - unit tests: 132 total (131 passed, 1 skipped)",In Progress,DevTeam,5 days,High
 ISS003,CLI Strategy,Medium,"Improve CLI installation error handling",Open,DevTeam,3 days,Medium
 ISS004,Status Bar,Low,"Theme color consistency issues",Open,DevTeam,1 week,Low
 ISS005,Web Strategy,Medium,"Resource cleanup in webview",Open,DevTeam,5 days,Medium
@@ -15,5 +15,4 @@ ISS013,Test Setup,Critical,"diagramDiscoveryService.test.ts setup error (missing
 ISS014,Batch Engine,High,"Duration estimation test failure in batchExportEngine",Resolved,DevTeam,2 days,Medium
 ISS015,Onboarding,Medium,"Web-only setup message test failure",Resolved,DevTeam,2 days,Medium
 ISS016,Status Bar,Medium,"Command execution assertion failure",Resolved,DevTeam,2 days,Medium
-ISS017,Integration Tests,Critical,"Integration test compilation and runner setup",In Progress,DevTeam,2 days,High
 ISS017,Integration Tests,Critical,"Integration test compilation and runner setup",Resolved,DevTeam,0 days,High
