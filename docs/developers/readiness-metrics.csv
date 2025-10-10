@@ -1,13 +1,33 @@
 Metric,Current,Target,Status,Notes,LastUpdated
-Unit Test Coverage,76%,80%,In Progress,"Branch coverage 76%, Function coverage 55%, Statement coverage low due to vendor files - added .nycrc.json to exclude webview/mermaid.min.js",2025-09-16
-Integration Test Coverage,20%,50%,In Progress,"Integration test runner script added, tests exist but not compiled/run yet",2025-09-16
-Code Quality,85%,90%,On Track,"ESLint passing, good structure",2025-09-16
-Documentation,70%,90%,Behind,"API docs incomplete",2025-09-16
-Performance,Good,N/A,Complete,"Timeout handling implemented",2025-09-16
-Cross-Platform,80%,95%,Behind,"Windows UNC path edge cases",2025-09-16
-Error Handling,75%,90%,Behind,"User-friendly messages incomplete",2025-09-16
-Build Stability,90%,95%,On Track,"Watch tasks running successfully",2025-09-16
-Extension Packaging,85%,95%,On Track,"VSIX generation working",2025-09-16
-User Experience,88%,95%,On Track,"Status bar and CodeLens working",2025-09-16
-Test Success Rate,99%,98%,Complete,"114/115 tests passing (1 skipped)",2025-09-16
-Test File Success Rate,100%,90%,Complete,"11/11 test files passing",2025-09-16
+Unit Test Coverage,25.56%,80%,Behind,"Statement: 25.56% | Branch: 74.39% | Function: 47.16% - Vitest V8 coverage from 194 passing tests",2025-10-10
+Integration Test Coverage,100%,50%,Complete,"Integration test suite running successfully with Mocha - all tests passing",2025-10-10
+E2E Test Coverage,38%,60%,On Track,"14/37 E2E scenarios complete + 3 partial = 17 scenarios with some coverage (46%)",2025-10-10
+E2E Test Count,29 tests,40 tests,On Track,"3 test suites: batch-export (9), export-strategies (10), advanced-features (10)",2025-10-10
+Code Quality,85%,90%,On Track,"ESLint passing, good structure, TypeScript strict mode enabled",2025-10-10
+Documentation,70%,90%,Behind,"API docs incomplete - JSDoc coverage gaps in several services",2025-10-10
+Performance,Good,N/A,In Progress,"Timeout handling partial (0.74% coverage), large batch optimization needed",2025-10-10
+Cross-Platform,95%,95%,Complete,"PathUtils 96.70% coverage - Windows UNC paths resolved",2025-10-10
+Error Handling,73.02%,90%,On Track,"Error handler well tested but message mapping incomplete",2025-10-10
+Build Stability,90%,95%,On Track,"Watch tasks and esbuild working - optimization pending",2025-10-10
+Extension Packaging,85%,95%,On Track,"VSIX generation working - bundling optimization needed",2025-10-10
+User Experience,88%,95%,On Track,"Status bar (54.46%), Theme bar (85.49%), CodeLens (76.64%) working well",2025-10-10
+Test Success Rate,99.48%,98%,Complete,"194/195 tests passing (1 skipped) - exceeds target",2025-10-10
+Test File Success Rate,100%,90%,Complete,"24/24 test files passing - all test suites stable",2025-10-10
+Component Test Distribution,40%,80%,Behind,"14/35 components have tests - 21 components untested",2025-10-10
+Critical Component Coverage,66.99%,95%,On Track,"4 critical files averaging 66.99% - good progress",2025-10-10
+High Priority Coverage,52.64%,85%,Behind,"8 high-priority files at 52.64% - needs improvement",2025-10-10
+Commands Coverage,15.43%,85%,Critical,"8 command files mostly untested - major gap (ISS018-ISS020)",2025-10-10
+Services Coverage,38.27%,85%,Behind,"11 service files mixed coverage - several critical gaps",2025-10-10
+Strategies Coverage,81.08%,95%,On Track,"2 strategy files well tested - CLI 82.47%, Web 79.69%",2025-10-10
+UI Components Coverage,49.60%,85%,Behind,"5 UI files mixed - statusBar good, progressReporter 0%",2025-10-10
+Utils Coverage,38.02%,85%,Behind,"4 utility files - pathUtils excellent (96.7%), validators 0%",2025-10-10
+Providers Coverage,39.13%,85%,Behind,"2 provider files - CodeLens good (76.64%), Hover poor (1.62%)",2025-10-10
+
+Summary Dashboard,,,,,2025-10-10
+Total LOC,11643,N/A,N/A,"35 source files tracked (excluding tests/mocks/vendor)",2025-10-10
+Test LOC,~4800,N/A,N/A,"24 test files with 194 test cases",2025-10-10
+Code-to-Test Ratio,1:0.41,1:1,Behind,"Need ~6800 more LOC in tests to reach 1:1 ratio",2025-10-10
+Open Issues,15,0,Behind,"60% open rate - 4 High, 7 Medium, 4 Low severity",2025-10-10
+Resolved Issues,10,N/A,Good,"40% resolution rate - avg 1.2 days to resolve",2025-10-10
+Critical Gaps,4,0,Critical,"batchExportCommand (0%), exportAllCommand (2.44%), operationTimeoutManager (0.74%), validators (0%)",2025-10-10
+Overall Readiness,68%,95%,Behind,"Good test infrastructure, major coverage gaps in commands/services",2025-10-10

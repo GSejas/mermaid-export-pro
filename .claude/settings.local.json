@@ -1,26 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run compile:*)",
-      "WebSearch",
-      "Bash(npm install:*)",
-      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ/**)",
-      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ/**)",
-      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\cli/**)",
-      "Read(/C:\\Users\\delir\\Documents\\repos\\content-creator-app\\debug-exports\\2025-08-24_23-20-52-724ZZ\\web/**)",
-      "Bash(npm run *)",
-      "Bash(vsce package:*)",
-      "Bash(code:*)",
-      "Bash(node:*)",
-      "Bash(mmdc:*)",
-      "Bash(npm run test:unit:*)",
-      "Bash(npm run check-types:*)",
-      "Bash(npm run lint)",
-      "Bash(npm run lint:*)",
-      "Bash(npm run package:*)",
-      "Bash(npm test)",
-      "Bash(npm test:*)",
-      "Bash(vsce publish:*)"
+      "Bash(npm run test:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npm run test:integration:*)"
     ],
     "deny": [],
     "ask": []

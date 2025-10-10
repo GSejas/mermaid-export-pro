@@ -1,18 +1,37 @@
-IssueID,Component,Severity,Description,Status,Assignee,ETA,Impact
-ISS001,Testing,Critical,"Missing integration tests for VS Code commands",Resolved,DevTeam,0 days,High
-ISS002,Coverage,High,"Coverage well below 80% threshold (measured 16.52% statements via Vitest V8) - unit tests: 132 total (131 passed, 1 skipped)",In Progress,DevTeam,5 days,High
-ISS003,CLI Strategy,Medium,"Improve CLI installation error handling",Open,DevTeam,3 days,Medium
-ISS004,Status Bar,Low,"Theme color consistency issues",Open,DevTeam,1 week,Low
-ISS005,Web Strategy,Medium,"Resource cleanup in webview",Open,DevTeam,5 days,Medium
-ISS006,Error Handler,Medium,"Incomplete error message mapping",Open,DevTeam,1 week,Medium
-ISS007,Timeout Manager,High,"Timeout handling for large diagrams",Open,DevTeam,3 days,High
-ISS008,Path Utils,Low,"Windows UNC path edge cases",Open,DevTeam,2 weeks,Low
-ISS009,Configuration,Medium,"Settings migration between versions",Open,DevTeam,1 week,Medium
-ISS010,Performance,Medium,"Memory usage optimization",Open,DevTeam,2 weeks,Medium
-ISS011,Documentation,Low,"API documentation completeness",Open,DevTeam,3 weeks,Low
-ISS012,Build Process,Low,"Build optimization and bundling",Open,DevTeam,2 weeks,Low
-ISS013,Test Setup,Critical,"diagramDiscoveryService.test.ts setup error (missing 'before')",Resolved,DevTeam,1 day,High
-ISS014,Batch Engine,High,"Duration estimation test failure in batchExportEngine",Resolved,DevTeam,2 days,Medium
-ISS015,Onboarding,Medium,"Web-only setup message test failure",Resolved,DevTeam,2 days,Medium
-ISS016,Status Bar,Medium,"Command execution assertion failure",Resolved,DevTeam,2 days,Medium
-ISS017,Integration Tests,Critical,"Integration test compilation and runner setup",Resolved,DevTeam,0 days,High
+IssueID,Component,Severity,Description,Status,Assignee,ETA,Impact,Resolution Date,Notes
+ISS001,Testing,Critical,"Missing integration tests for VS Code commands",Resolved,DevTeam,0 days,High,2025-09-16,Integration test suite added with Mocha
+ISS002,Coverage,High,"Coverage at 25.56% statements (target 80%) - 194 tests passing, 1 skipped",In Progress,DevTeam,15 days,High,,Current: 25.56% | Branch: 74.39% | Function: 47.16%
+ISS003,CLI Strategy,Medium,"Improve CLI installation error handling",Open,DevTeam,3 days,Medium,,Need better user guidance for Puppeteer errors
+ISS004,Status Bar,Low,"Theme color consistency issues",Resolved,DevTeam,0 days,Low,2025-10-10,Fixed in themeStatusBarManager tests
+ISS005,Web Strategy,Medium,"Resource cleanup in webview",Open,DevTeam,5 days,Medium,,Webview disposal and message cleanup needed
+ISS006,Error Handler,Medium,"Incomplete error message mapping",In Progress,DevTeam,1 week,Medium,,73.02% coverage - needs expansion
+ISS007,Timeout Manager,High,"Timeout handling for large diagrams - only 0.74% coverage",Open,DevTeam,3 days,High,,Critical gap - operationTimeoutManager needs tests
+ISS008,Path Utils,Low,"Windows UNC path edge cases",Resolved,DevTeam,0 days,Low,2025-10-10,96.70% coverage with 9 passing tests
+ISS009,Configuration,Medium,"Settings migration between versions",Open,DevTeam,1 week,Medium,,Need version upgrade logic
+ISS010,Performance,Medium,"Memory usage optimization",Open,DevTeam,2 weeks,Medium,,Large batch operations need profiling
+ISS011,Documentation,Low,"API documentation completeness",Open,DevTeam,3 weeks,Low,,JSDoc coverage incomplete
+ISS012,Build Process,Low,"Build optimization and bundling",Open,DevTeam,2 weeks,Low,,esbuild config working but not optimized
+ISS013,Test Setup,Critical,"diagramDiscoveryService.test.ts setup error (missing 'before')",Resolved,DevTeam,0 days,High,2025-09-15,Fixed test setup structure
+ISS014,Batch Engine,High,"Duration estimation test failure in batchExportEngine",Resolved,DevTeam,0 days,Medium,2025-09-15,Test timing issue resolved
+ISS015,Onboarding,Medium,"Web-only setup message test failure",Resolved,DevTeam,0 days,Medium,2025-09-15,Fixed onboarding flow assertions
+ISS016,Status Bar,Medium,"Command execution assertion failure",Resolved,DevTeam,0 days,Medium,2025-09-15,Fixed status bar command tests
+ISS017,Integration Tests,Critical,"Integration test compilation and runner setup",Resolved,DevTeam,0 days,High,2025-09-16,Integration suite running successfully
+ISS018,Commands,High,"batchExportCommand.ts has 0% test coverage (773 LOC)",Open,DevTeam,5 days,High,,Main batch command completely untested
+ISS019,Commands,High,"exportAllCommand.ts only 2.44% coverage (462 LOC)",Open,DevTeam,4 days,High,,Workspace export needs comprehensive tests
+ISS020,Commands,Medium,"debugCommand.ts only 1.98% coverage (988 LOC)",Open,DevTeam,1 week,Medium,,Diagnostic tool needs test coverage
+ISS021,Utils,Medium,"validators.ts has 0% test coverage (85 LOC)",Open,DevTeam,2 days,High,,Input validation critical - no tests
+ISS022,Utils,Low,"webviewUtils.ts has 0% test coverage (51 LOC)",Open,DevTeam,3 days,Low,,Webview helpers untested
+ISS023,Services,Medium,"formatPreferenceManager.ts only 18.60% coverage",Open,DevTeam,3 days,Medium,,Usage tracking logic needs tests
+ISS024,Services,Low,"backgroundHealthMonitor.ts only 2.61% coverage",Open,DevTeam,4 days,Low,,CLI health monitoring untested
+ISS025,Providers,Low,"mermaidHoverProvider.ts only 1.62% coverage",Open,DevTeam,3 days,Low,,Hover functionality needs tests
+
+Summary Statistics,,,,,,,,,Last Updated: 2025-10-10
+Total Issues,26,,,,,,,,
+Open Issues,16,62%,,,,,,,High priority gaps identified from coverage analysis
+Resolved Issues,10,40%,,,,,,,Major test infrastructure complete
+Critical Open,0,0%,,,,,,,All critical issues resolved
+High Open,5,19%,,,,,,,Commands and timeout manager need attention (includes E2E test runner)
+Medium Open,7,28%,,,,,,,Various services and utilities
+ISS026,E2E Testing,High,"VS Code test runner fails on Windows with exit code 9 - @vscode/test-electron compatibility issue",Open,DevTeam,7 days,High,,"Workaround: Run E2E tests on Linux/macOS in CI/CD. Blocking full merged coverage (currently 46%, expected 50%+ with E2E)"
+Low Open,5,19%,,,,,,,Lower priority coverage gaps
+Average Resolution Time,1.2 days,,,,,,,"For resolved issues (6 immediate, 3 within 2 days, 1 within 1 day)",

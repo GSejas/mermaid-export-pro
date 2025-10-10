@@ -1,0 +1,40 @@
+Component,Category,File Path,LOC Est,Dependencies,Test File,Test Coverage %,Complexity,Status,Owner,Notes
+extension.ts,Core,src/extension.ts,656,All services/commands/strategies,src/test/unit/extension.test.ts,40.12%,High,Active,DevTeam,Main activation - 22 tests passing
+exportCommand.ts,Commands,src/commands/exportCommand.ts,358,cliExportStrategy|webExportStrategy|configManager|errorHandler,src/test/unit/commands/exportCommand.test.ts,81.63%,Medium,Active,DevTeam,Single file export - well tested
+batchExportCommand.ts,Commands,src/commands/batchExportCommand.ts,773,batchExportEngine|diagramDiscoveryService|progressTracker,None,0%,High,Active,DevTeam,V1 implementation - needs tests
+batchExportCommand.v2.ts,Commands,src/commands/batchExportCommand.v2.ts,1078,batchExportEngine|diagramDiscoveryService|progressTracker,None,1.07%,High,WIP,DevTeam,V2 refactor - experimental
+debugCommand.ts,Commands,src/commands/debugCommand.ts,988,Both export strategies|fileProcessor|pathUtils,None,1.98%,High,Active,DevTeam,Diagnostic tool - needs tests
+diagnosticsCommand.ts,Commands,src/commands/diagnosticsCommand.ts,207,configManager|cliExportStrategy|webExportStrategy,None,1.29%,Low,Active,DevTeam,Health check - needs tests
+exportAllCommand.ts,Commands,src/commands/exportAllCommand.ts,462,batchExportEngine|diagramDiscoveryService,None,2.44%,Medium,Active,DevTeam,Workspace export - needs tests
+exportPremiumCommand.ts,Commands,src/commands/exportPremiumCommand.ts,235,exportCommand|configManager,None,0%,Low,Planned,DevTeam,Future premium features
+watchCommand.ts,Commands,src/commands/watchCommand.ts,364,exportCommand|configManager|fileSystemWatcher,None,3.67%,Medium,Active,DevTeam,Auto-export on save - needs tests
+cliExportStrategy.ts,Strategies,src/strategies/cliExportStrategy.ts,336,@mermaid-js/mermaid-cli|pathUtils|fileProcessor,src/test/unit/strategies/cliExportStrategy.test.ts,82.47%,High,Active,DevTeam,Primary export - 8 tests passing
+webExportStrategy.ts,Strategies,src/strategies/webExportStrategy.ts,416,mermaid.js|webviewUtils|canvg,src/test/unit/strategies/webExportStrategy.test.ts,79.69%,High,Active,DevTeam,Fallback export - 4 tests passing
+batchExportEngine.ts,Services,src/services/batchExportEngine.ts,893,exportStrategy|progressTracker|errorHandler,src/test/unit/services/batchExportEngine.test.ts,51.56%,High,Active,DevTeam,Batch orchestration - 48 tests
+diagramDiscoveryService.ts,Services,src/services/diagramDiscoveryService.ts,733,workspace API|pathUtils|validators,src/test/unit/services/diagramDiscoveryService.test.ts,92.77%,Medium,Active,DevTeam,File scanning - 26 tests passing
+configManager.ts,Services,src/services/configManager.ts,112,vscode.workspace.getConfiguration,None,35.71%,Low,Active,DevTeam,Settings management - partial coverage
+fileProcessor.ts,Services,src/services/fileProcessor.ts,9,fs|pathUtils,src/test/unit/services/fileProcessor.test.ts,100%,Low,Active,DevTeam,File operations - fully tested
+formatPreferenceManager.ts,Services,src/services/formatPreferenceManager.ts,182,configManager|memento,None,18.60%,Low,Active,DevTeam,Usage tracking - needs more tests
+onboardingManager.ts,Services,src/services/onboardingManager.ts,587,configManager|cliExportStrategy|UI components,src/test/unit/services/onboardingManager.test.ts,23.54%,High,Active,DevTeam,Welcome flow - 4 tests passing
+operationTimeoutManager.ts,Services,src/services/operationTimeoutManager.ts,454,None,None,0.74%,Medium,Active,DevTeam,Timeout handling - needs tests
+progressTrackingService.ts,Services,src/services/progressTrackingService.ts,562,vscode.window.withProgress,src/test/unit/services/progressTrackingService.test.ts,60.29%,Medium,Active,DevTeam,Progress UI - needs more tests
+visualEnhancementManager.ts,Services,src/services/visualEnhancementManager.ts,750,configManager|themeDetection,src/test/unit/services/visualEnhancementManager.test.ts,13.80%,Medium,Active,DevTeam,Theme integration - needs tests
+errorHandlingService.ts,Services,src/services/errorHandlingService.ts,690,None,None,43.40%,Medium,Active,DevTeam,Error mapping - partial coverage
+backgroundHealthMonitor.ts,Services,src/services/backgroundHealthMonitor.ts,295,cliExportStrategy|configManager,None,2.61%,Low,Active,DevTeam,CLI health checks - needs tests
+statusBarManager.ts,UI,src/ui/statusBarManager.ts,578,vscode.window.createStatusBarItem,src/test/unit/ui/statusBarManager.test.ts,54.46%,Medium,Active,DevTeam,Format display - 18 tests passing
+themeStatusBarManager.ts,UI,src/ui/themeStatusBarManager.ts,245,vscode.window.createStatusBarItem,src/test/unit/ui/themeStatusBarManager.test.ts,85.49%,Low,Active,DevTeam,Theme switching - 8 tests passing
+batchExportStatusBarManager.ts,UI,src/ui/batchExportStatusBarManager.ts,408,statusBarItem|progressTracker,None,30.36%,Medium,Active,DevTeam,Batch progress - needs tests
+errorHandler.ts,UI,src/ui/errorHandler.ts,206,vscode.window.showErrorMessage,src/test/unit/ui/errorHandler.test.ts,73.02%,Medium,Active,DevTeam,User messages - 6 tests passing
+progressReporter.ts,UI,src/ui/progressReporter.ts,72,vscode.window.withProgress,None,0%,Low,Active,DevTeam,Progress wrapper - needs tests
+pathUtils.ts,Utils,src/utils/pathUtils.ts,145,path|os,src/test/unit/utils/pathUtils.test.ts,96.70%,Medium,Active,DevTeam,Path normalization - 9 tests passing
+autoNaming.ts,Utils,src/utils/autoNaming.ts,154,path|configManager,src/test/unit/utils/autoNaming.test.ts,55.29%,Low,Active,DevTeam,Output naming - 4 tests passing
+validators.ts,Utils,src/utils/validators.ts,85,None,None,0%,Low,Active,DevTeam,Input validation - no tests
+webviewUtils.ts,Utils,src/utils/webviewUtils.ts,51,vscode.Uri.asWebviewUri,None,0%,Low,Active,DevTeam,Webview helpers - no tests
+mermaidCodeLensProvider.ts,Providers,src/providers/mermaidCodeLensProvider.ts,182,vscode.CodeLensProvider|diagramDiscovery,src/test/unit/providers/mermaidCodeLensProvider.test.ts,76.64%,Medium,Active,DevTeam,Inline buttons - 9 tests passing
+mermaidHoverProvider.ts,Providers,src/providers/mermaidHoverProvider.ts,164,vscode.HoverProvider|configManager,None,1.62%,Low,Active,DevTeam,Hover info - needs tests
+
+Summary,,,,,,,,,
+Total Components,35,,9142 (est),,,25.56% (overall),,,Latest from Vitest V8 coverage
+Components with Tests,14/35,40%,~4200,,,,,,,Test coverage improving
+High Priority Gaps,8,CLI strategies/Commands/Services,~3500,,,<20%,High,,,Need urgent attention
+Coverage Target,80%,By EOQ,All components,,,80%,,,8 weeks,Per roadmap

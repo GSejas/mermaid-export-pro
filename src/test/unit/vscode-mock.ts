@@ -106,7 +106,9 @@ export const workspace = {
     update: (key: string, value: any, target?: ConfigurationTarget) => Promise.resolve()
   }),
   
-  onDidChangeTextDocument: () => ({ dispose: () => {} })
+  onDidChangeTextDocument: () => ({ dispose: () => {} }),
+  
+  onDidChangeConfiguration: (callback: (event: any) => void) => ({ dispose: () => {} })
 };
 
 export const commands = {

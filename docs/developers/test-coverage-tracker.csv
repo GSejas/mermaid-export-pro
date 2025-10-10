@@ -1,39 +1,52 @@
-File Path,Category,Lines of Code,Current Coverage %,Has Tests,Test File,Priority,Recent Bugs,Complexity,Target Coverage %,Week 1,Week 2,Week 3,Week 4,Notes
-src/extension.ts,Core,100,5,Yes,src/test/extension.test.ts,High,Yes,High,90,✓,,,Dummy test only - needs rewrite
-src/types/index.ts,Core,50,0,No,,Low,No,Low,80,,,,Type definitions - less critical
-src/commands/exportCommand.ts,Commands,200,0,No,,Medium,No,Medium,85,,,✓,,"Main export logic, user-facing"
-src/commands/batchExportCommand.ts,Commands,180,0,No,,Medium,No,Medium,85,,,✓,,Batch operations
-src/commands/debugCommand.ts,Commands,120,0,No,,Low,No,Low,80,,,✓,,Debug functionality
-src/commands/watchCommand.ts,Commands,160,0,No,,Medium,No,Medium,85,,,✓,,Auto-export feature
-src/services/exportManager.ts,Services,250,0,No,,High,No,High,90,,✓,,,Export orchestration
-src/services/onboardingManager.ts,Services,300,85,Yes,src/test/unit/services/onboardingManager.test.ts,Critical,Yes,High,95,✓,,,,Welcome flow and setup completion tests
-src/services/configManager.ts,Services,150,0,No,,High,No,Medium,85,,✓,,,Configuration management
-src/services/fileProcessor.ts,Services,180,0,No,,Medium,No,Medium,80,,,✓,,File operations
-src/services/formatPreferenceManager.ts,Services,100,0,No,,Low,No,Low,75,,,✓,,Format selection
-src/strategies/cliExportStrategy.ts,Strategies,220,0,No,,Critical,No,High,95,,✓,,,CLI detection and execution
-src/strategies/webExportStrategy.ts,Strategies,280,0,No,,Critical,No,High,95,,✓,,,Webview export logic
-src/strategies/simpleWebExportStrategy.ts,Strategies,150,0,No,,Medium,No,Medium,85,,✓,,,Fallback strategy
-src/ui/statusBarManager.ts,UI,350,90,Yes,src/test/unit/ui/statusBarManager.test.ts,Critical,Yes,High,95,✓,,,,Display formats and click handling tests
-src/ui/themeStatusBarManager.ts,UI,200,95,Yes,src/test/unit/ui/themeStatusBarManager.test.ts,Critical,Yes,Medium,90,✓,,,,Theme cycling and debounced notifications tests
-src/ui/errorHandler.ts,UI,120,0,No,,Medium,No,Medium,80,,,✓,,Error handling
-src/ui/progressReporter.ts,UI,100,0,No,,Low,No,Low,75,,,✓,,Progress updates
-src/utils/pathUtils.ts,Utils,80,0,No,,Medium,No,Low,80,,,✓,,Cross-platform paths
-src/utils/validators.ts,Utils,60,0,No,,Medium,No,Low,80,,,✓,,Input validation
-src/utils/autoNaming.ts,Utils,90,0,No,,Low,No,Low,75,,,✓,,File naming logic
-src/utils/webviewUtils.ts,Utils,70,0,No,,Low,No,Low,75,,,✓,,Webview helpers
-src/providers/mermaidCodeLensProvider.ts,Providers,140,0,No,,Low,No,Medium,70,,,,✓,CodeLens integration
-src/providers/mermaidHoverProvider.ts,Providers,100,0,No,,Low,No,Medium,70,,,,✓,Hover information
-,,,,,,,,,,,,,
-Summary,All Categories,3190,32.5,4,4,,,,,,,
-Target Coverage by Week,Week 1,,,25,,,,,,✓,,,
-Target Coverage by Week,Week 2,,,50,,,,,,,✓,,
-Target Coverage by Week,Week 3,,,75,,,,,,,,✓,
-Target Coverage by Week,Week 4,,,90,,,,,,,,,✓
-,,,,,,,,,,,,,
-Priority Distribution,Critical,5,3,3,3,,,,,,,
-Priority Distribution,High,3,0,0,0,,,,,,,
-Priority Distribution,Medium,10,0,0,0,,,,,,,
-Priority Distribution,Low,6,0,0,0,,,,,,,
-,,,,,,,,,,,,,
-Bug Status,Files with Recent Bugs,4,3,3,3,Yes,,,,,,,Major status bar and onboarding issues resolved
-Bug Status,Files without Bugs,20,29.5,1,1,No,,,,,,,Extension.ts has dummy test
+File Path,Category,Lines of Code,Current Coverage %,Has Tests,Test File,Priority,Recent Bugs,Complexity,Target Coverage %,Week 1,Week 2,Week 3,Week 4,Notes,Last Updated
+src/extension.ts,Core,656,40.12,Yes,src/test/unit/extension.test.ts,Critical,No,High,90,✓,✓,,,22 tests passing - activation/deactivation/commands,2025-10-10
+src/types/index.ts,Core,50,100,N/A,,Low,No,Low,100,✓,✓,✓,✓,Type definitions - full coverage,2025-10-10
+src/commands/exportCommand.ts,Commands,358,81.63,Yes,src/test/unit/commands/exportCommand.test.ts,High,No,Medium,90,✓,✓,,,Main export logic - good coverage,2025-10-10
+src/commands/batchExportCommand.ts,Commands,773,0,No,,High,No,High,85,,,,,"V1 batch implementation, needs tests",2025-10-10
+src/commands/batchExportCommand.v2.ts,Commands,1078,1.07,No,,Medium,No,High,85,,,,,"V2 refactor, experimental",2025-10-10
+src/commands/debugCommand.ts,Commands,988,1.98,No,,Medium,No,High,80,,,,,Diagnostic tool - needs tests,2025-10-10
+src/commands/diagnosticsCommand.ts,Commands,207,1.29,No,,Low,No,Low,75,,,,,Health check command,2025-10-10
+src/commands/exportAllCommand.ts,Commands,462,2.44,No,,High,No,Medium,85,,,,,Workspace export - needs tests,2025-10-10
+src/commands/watchCommand.ts,Commands,364,3.67,No,,Medium,No,Medium,85,,,,,Auto-export on save,2025-10-10
+src/services/batchExportEngine.ts,Services,893,51.56,Yes,src/test/unit/services/batchExportEngine.test.ts,Critical,No,High,90,✓,✓,,,48 tests - batch orchestration,2025-10-10
+src/services/diagramDiscoveryService.ts,Services,733,92.77,Yes,src/test/unit/services/diagramDiscoveryService.test.ts,Critical,No,Medium,95,✓,✓,✓,,26 tests - excellent coverage,2025-10-10
+src/services/onboardingManager.ts,Services,587,23.54,Yes,src/test/unit/services/onboardingManager.test.ts,High,No,High,85,✓,,,,4 tests - needs expansion,2025-10-10
+src/services/configManager.ts,Services,112,35.71,No,,High,No,Medium,85,✓,,,,Partial coverage - needs tests,2025-10-10
+src/services/fileProcessor.ts,Services,9,100,Yes,src/test/unit/services/fileProcessor.test.ts,Medium,No,Low,100,✓,✓,✓,✓,File operations - fully tested,2025-10-10
+src/services/formatPreferenceManager.ts,Services,182,18.60,No,,Low,No,Low,75,,,,,Usage tracking - needs tests,2025-10-10
+src/services/progressTrackingService.ts,Services,562,60.29,Yes,src/test/unit/services/progressTrackingService.test.ts,Medium,No,Medium,80,✓,✓,,,Progress UI tracking,2025-10-10
+src/services/visualEnhancementManager.ts,Services,750,13.80,Yes,src/test/unit/services/visualEnhancementManager.test.ts,Medium,No,Medium,80,✓,,,,Theme integration - needs expansion,2025-10-10
+src/services/errorHandlingService.ts,Services,690,43.40,No,,Medium,No,Medium,80,✓,,,,Error mapping - partial coverage,2025-10-10
+src/services/operationTimeoutManager.ts,Services,454,0.74,No,,High,No,Medium,85,,,,,Timeout handling - critical gap,2025-10-10
+src/services/backgroundHealthMonitor.ts,Services,295,2.61,No,,Low,No,Low,75,,,,,CLI health checks,2025-10-10
+src/strategies/cliExportStrategy.ts,Strategies,336,82.47,Yes,src/test/unit/strategies/cliExportStrategy.test.ts,Critical,No,High,95,✓,✓,,,8 tests - primary export strategy,2025-10-10
+src/strategies/webExportStrategy.ts,Strategies,416,79.69,Yes,src/test/unit/strategies/webExportStrategy.test.ts,Critical,No,High,95,✓,✓,,,4 tests - fallback strategy,2025-10-10
+src/ui/statusBarManager.ts,UI,578,54.46,Yes,src/test/unit/ui/statusBarManager.test.ts,High,No,Medium,85,✓,✓,,,18 tests - format display,2025-10-10
+src/ui/themeStatusBarManager.ts,UI,245,85.49,Yes,src/test/unit/ui/themeStatusBarManager.test.ts,High,No,Low,90,✓,✓,✓,,8 tests - theme switching,2025-10-10
+src/ui/batchExportStatusBarManager.ts,UI,408,30.36,No,,Medium,No,Medium,80,✓,,,,Batch progress UI,2025-10-10
+src/ui/errorHandler.ts,UI,206,73.02,Yes,src/test/unit/ui/errorHandler.test.ts,Medium,No,Medium,85,✓,✓,,,6 tests - user error messages,2025-10-10
+src/ui/progressReporter.ts,UI,72,0,No,,Low,No,Low,75,,,,,Progress wrapper - needs tests,2025-10-10
+src/utils/pathUtils.ts,Utils,145,96.70,Yes,src/test/unit/utils/pathUtils.test.ts,High,No,Medium,98,✓,✓,✓,,9 tests - excellent coverage,2025-10-10
+src/utils/autoNaming.ts,Utils,154,55.29,Yes,src/test/unit/utils/autoNaming.test.ts,Medium,No,Low,80,✓,✓,,,4 tests - output naming,2025-10-10
+src/utils/validators.ts,Utils,85,0,No,,Medium,No,Low,80,,,,,Input validation - no tests,2025-10-10
+src/utils/webviewUtils.ts,Utils,51,0,No,,Low,No,Low,75,,,,,Webview helpers - no tests,2025-10-10
+src/providers/mermaidCodeLensProvider.ts,Providers,182,76.64,Yes,src/test/unit/providers/mermaidCodeLensProvider.test.ts,Medium,No,Medium,85,✓,✓,,,9 tests - inline buttons,2025-10-10
+src/providers/mermaidHoverProvider.ts,Providers,164,1.62,No,,Low,No,Low,70,,,,,Hover info - needs tests,2025-10-10
+,,,,,,,,,,,,,,,
+Summary,All Categories,11643,25.56,14,24,,,,,,,,,194 passing | 1 skipped,2025-10-10
+Current Test Stats,Total Tests,194 passing,,1 skipped,,,,,,✓,✓,,,Vitest V8 coverage,2025-10-10
+Current Coverage,Statement Coverage,25.56%,,Branch: 74.39%,,Function: 47.16%,,,,,✓,✓,,,From latest test run,2025-10-10
+Target Coverage by Week,Week 1,,,25,,,,,,✓,✓,,,ACHIEVED,2025-10-10
+Target Coverage by Week,Week 2,,,50,,,,,,,○,,,"IN PROGRESS - at 25.56%",2025-10-10
+Target Coverage by Week,Week 3,,,75,,,,,,,,○,,"PENDING - need 49.44% more",2025-10-10
+Target Coverage by Week,Week 4,,,90,,,,,,,,,○,"PENDING - need 64.44% more",2025-10-10
+,,,,,,,,,,,,,,,
+Priority Distribution,Critical,4 files,66.99%,4,4,,,,,✓,✓,,,Good coverage on critical files,2025-10-10
+Priority Distribution,High,8 files,52.64%,5,5,,,,,✓,✓,,,Mixed - some gaps,2025-10-10
+Priority Distribution,Medium,12 files,28.97%,4,4,,,,,✓,,,,"Lower priority, acceptable",2025-10-10
+Priority Distribution,Low,9 files,1.80%,1,1,,,,,,,,,"Minimal, expected",2025-10-10
+,,,,,,,,,,,,,,,
+Files Needing Urgent Attention,operationTimeoutManager.ts,454 LOC,0.74%,,High priority,,,,,,,,,Critical timeout logic - 0 tests,2025-10-10
+Files Needing Urgent Attention,batchExportCommand.ts,773 LOC,0%,,High priority,,,,,,,,,Main batch command - 0 tests,2025-10-10
+Files Needing Urgent Attention,exportAllCommand.ts,462 LOC,2.44%,,High priority,,,,,,,,,Workspace export - 0 real tests,2025-10-10
+Files Needing Urgent Attention,validators.ts,85 LOC,0%,,Medium priority,,,,,,,,,Input validation critical - 0 tests,2025-10-10

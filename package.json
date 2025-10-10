@@ -272,10 +272,17 @@
     "lint": "eslint src",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "vitest run",
-  "test:unit:coverage": "vitest run --coverage --reporter=verbose --threads=false",
+    "test:unit:coverage": "vitest run --coverage --reporter=verbose --pool=forks --poolOptions.forks.singleFork",
     "test:integration": "node ./scripts/test-integration.js",
-    "test:coverage": "nyc npm run test:unit",
-    "test:watch": "vitest"
+    "test:integration:coverage": "nyc --report-dir=coverage-e2e --temp-dir=.nyc_output-e2e npm run test:integration",
+    "test:coverage": "npm run coverage:clean && npm run test:unit:coverage && npm run test:integration:coverage && npm run coverage:merge",
+    "test:watch": "vitest",
+    "coverage:clean": "rimraf coverage coverage-e2e coverage-merged .nyc_output .nyc_output-e2e",
+    "coverage:unit": "npm run test:unit:coverage",
+    "coverage:e2e": "npm run test:integration:coverage",
+    "coverage:merge": "node scripts/merge-coverage.js",
+    "coverage:report": "nyc report --reporter=text --reporter=html --reporter=lcov --report-dir=coverage-merged --temp-dir=.nyc_output-merged",
+    "coverage:view": "open coverage-merged/lcov-report/index.html || start coverage-merged/lcov-report/index.html || xdg-open coverage-merged/lcov-report/index.html"
   },
   "nyc": {
     "extension": [
