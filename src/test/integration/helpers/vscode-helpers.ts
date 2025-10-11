@@ -233,7 +233,7 @@ export class VSCodeTestHelper {
   /**
    * Update configuration value
    */
-  async updateConfig(section: string, key: string, value: any, target: vscode.ConfigurationTarget = vscode.ConfigurationTarget.Workspace): Promise<void> {
+  async updateConfig(section: string, key: string, value: any, target: vscode.ConfigurationTarget = vscode.ConfigurationTarget.Global): Promise<void> {
     await vscode.workspace.getConfiguration(section).update(key, value, target);
   }
 
@@ -241,6 +241,6 @@ export class VSCodeTestHelper {
    * Reset configuration to default
    */
   async resetConfig(section: string, key: string): Promise<void> {
-    await vscode.workspace.getConfiguration(section).update(key, undefined, vscode.ConfigurationTarget.Workspace);
+    await vscode.workspace.getConfiguration(section).update(key, undefined, vscode.ConfigurationTarget.Global);
   }
 }

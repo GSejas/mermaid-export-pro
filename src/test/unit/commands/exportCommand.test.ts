@@ -256,7 +256,7 @@ describe('Export Command Tests', () => {
       await runExportCommand(mockContext, false);
 
       // Assert
-      const expectedDefault = path.join('\\test\\workspace', 'file.png');
+      const expectedDefault = path.join('/test/workspace', 'file.png');
       expect(vscodeWindow.showSaveDialog).toHaveBeenCalledWith({
         defaultUri: expect.objectContaining({ fsPath: expectedDefault }),
         filters: { 'PNG files': ['png'] },
