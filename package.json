@@ -272,7 +272,7 @@
     "lint": "eslint src",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "vitest run",
-    "test:unit:coverage": "vitest run --coverage --reporter=verbose --pool=threads --poolOptions.threads.maxThreads=1",
+    "test:unit:coverage": "vitest run --coverage --reporter=verbose --pool=threads --poolOptions.threads.singleThread=true",
     "test:integration": "node ./scripts/test-integration.js",
     "test:integration:coverage": "nyc --report-dir=coverage-e2e --temp-dir=.nyc_output-e2e npm run test:integration",
     "test:coverage": "npm run coverage:clean && npm run test:unit:coverage && npm run test:integration:coverage && npm run coverage:merge",
