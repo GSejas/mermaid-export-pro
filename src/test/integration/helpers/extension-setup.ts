@@ -35,7 +35,7 @@ export class ExtensionSetup {
 
   private static async _activate(timeout: number): Promise<void> {
     const extension = vscode.extensions.getExtension('GSejas.mermaid-export-pro');
-    
+     
     if (!extension) {
       throw new Error('Mermaid Export Pro extension not found');
     }

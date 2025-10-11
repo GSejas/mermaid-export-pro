@@ -41,6 +41,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Puppeteer/Chromium for mermaid CLI
+        run: |
+          node -e "console.log('Installing Chromium for Puppeteer...')"
+          npx puppeteer browsers install chrome
+        shell: bash
+        continue-on-error: false
+
       - name: TypeScript compilation check
         run: npm run check-types
         continue-on-error: false
