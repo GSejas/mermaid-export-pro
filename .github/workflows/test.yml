@@ -18,7 +18,7 @@ jobs:
       fail-fast: false  # Don't cancel other jobs on first failure
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [18.x, 20.x]
+        node-version: [20.x]  # Node 20+ only - modern ESM support and VS Code 1.103+ baseline
     
     steps:
       - name: Checkout
