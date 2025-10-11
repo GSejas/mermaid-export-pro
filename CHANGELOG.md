@@ -7,7 +7,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 ### 🐛 Critical Fixes
 
 #### Auto-Save Functionality Restored
-- **Fixed Right-Click "Auto Save"**: Resolved issue where right-click "Export Mermaid Pro - Auto Save" was incorrectly showing save dialog instead of auto-generating filenames
+- **Fixed Right-Click "Auto Save"**: Resolved issue where right-click "Quick Export" was incorrectly showing save dialog instead of auto-generating filenames
 - **Command Consolidation**: Removed redundant `exportMarkdown` command that was duplicating `exportCurrent` functionality
 - **Proper Auto-Naming**: Right-click auto-save now correctly uses smart filename generation next to source files
 
@@ -142,7 +142,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 - **Real-time Updates**: Diagram count updates automatically as you edit
 - **Visual Status Indicators**: Different icons for CLI-available, web-only, and setup-needed states
 
-#### Mermaid Export Pro - Batch Export System
+#### Mermaid Export Pro - Export Folder System
 - **Recursive Directory Scanning**: Export all mermaid files in folder structure
 - **Multi-Diagram Support**: Handle multiple mermaid blocks per markdown file
 - **Progress Tracking**: Visual progress indication for large batch operations
@@ -193,7 +193,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ### 📋 Menu Integrations
 
-- **Explorer Context**: Right-click folders to Mermaid Export Pro - Batch Export
+- **Explorer Context**: Right-click folders to Mermaid Export Pro - Export Folder
 - **Editor Context**: Right-click mermaid files to export
 - **Command Palette**: All commands available via Ctrl+Shift+P
 

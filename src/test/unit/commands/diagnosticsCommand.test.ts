@@ -111,7 +111,7 @@ describe('diagnosticsCommand', () => {
         },
         {
           id: 'op-456',
-          name: 'Batch Export',
+          name: 'Export Folder',
           duration: 15000,
           isWarned: true
         }
@@ -121,7 +121,7 @@ describe('diagnosticsCommand', () => {
 
       const calls = mockOutputChannel.appendLine.mock.calls.map((call: any) => call[0]);
       const hasOperation1 = calls.some((line: string) => line.includes('Export Operation'));
-      const hasOperation2 = calls.some((line: string) => line.includes('Batch Export'));
+      const hasOperation2 = calls.some((line: string) => line.includes('Export Folder'));
       
       expect(hasOperation1).toBe(true);
       expect(hasOperation2).toBe(true);

@@ -1,8 +1,8 @@
-# Batch Export v2.0 - Architecture Documentation
+# Export Folder v2.0 - Architecture Documentation
 
 ## Overview
 
-This document describes the completely redesigned batch export system for Mermaid Export Pro v2.0, built with modern software engineering principles including SOLID design, comprehensive testing, and maintainable architecture.
+This document describes the completely redesigned export folder system for Mermaid Export Pro v2.0, built with modern software engineering principles including SOLID design, comprehensive testing, and maintainable architecture.
 
 ## Table of Contents
 
@@ -122,7 +122,7 @@ const files = await diagramDiscoveryService.discoverFiles(options);
 
 **Location**: `src/services/batchExportEngine.ts`
 
-Core orchestration engine for multi-format batch exports.
+Core orchestration engine for multi-format export folders.
 
 #### Key Capabilities:
 - **Job Planning**: Creates optimized export jobs from files and config
@@ -503,12 +503,12 @@ Built-in performance monitoring tracks:
 The architecture scales to handle:
 - **Large Workspaces**: 1000+ files with optimized scanning
 - **Complex Diagrams**: Multi-format exports of complex diagrams
-- **Concurrent Operations**: Multiple batch exports (with resource limits)
+- **Concurrent Operations**: Multiple export folders (with resource limits)
 - **Long-running Operations**: Progress tracking prevents UI blocking
 
 ## Usage Examples
 
-### Basic Batch Export
+### Basic Export Folder
 
 ```typescript
 import { runBatchExport } from './commands/batchExportCommand.v2';
@@ -668,7 +668,7 @@ batchExportEngine.registerPlugin(new MyCustomPlugin());
 
 ## Conclusion
 
-The Batch Export v2.0 architecture represents a complete redesign focused on:
+The Export Folder v2.0 architecture represents a complete redesign focused on:
 
 - **Maintainability**: Clean service separation and comprehensive testing
 - **Reliability**: Robust error handling and recovery mechanisms
@@ -676,4 +676,4 @@ The Batch Export v2.0 architecture represents a complete redesign focused on:
 - **User Experience**: Guided workflows and detailed progress reporting
 - **Extensibility**: Plugin-ready architecture for future enhancements
 
-This architecture provides a solid foundation for current batch export needs while being extensible for future requirements. The comprehensive type system, testing coverage, and documentation ensure long-term maintainability and developer productivity.
+This architecture provides a solid foundation for current export folder needs while being extensible for future requirements. The comprehensive type system, testing coverage, and documentation ensure long-term maintainability and developer productivity.

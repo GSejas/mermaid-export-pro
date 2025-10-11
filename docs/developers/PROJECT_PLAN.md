@@ -8,7 +8,7 @@ Create a modern, reliable VS Code extension called "**Mermaid Export Pro**" to r
 ### **Primary Functionality**
 1. **Export mermaid diagrams** from `.mmd` files to multiple formats (SVG, PNG, PDF, WEBP)
 2. **Process markdown files** with embedded mermaid code blocks
-3. **Mermaid Export Pro - Batch Export** entire folders/workspaces
+3. **Export Folder...** entire folders/workspaces
 4. **Cross-platform compatibility** (Windows/Mac/Linux) with proper path handling
 5. **Dual export strategies** for maximum reliability
 
@@ -39,7 +39,7 @@ mermaid-export-pro/
 │   ├── extension.ts             # Main activation file
 │   ├── commands/
 │   │   ├── exportCommand.ts     # Single file export
-│   │   ├── batchExportCommand.ts# Mermaid Export Pro - Batch Export
+│   │   ├── batchExportCommand.ts# Export Folder...
 │   │   └── watchCommand.ts      # Auto-export on save
 │   ├── strategies/
 │   │   ├── cliExportStrategy.ts # @mermaid-js/mermaid-cli
@@ -153,7 +153,7 @@ const commands = [
 - [ ] Comprehensive error handling
 
 ### **Phase 3: Advanced Features (Week 3)**
-- [ ] Mermaid Export Pro - Batch Export functionality
+- [ ] Export Folder... functionality
 - [ ] Markdown file processing with embedded diagrams
 - [ ] Auto-export on save feature
 - [ ] Custom themes and styling support

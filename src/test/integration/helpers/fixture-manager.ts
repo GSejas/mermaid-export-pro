@@ -39,7 +39,7 @@ export class FixtureManager {
   }
 
   /**
-   * Create a nested folder structure for testing recursive batch export
+   * Create a nested folder structure for testing recursive export folder
    */
   async createNestedWorkspace(name: string, depth: number): Promise<string> {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), `mermaid-nested-${name}-`));

@@ -185,7 +185,7 @@ export class ErrorHandlingServiceImpl implements ErrorHandlingService {
     }
 
     const report = [];
-    report.push('# Batch Export Error Report');
+    report.push('# Export Folder Error Report');
     report.push(`Generated: ${new Date().toISOString()}`);
     report.push(`Total Errors: ${errors.length}`);
     report.push('');
@@ -561,7 +561,7 @@ export class ErrorHandlingServiceImpl implements ErrorHandlingService {
       steps.push(`1. Open file: ${context.filePath}`);
     }
     
-    steps.push(`2. Run batch export operation`);
+    steps.push(`2. Run export folder operation`);
     
     if (context.format) {
       steps.push(`3. Export to ${context.format} format`);

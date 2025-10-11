@@ -1,4 +1,4 @@
-# Batch Export - E2E Testing Gap Analysis
+# Export Folder - E2E Testing Gap Analysis
 
 **Generated:** 2025-10-10
 **Status:** ⚠️ **Critical Gaps Identified**
@@ -6,7 +6,7 @@
 
 ## 🚨 Executive Summary
 
-**Batch Export has SIGNIFICANT E2E testing gaps despite having good unit test coverage.**
+**Export Folder has SIGNIFICANT E2E testing gaps despite having good unit test coverage.**
 
 ### Current State
 - **Unit Test Coverage**: 51.56% (batchExportEngine.ts) - 48 tests passing
@@ -18,7 +18,7 @@
 1. ✅ **DiagramDiscoveryService** is well-tested (92.77% coverage, 26 tests)
 2. ✅ **BatchExportEngine** has good unit coverage (51.56%, 48 tests)
 3. ⚠️ **Integration tests** exist but don't execute real exports
-4. 🔴 **NO E2E tests** for the actual batch export command
+4. 🔴 **NO E2E tests** for the actual export folder command
 5. 🔴 **NO tests** for user workflows (context menu, progress UI, error recovery)
 
 ---
@@ -67,8 +67,8 @@
 ### 🔴 What is NOT Tested (E2E Level)
 
 **User Workflows:**
-- ❌ Right-click folder → "Batch Export" → completion
-- ❌ Command palette → "Batch Export" → folder selection → export
+- ❌ Right-click folder → "Export Folder" → completion
+- ❌ Command palette → "Export Folder" → folder selection → export
 - ❌ Format selection dialog interaction
 - ❌ Output directory selection
 - ❌ Confirmation dialog interaction
@@ -102,18 +102,18 @@
 
 ### Priority 1: Critical User Flows (Week 1-2)
 
-#### TC-E2E-001: Basic Batch Export Flow
+#### TC-E2E-001: Basic Export Folder Flow
 **Status:** Missing
 **Priority:** Critical
 **Effort:** 1 day
 
 **Test Scenario:**
 ```typescript
-describe('Batch Export - Basic Flow', () => {
+describe('Export Folder - Basic Flow', () => {
   it('should export all diagrams from a folder via context menu', async () => {
     // 1. Create test folder with 5 .mmd files
     // 2. Right-click folder in explorer
-    // 3. Select "Batch Export Mermaid Diagrams"
+    // 3. Select "Export Folder Mermaid Diagrams"
     // 4. Choose format: SVG
     // 5. Confirm export
     // 6. Verify: 5 SVG files created in output directory
@@ -132,7 +132,7 @@ describe('Batch Export - Basic Flow', () => {
 it('should export diagrams in multiple formats', async () => {
   // 1. Folder with 3 diagrams
   // 2. Select formats: SVG, PNG, PDF
-  // 3. Execute batch export
+  // 3. Execute export folder
   // 4. Verify: 9 files created (3 diagrams × 3 formats)
   // 5. Verify: Files organized by format (if configured)
 });
@@ -147,7 +147,7 @@ it('should export diagrams in multiple formats', async () => {
 ```typescript
 it('should handle partial failures gracefully', async () => {
   // 1. Folder with 5 diagrams (1 has invalid syntax)
-  // 2. Start batch export
+  // 2. Start export folder
   // 3. Monitor progress: 4 succeed, 1 fails
   // 4. Verify: 4 exports completed successfully
   // 5. Verify: Error reported for failed diagram
@@ -155,15 +155,15 @@ it('should handle partial failures gracefully', async () => {
 });
 ```
 
-#### TC-E2E-004: Batch Export Cancellation
+#### TC-E2E-004: Export Folder Cancellation
 **Status:** Missing
 **Priority:** High
 **Effort:** 1 day
 
 **Test Scenario:**
 ```typescript
-it('should cancel batch export cleanly', async () => {
-  // 1. Start batch export of 20 diagrams
+it('should cancel export folder cleanly', async () => {
+  // 1. Start export folder of 20 diagrams
   // 2. Cancel after 5 exports
   // 3. Verify: Export stops immediately
   // 4. Verify: No orphaned processes
@@ -183,7 +183,7 @@ it('should cancel batch export cleanly', async () => {
 ```typescript
 it('should fallback to web strategy when CLI fails', async () => {
   // 1. Mock CLI as unavailable
-  // 2. Start batch export
+  // 2. Start export folder
   // 3. Verify: Web strategy used automatically
   // 4. Verify: User notified of fallback
   // 5. Verify: Exports complete successfully
@@ -199,7 +199,7 @@ it('should fallback to web strategy when CLI fails', async () => {
 
 **Test Scenario:**
 ```typescript
-it('should show accurate progress during batch export', async () => {
+it('should show accurate progress during export folder', async () => {
   // 1. Export 10 diagrams
   // 2. Verify: Progress bar shows 0% → 100%
   // 3. Verify: Current file name displayed
@@ -328,7 +328,7 @@ export class PerformanceMonitor {
 ### Week 1-2: Critical User Flows
 - [ ] Set up E2E test fixtures infrastructure
 - [ ] Create VS Code interaction helpers
-- [ ] Implement TC-E2E-001: Basic batch export flow
+- [ ] Implement TC-E2E-001: Basic export folder flow
 - [ ] Implement TC-E2E-002: Multi-format export
 - [ ] Implement TC-E2E-003: Error recovery
 - [ ] Implement TC-E2E-004: Cancellation handling
@@ -390,7 +390,7 @@ export class PerformanceMonitor {
 
 ### Immediate Actions (This Week)
 1. **Create E2E test infrastructure** - Fixture manager, VS Code helpers
-2. **Implement TC-E2E-001** - Basic batch export flow (highest priority)
+2. **Implement TC-E2E-001** - Basic export folder flow (highest priority)
 3. **Update issue tracker** - Add E2E test tasks to ISS018
 
 ### Short-term (Next 2 Weeks)

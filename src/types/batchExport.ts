@@ -1,7 +1,7 @@
 /**
- * Advanced Batch Export Types and Interfaces
+ * Advanced Export Folder Types and Interfaces
  * 
- * This module provides comprehensive type definitions for the new batch export system
+ * This module provides comprehensive type definitions for the new export folder system
  * with support for multi-format exports, progress tracking, error handling, and testability.
  * 
  * @author Claude/Jorge
@@ -12,11 +12,11 @@
 import { ExportFormat, ExportOptions, MermaidDiagram, MermaidTheme } from './index';
 
 // =====================================================
-// Core Batch Export Configuration Types
+// Core Export Folder Configuration Types
 // =====================================================
 
 /**
- * Comprehensive configuration for batch export operations
+ * Comprehensive configuration for export folder operations
  */
 export interface BatchExportConfig {
   /** Formats to export to (supports multiple formats) */
@@ -43,7 +43,7 @@ export interface BatchExportConfig {
 }
 
 /**
- * File naming strategies for batch exports
+ * File naming strategies for export folders
  */
 export type FileNamingStrategy = 
   | 'sequential'    // file-1.svg, file-2.svg
@@ -406,7 +406,7 @@ export interface JobResult {
 }
 
 /**
- * Comprehensive batch export results
+ * Comprehensive export folder results
  */
 export interface BatchResult {
   /** Batch that was executed */

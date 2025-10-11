@@ -1,7 +1,7 @@
 /**
- * E2E Tests for Batch Export
+ * E2E Tests for Export Folder
  *
- * Validates end-to-end batch export workflows including:
+ * Validates end-to-end export folder workflows including:
  * - Basic folder export with single and multiple files
  * - Multi-format exports
  * - Error recovery and partial failures
@@ -20,7 +20,7 @@ import { VSCodeTestHelper } from '../helpers/vscode-helpers';
 import { ExportValidator } from '../helpers/export-validator';
 import { ExtensionSetup } from '../helpers/extension-setup';
 
-suite('Batch Export E2E Tests', () => {
+suite('Export Folder E2E Tests', () => {
   let fixtureManager: FixtureManager;
   let vscodeHelper: VSCodeTestHelper;
   let exportValidator: ExportValidator;
@@ -44,10 +44,10 @@ suite('Batch Export E2E Tests', () => {
   });
 
   /**
-   * TC-E2E-001: Basic Batch Export Flow
+   * TC-E2E-001: Basic Export Folder Flow
    * Priority: Critical
    */
-  suite('TC-E2E-001: Basic Batch Export', () => {
+  suite('TC-E2E-001: Basic Export Folder', () => {
     test('should export all diagrams from folder via command', async function() {
       this.timeout(30000);
 
@@ -69,7 +69,7 @@ suite('Batch Export E2E Tests', () => {
       vscodeHelper.setMockResponse('Select output directory', outputDir); // Output directory
       vscodeHelper.setDefaultMockResponse('Yes'); // Confirm all dialogs
 
-      // Execute batch export command
+      // Execute export folder command
       const folderUri = vscode.Uri.file(workspaceDir);
       await vscodeHelper.executeCommand('mermaidExportPro.batchExport', folderUri);
 
@@ -82,7 +82,7 @@ suite('Batch Export E2E Tests', () => {
         15000
       );
 
-      assert.ok(exportComplete, 'Batch export did not complete within timeout');
+      assert.ok(exportComplete, 'Folder export did not complete within timeout');
 
       // Verify all 5 SVG files were created
       const svgCount = await exportValidator.getFileCount(outputDir, '.svg');
@@ -106,7 +106,7 @@ suite('Batch Export E2E Tests', () => {
 
       vscodeHelper.setupMockDialogs();
 
-      // Execute batch export command on empty folder
+      // Execute export folder command on empty folder
       const folderUri = vscode.Uri.file(workspaceDir);
       await vscodeHelper.executeCommand('mermaidExportPro.batchExport', folderUri);
 
@@ -387,7 +387,7 @@ suite('Batch Export E2E Tests', () => {
 
       const duration = Date.now() - startTime;
 
-      assert.ok(exportComplete, 'Large batch export did not complete');
+      assert.ok(exportComplete, 'Large export folder did not complete');
 
       const svgCount = await exportValidator.getFileCount(outputDir, '.svg');
       assert.strictEqual(svgCount, 20, `Expected 20 SVG files, got ${svgCount}`);

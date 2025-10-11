@@ -271,8 +271,8 @@ export class StatusBarManager {
           ? `${icon}${countText} - Setup`
           : `${icon} Mermaid Export Pro - Setup`;
         tooltip = diagramCount > 0
-          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to setup export tools`
-          : `Mermaid Export Pro: No diagrams found in the active file. Click to setup export tools.`;
+          ? `Mermaid Export Pro: ${diagramCount} diagram${diagramCount > 1 ? 's' : ''} found in ${fileName}\nClick to set up export tools`
+          : `Mermaid Export Pro: No diagrams found in the active file. Click to set up export tools.`;
         backgroundColor = undefined;
         color = new vscode.ThemeColor('statusBarItem.warningForeground');
         break;

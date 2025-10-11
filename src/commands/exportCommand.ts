@@ -16,8 +16,11 @@ import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy } from '../ty
 import { AutoNaming } from '../utils/autoNaming';
 import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
+import { getDialogService } from '../services/dialogService';
 
 export async function runExportCommand(context: vscode.ExtensionContext, preferAuto = false, documentUri?: vscode.Uri): Promise<void> {
+  console.log('[DEBUG exportCommand] Starting export command...');
+  console.log('[DEBUG exportCommand] preferAuto:', preferAuto);
   ErrorHandler.logInfo('Starting export command...');
 
   // Check export throttling
@@ -68,12 +71,16 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
 
     let outputPath: string | null = null;
 
+    console.log('[DEBUG exportCommand] Checking preferAuto flag:', preferAuto);
     if (preferAuto) {
       // Auto-generate smart name next to file (skip save dialog)
+      console.log('[DEBUG exportCommand] preferAuto=true, generating smart name...');
       const outputDir = path.dirname(document.fileName);
       outputPath = await AutoNaming.generateSmartName({ baseName: path.basename(document.fileName, path.extname(document.fileName)), format: exportOptions.format, content: mermaidContent, outputDirectory: outputDir });
+      console.log('[DEBUG exportCommand] Generated outputPath:', outputPath);
     } else {
       // Fall back to save dialog
+      console.log('[DEBUG exportCommand] preferAuto=false, showing save dialog...');
       outputPath = await getOutputPath(document, exportOptions.format);
     }
 
@@ -314,7 +321,8 @@ async function getOutputPath(document: vscode.TextDocument, format: ExportFormat
     ? vscode.Uri.file(path.join(workspaceFolder.uri.fsPath, defaultName))
     : vscode.Uri.file(path.join(path.dirname(document.fileName), defaultName));
 
-  const result = await vscode.window.showSaveDialog({
+  const dialogService = getDialogService();
+  const result = await dialogService.showSaveDialog({
     defaultUri,
     filters: {
       [`${format.toUpperCase()} files`]: [format]

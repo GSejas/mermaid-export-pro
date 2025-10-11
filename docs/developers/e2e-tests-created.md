@@ -106,7 +106,7 @@ compareFileSizes(path1, path2): Promise<Comparison>
 ### Test File 1: [batch-export.test.ts](../../src/test/integration/suite/batch-export.test.ts)
 **Focus:** Batch export workflows and multi-file operations
 
-#### TC-E2E-001: Basic Batch Export
+#### TC-E2E-001: Basic Export Folder
 **Status:** ✅ Implemented
 **Coverage:**
 - ✅ Export 5 diagrams from folder via command
@@ -236,7 +236,7 @@ compareFileSizes(path1, path2): Promise<Comparison>
 | Component | Before | After | Improvement |
 |-----------|--------|-------|-------------|
 | batchExportCommand.ts | 0% | ~60% E2E | +60% |
-| Batch Export Workflows | 0% | 80% | +80% |
+| Export Folder Workflows | 0% | 80% | +80% |
 | Single File Export | 0% | 70% | +70% |
 | Strategy Failover | 0% | 50% | +50% |
 | Error Recovery | 0% | 60% | +60% |
@@ -245,7 +245,7 @@ compareFileSizes(path1, path2): Promise<Comparison>
 
 ## 🎯 Test Scenarios Covered
 
-### Batch Export (9 tests)
+### Export Folder (9 tests)
 1. ✅ Basic folder export (5 files)
 2. ✅ Empty folder handling
 3. ✅ Multi-format export (SVG + PNG)
@@ -280,7 +280,7 @@ npm run test:integration
 ### Run Specific Test Suite
 ```bash
 # Batch export tests only
-npm run test:integration -- --grep "Batch Export"
+npm run test:integration -- --grep "Export Folder"
 
 # Export strategies tests only
 npm run test:integration -- --grep "Export Strategies"
@@ -288,7 +288,7 @@ npm run test:integration -- --grep "Export Strategies"
 
 ### Run Specific Test Case
 ```bash
-# Run only basic batch export test
+# Run only basic export folder test
 npm run test:integration -- --grep "TC-E2E-001"
 ```
 

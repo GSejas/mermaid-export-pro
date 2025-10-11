@@ -45,7 +45,7 @@
 **Duration**: ~15 seconds  
 **Steps**:
 1. Show folder with 3-4 `.mmd` files
-2. Command Palette → "Mermaid Export Pro - Batch Export"  
+2. Command Palette → "Mermaid Export Pro - Export Folder"  
 3. Select folder
 4. Choose PNG format
 5. Show multiple files exported
@@ -132,7 +132,7 @@
 ![](../../media/2025-08-26-23-43-09.png)
 
 ### 6. **batch-export-picker.png**
-- Folder picker dialog for Mermaid Export Pro - Batch Export
+- Folder picker dialog for Mermaid Export Pro - Export Folder
 - Show file selection interface
 
 ## 📋 Required Demo Files

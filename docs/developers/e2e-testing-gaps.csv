@@ -1,12 +1,12 @@
 Test Scenario,Type,Current Coverage,Missing Tests,Priority,Risk Level,Estimated Effort,Notes,Related Issue,Status (2025-10-10)
-"Batch Export - Single Folder Export",E2E,✅ Complete,"N/A - Implemented in TC-E2E-001",Critical,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover basic folder export",ISS018,✅ Done
-"Batch Export - Multi-format Export",E2E,✅ Complete,"N/A - Implemented in TC-E2E-002",High,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover multi-format + organized structure",ISS018,✅ Done
-"Batch Export - Recursive Folder Scanning",E2E,✅ Complete,"N/A - Implemented in TC-E2E-005",High,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover nested folders + depth limits",TC014,✅ Done
-"Batch Export - Progress Tracking",E2E,Partial,"Real-time UI validation, cancellation token integration",Medium,Medium,0.5 days,"Test infrastructure exists, need progress callback verification",TC014,⚠️ Partial
-"Batch Export - Error Recovery",E2E,✅ Complete,"N/A - Implemented in TC-E2E-003",Critical,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 1 test covers partial failures",ISS018,✅ Done
-"Batch Export - Cancellation",E2E,None,"User cancels batch export mid-operation, cleanup validation",High,High,1 day,"TODO: Need cancellation token tests - memory leaks? Partial files?",New,🔴 Missing
-"Batch Export - Large Volume (100+ files)",E2E,✅ Complete,"Extended to 100+ files for stress testing",Medium,Low,0 days,"IMPLEMENTED: batch-export.test.ts - TC-E2E-006 tests 20 files in <45s",ISS010,✅ Done
-"Batch Export - Context Menu Integration",E2E,✅ Complete,"N/A - Command execution tested",Medium,Low,0 days,"IMPLEMENTED: Tests execute via URI parameter (same as context menu)",TC014,✅ Done
+"Export Folder - Single Folder Export",E2E,✅ Complete,"N/A - Implemented in TC-E2E-001",Critical,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover basic folder export",ISS018,✅ Done
+"Export Folder - Multi-format Export",E2E,✅ Complete,"N/A - Implemented in TC-E2E-002",High,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover multi-format + organized structure",ISS018,✅ Done
+"Export Folder - Recursive Folder Scanning",E2E,✅ Complete,"N/A - Implemented in TC-E2E-005",High,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 2 tests cover nested folders + depth limits",TC014,✅ Done
+"Export Folder - Progress Tracking",E2E,Partial,"Real-time UI validation, cancellation token integration",Medium,Medium,0.5 days,"Test infrastructure exists, need progress callback verification",TC014,⚠️ Partial
+"Export Folder - Error Recovery",E2E,✅ Complete,"N/A - Implemented in TC-E2E-003",Critical,Low,0 days,"IMPLEMENTED: batch-export.test.ts - 1 test covers partial failures",ISS018,✅ Done
+"Export Folder - Cancellation",E2E,None,"User cancels export folder mid-operation, cleanup validation",High,High,1 day,"TODO: Need cancellation token tests - memory leaks? Partial files?",New,🔴 Missing
+"Export Folder - Large Volume (100+ files)",E2E,✅ Complete,"Extended to 100+ files for stress testing",Medium,Low,0 days,"IMPLEMENTED: batch-export.test.ts - TC-E2E-006 tests 20 files in <45s",ISS010,✅ Done
+"Export Folder - Context Menu Integration",E2E,✅ Complete,"N/A - Command execution tested",Medium,Low,0 days,"IMPLEMENTED: Tests execute via URI parameter (same as context menu)",TC014,✅ Done
 "Single File Export - Command Execution",E2E,✅ Complete,"N/A - Implemented in TC-E2E-007",High,Low,0 days,"IMPLEMENTED: export-strategies.test.ts - exportCurrent command tested",TC018,✅ Done
 "Single File Export - Format Selection",E2E,✅ Complete,"N/A - Implemented in TC-E2E-007",High,Low,0 days,"IMPLEMENTED: export-strategies.test.ts - exportAs with PNG selection",TC001,✅ Done
 "Single File Export - Auto-save Integration",E2E,None,"Export on save functionality with file watchers",Medium,Medium,1 day,"TODO: watchCommand.ts has 3.67% coverage - no E2E auto-export tests",TC005,🔴 Missing
@@ -52,7 +52,7 @@ Low Risk - Complete E2E,BEFORE: 4 (11%),AFTER: 14 (38%),,,,,,"350% improvement i
 Low Risk - Adequate Tests,8,21%,,,,,,"Lower priority or well-tested areas",
 
 Recommended E2E Test Priority,,,,,,,,,
-Sprint 1 (Week 1-2),Batch Export Suite,"Error Recovery, Multi-format, Folder Scanning, Cancellation",Critical,,5 days,,,"Focus on ISS018 - most reported issues",
+Sprint 1 (Week 1-2),Export Folder Suite,"Error Recovery, Multi-format, Folder Scanning, Cancellation",Critical,,5 days,,,"Focus on ISS018 - most reported issues",
 Sprint 2 (Week 3),Strategy Failover,"CLI→Web fallback, Puppeteer errors, Web timeout",Critical,,3 days,,,"Critical for reliability (F002, F006)",
 Sprint 3 (Week 4),Onboarding & Setup,"First run, CLI installation, Settings persistence",High,,4 days,,,"User retention critical",
 Sprint 4 (Week 5-6),Markdown & Commands,"Markdown blocks, Single export, Auto-save, CodeLens",High,,6 days,,,"Core feature completeness",

@@ -1,9 +1,9 @@
 /**
- * Integration Tests for Batch Export v2 Architecture
+ * Integration Tests for Export Folder v2 Architecture
  * 
- * Tests the integration between all services in the new batch export architecture:
+ * Tests the integration between all services in the new export folder architecture:
  * - DiagramDiscoveryService + BatchExportEngine + ProgressTrackingService
- * - End-to-end batch export workflow
+ * - End-to-end export folder workflow
  * - Service coordination and error handling
  * 
  * @author Claude/Jorge
@@ -35,7 +35,7 @@ const mockContext = {
   }
 } as any;
 
-describe('Batch Export v2 - Integration Tests', () => {
+describe('Export Folder v2 - Integration Tests', () => {
   let discoveryService: DiagramDiscoveryServiceImpl;
   let batchEngine: BatchExportEngineImpl;
   let tempDir: string;

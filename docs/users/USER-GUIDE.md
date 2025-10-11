@@ -21,13 +21,13 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 2. Go to Extensions (Ctrl+Shift+X)
 3. Search for "Mermaid Export Pro"
 4. Click Install
-5. Run `Mermaid Export Pro: Setup Export Tools` to configure CLI tools (optional)
+5. Run `Mermaid Export Pro: Set Up Export Tools` to configure CLI tools (optional)
 
 ## ⚡ Quick Start
 
 1. Create or open a `.mmd` file or Markdown file with Mermaid diagrams
 2. Right-click in the editor or file explorer
-3. Select "Export Mermaid Pro - Auto Save"
+3. Select "Quick Export"
 4. Your diagram will be exported in the configured format
 
 ## 📖 Commands Overview
@@ -39,7 +39,7 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 | **Export Current Diagram** | Export the active Mermaid file | Command Palette: `Mermaid Export Pro: Export Current Diagram` |
 | **Export As...** | Choose format and location interactively | Right-click menu, Command Palette |
 | **Export Mermaid (Auto-save)** | Quick export with default settings | Right-click menu (primary option) |
-| **Mermaid Export Pro - Batch Export** | Export multiple files at once | Command Palette: `Mermaid Export Pro: Mermaid Export Pro - Batch Export` |
+| **Mermaid Export Pro - Export Folder** | Export multiple files at once | Command Palette: `Mermaid Export Pro: Mermaid Export Pro - Export Folder` |
 | **Export Markdown Diagrams** | Extract and export diagrams from Markdown | Command Palette: `Mermaid Export Pro: Export Markdown Diagrams` |
 
 ### Utility Commands
@@ -48,8 +48,8 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 |---------|-------------|-------|
 | **Toggle Auto Export** | Enable/disable automatic export on save | Command Palette: `Mermaid Export Pro: Toggle Auto Export` |
 | **Show Export Log** | View export history and debug information | Command Palette: `Mermaid Export Pro: Show Export Log` |
-| **Setup Export Tools** | Install and configure CLI dependencies | Command Palette: `Mermaid Export Pro: Setup Export Tools` |
-| **Cycle Mermaid Theme** | Switch between available themes | Command Palette: `Mermaid Export Pro: Cycle Mermaid Theme` |
+| **Set Up Export Tools** | Install and configure CLI dependencies | Command Palette: `Mermaid Export Pro: Set Up Export Tools` |
+| **Switch Theme** | Switch between available themes | Command Palette: `Mermaid Export Pro: Switch Theme` |
 | **Show Export Options** | View current configuration | Command Palette: `Mermaid Export Pro: Show Export Options` |
 | **Debug: Export Hardcoded Diagram** | Test export functionality | Command Palette: `Mermaid Export Pro: Debug: Export Hardcoded Diagram` |
 
@@ -58,7 +58,7 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 ### Flow 1: Quick Single File Export
 ```
 1. Open .mmd file or Markdown with Mermaid diagrams
-2. Right-click in editor → "Export Mermaid Pro - Auto Save"
+2. Right-click in editor → "Quick Export"
 3. File exported to same directory with default format (PNG)
 ```
 
@@ -71,9 +71,9 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 5. File exported with chosen settings
 ```
 
-### Flow 3: Mermaid Export Pro - Batch Export Workflow
+### Flow 3: Mermaid Export Pro - Export Folder Workflow
 ```
-1. Command Palette → "Mermaid Export Pro: Mermaid Export Pro - Batch Export"
+1. Command Palette → "Mermaid Export Pro: Mermaid Export Pro - Export Folder"
 2. Select folder containing Mermaid files
 3. Choose export format and settings
 4. All compatible files exported automatically
@@ -190,7 +190,7 @@ graph TD
 #### CLI Export Fails
 **Problem**: "CLI export failed" error
 **Solution**: 
-1. Run "Setup Export Tools" command
+1. Run "Set Up Export Tools" command
 2. Check if Puppeteer/Chromium installed
 3. Switch to web export strategy temporarily
 
@@ -237,7 +237,7 @@ graph TD
 
 ### Workflow Tips
 - Set up auto-export for active development
-- Use Mermaid Export Pro - Batch Export for project documentation
+- Use Mermaid Export Pro - Export Folder for project documentation
 - Configure output directory for organized exports
 
 ### Quality Tips

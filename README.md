@@ -113,15 +113,15 @@ This extension contributes the following settings:
 
 ### Commands
 - **Export Current**: Export active file diagrams
-- **Mermaid Export Pro - Batch Export**: Export all diagrams in folder
+- **Export Folder...**: Export all diagrams in folder
 - **Toggle Auto Export**: Enable/disable auto-export on save
-- **Setup Export Tools**: Configure CLI tools
+- **Set Up Export Tools**: Configure CLI tools
 - **Debug Export**: Run comprehensive test suite with quality comparison
 - **Export As**: Choose specific format and options for current file
 
 ### Context Menus
 - Right-click `.mmd` files → Export Current
-- Right-click folders → Mermaid Export Pro - Batch Export
+- Right-click folders → Export Folder...
 - CodeLens buttons above mermaid blocks in markdown
 
 ## Release Notes
@@ -154,7 +154,7 @@ This extension contributes the following settings:
 **Foundation Release:**
 
 - Smart status bar with diagram counting and one-click export
-- Comprehensive Mermaid Export Pro - Batch Export with recursive directory support
+- Comprehensive Mermaid Export Pro - Export Folder with recursive directory support
 - Auto-export on save with file watcher integration
 - Enhanced markdown support with CodeLens and hover providers
 - Extended format support including JPG/JPEG

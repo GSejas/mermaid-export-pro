@@ -1,14 +1,14 @@
 /**
- * Batch Export Status Bar Manager
+ * Export Folder Status Bar Manager
  * 
- * Provides dedicated status bar items for batch export operations with:
+ * Provides dedicated status bar items for export folder operations with:
  * - Separate animated CLI-style progress bar (=---- → ==--- → ===-- → ====)
  * - Real-time file counters (n/N completed)
  * - Color-coded phases (discovery, planning, exporting, complete)
  * - Click-to-cancel functionality
  * - Automatic lifecycle management (show/hide)
  * 
- * The status bar item appears only during batch export operations and provides
+ * The status bar item appears only during export folder operations and provides
  * rich visual feedback without interrupting the user's workflow.
  * 
  * @author Claude/Jorge
@@ -20,7 +20,7 @@ import * as vscode from 'vscode';
 import { ErrorHandler } from './errorHandler';
 
 /**
- * Represents the current phase of batch export operation
+ * Represents the current phase of export folder operation
  */
 export type BatchExportPhase = 'discovery' | 'planning' | 'exporting' | 'completing' | 'success' | 'error' | 'cancelled';
 
@@ -148,7 +148,7 @@ export class BatchExportStatusBarManager {
   }
 
   /**
-   * Start showing the status bar item and begin animation for a batch export operation
+   * Start showing the status bar item and begin animation for a export folder operation
    */
   public startBatchExport(cancelCallback: () => void): void {
     this.cancelCallback = cancelCallback;
@@ -161,10 +161,10 @@ export class BatchExportStatusBarManager {
     this.startAnimation();
     this.updateDisplay({
       phase: 'discovery',
-      message: 'Starting batch export...'
+      message: 'Starting export folder...'
     });
 
-    ErrorHandler.logInfo('BatchExportStatusBarManager: Started batch export display');
+    ErrorHandler.logInfo('BatchExportStatusBarManager: Started export folder display');
   }
 
   /**
@@ -178,7 +178,7 @@ export class BatchExportStatusBarManager {
   }
 
   /**
-   * Complete the batch export and show final status briefly before hiding
+   * Complete the export folder and show final status briefly before hiding
    */
   public completeBatchExport(success: boolean, finalMessage: string, duration?: number): void {
     if (!this.isActive) return;
@@ -196,19 +196,19 @@ export class BatchExportStatusBarManager {
     this.statusBarItem.color = undefined; // Use default text color for better contrast
     this.statusBarItem.backgroundColor = undefined;
     this.statusBarItem.tooltip = success 
-      ? 'Batch export completed successfully' 
-      : 'Batch export completed with errors';
+      ? 'Folder export completed successfully' 
+      : 'Folder export completed with errors';
 
     // Auto-hide after 3 seconds
     setTimeout(() => {
       this.hideBatchExport();
     }, 3000);
 
-    ErrorHandler.logInfo(`BatchExportStatusBarManager: Completed batch export (success: ${success})`);
+    ErrorHandler.logInfo(`BatchExportStatusBarManager: Completed export folder (success: ${success})`);
   }
 
   /**
-   * Cancel the current batch export operation
+   * Cancel the current export folder operation
    */
   public cancelBatchExport(): void {
     if (!this.isActive) return;
@@ -219,10 +219,10 @@ export class BatchExportStatusBarManager {
     // Hide animation bar and show cancelled status on main bar
     this.animationBarItem.hide();
     
-    this.statusBarItem.text = '$(x) Batch export cancelled';
+    this.statusBarItem.text = '$(x) Folder export cancelled';
     this.statusBarItem.color = undefined; // Use default text color for better contrast
     this.statusBarItem.backgroundColor = undefined;
-    this.statusBarItem.tooltip = 'Batch export was cancelled by user';
+    this.statusBarItem.tooltip = 'Folder export was cancelled by user';
 
     // Call the cancel callback if provided
     if (this.cancelCallback) {
@@ -234,7 +234,7 @@ export class BatchExportStatusBarManager {
       this.hideBatchExport();
     }, 2000);
 
-    ErrorHandler.logInfo('BatchExportStatusBarManager: Cancelled batch export');
+    ErrorHandler.logInfo('BatchExportStatusBarManager: Cancelled export folder');
   }
 
   /**
@@ -247,7 +247,7 @@ export class BatchExportStatusBarManager {
     this.animationBarItem.hide();
     this.cancelCallback = undefined;
 
-    ErrorHandler.logInfo('BatchExportStatusBarManager: Hidden batch export display');
+    ErrorHandler.logInfo('BatchExportStatusBarManager: Hidden export folder display');
   }
 
   /**
@@ -372,7 +372,7 @@ export class BatchExportStatusBarManager {
    * Get appropriate tooltip text for the current phase
    */
   private getTooltipForPhase(phase: BatchExportPhase, message: string): string {
-    const baseTooltip = `Mermaid Batch Export - ${message}`;
+    const baseTooltip = `Mermaid Export Folder - ${message}`;
     
     switch (phase) {
       case 'discovery':
@@ -388,13 +388,13 @@ export class BatchExportStatusBarManager {
         return `${baseTooltip}\n\nFinalizing exports and generating reports...`;
       
       case 'success':
-        return `${baseTooltip}\n\nBatch export completed successfully!`;
+        return `${baseTooltip}\n\nFolder export completed successfully!`;
       
       case 'error':
-        return `${baseTooltip}\n\nBatch export completed with errors.`;
+        return `${baseTooltip}\n\nFolder export completed with errors.`;
       
       case 'cancelled':
-        return `${baseTooltip}\n\nBatch export was cancelled by user.`;
+        return `${baseTooltip}\n\nFolder export was cancelled by user.`;
       
       default:
         return baseTooltip;

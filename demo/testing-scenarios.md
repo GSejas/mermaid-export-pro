@@ -130,7 +130,7 @@ This file documents the key testing scenarios that should be captured in GIF dem
 
 ---
 
-## 🎬 GIF Scenario 7: Batch Export (Future)
+## 🎬 GIF Scenario 7: Export Folder (Future)
 
 **Duration**: 20-30 seconds  
 **File**: `04-all-diagram-types.md`
@@ -138,7 +138,7 @@ This file documents the key testing scenarios that should be captured in GIF dem
 ### Steps to Record:
 1. Open file with multiple diagrams
 2. Select multiple mermaid blocks
-3. Right-click → "Batch Export"
+3. Right-click → "Export Folder"
 4. Choose format and destination
 5. Show progress for multiple exports
 6. Display folder with all exported files

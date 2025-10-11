@@ -75,7 +75,7 @@ src/test/
 │   └── utils/                     # Utility function tests
 │       └── pathUtils.test.ts
 ├── integration/                   # Integration tests with VS Code API
-│   ├── fullBatchExport.test.ts    # End-to-end batch export flow
+│   ├── fullBatchExport.test.ts    # End-to-end export folder flow
 │   ├── commandRegistration.test.ts
 │   └── extensionActivation.test.ts
 ├── e2e/                          # End-to-end tests with Playwright
@@ -159,7 +159,7 @@ describe('DiagramDiscoveryService', () => {
 });
 ```
 
-### Batch Export Engine Testing
+### Export Folder Engine Testing
 
 ```typescript
 // Example: batchExportEngine.test.ts
@@ -234,7 +234,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { runBatchExport } from '../../commands/batchExportCommand.v2';
 
-describe('Full Batch Export Integration', () => {
+describe('Full Export Folder Integration', () => {
   let testWorkspace: vscode.Uri;
 
   before(async () => {
@@ -242,14 +242,14 @@ describe('Full Batch Export Integration', () => {
     await vscode.commands.executeCommand('vscode.openFolder', testWorkspace);
   });
 
-  it('should complete full batch export workflow', async () => {
+  it('should complete full export folder workflow', async () => {
     const folderUri = vscode.Uri.file(path.join(testWorkspace.fsPath, 'diagrams'));
     
     // Mock user selections
     const showQuickPickStub = sinon.stub(vscode.window, 'showQuickPick');
     setupBatchExportMocks(showQuickPickStub);
     
-    // Execute batch export
+    // Execute export folder
     await runBatchExport(mockContext, folderUri);
     
     // Verify outputs
@@ -374,13 +374,13 @@ test.describe('Webview Export', () => {
 import { test, expect } from '@playwright/test';
 
 test.describe('Complete User Workflows', () => {
-  test('batch export workflow', async ({ page }) => {
+  test('export folder workflow', async ({ page }) => {
     // Navigate to VS Code extension
     await page.goto('vscode://extension/your-publisher.mermaid-export-pro');
     
     // Open command palette
     await page.keyboard.press('Ctrl+Shift+P');
-    await page.type('Mermaid: Batch Export');
+    await page.type('Mermaid: Export Folder');
     await page.press('Enter');
     
     // Follow through export dialog

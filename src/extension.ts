@@ -112,14 +112,14 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Mermaid Export Pro - Batch Export command
+  // Mermaid Export Pro - Export Folder command
   const batchExportCommand = vscode.commands.registerCommand(
     'mermaidExportPro.batchExport',
     async (folderUri?: vscode.Uri) => {
       try {
         await runBatchExport(context, folderUri);
       } catch (error) {
-        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Mermaid Export Pro - Batch Export failed'), 'Mermaid Export Pro - Batch Export');
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Mermaid Export Pro - Export Folder failed'), 'Mermaid Export Pro - Export Folder');
       }
     }
   );
@@ -157,7 +157,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Cancel batch export command (called from status bar)
+  // Cancel export folder command (called from status bar)
   const cancelBatchExportCommand = vscode.commands.registerCommand(
     'mermaidExportPro.cancelBatchExport',
     () => {

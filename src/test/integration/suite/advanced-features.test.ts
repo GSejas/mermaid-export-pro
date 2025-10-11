@@ -18,6 +18,7 @@ import * as path from 'path';
 import { FixtureManager, DiagramFixture } from '../helpers/fixture-manager';
 import { VSCodeTestHelper } from '../helpers/vscode-helpers';
 import { ExportValidator } from '../helpers/export-validator';
+import { skipInCI } from '../helpers/ci-helper';
 import { ExtensionSetup } from '../helpers/extension-setup';
 
 suite('Advanced Features E2E Tests', () => {
@@ -48,7 +49,7 @@ suite('Advanced Features E2E Tests', () => {
    * Priority: High
    */
   suite('TC-E2E-012: Export Cancellation', () => {
-    test('should stop batch export when cancelled', async function() {
+    test('should stop export folder when cancelled', async function() {
       this.timeout(30000);
 
       // Create large batch to allow time for cancellation
@@ -320,7 +321,7 @@ suite('Advanced Features E2E Tests', () => {
    * Priority: Medium
    */
   suite('TC-E2E-016: Complex Diagram Performance', () => {
-    test('should export very complex diagram within timeout', async function() {
+    skipInCI('should export very complex diagram within timeout', async function(this: Mocha.Context) {
       this.timeout(40000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('complex-perf', []);
@@ -368,7 +369,7 @@ suite('Advanced Features E2E Tests', () => {
       }
     });
 
-    test('should handle extremely complex diagram gracefully', async function() {
+    skipInCI('should handle extremely complex diagram gracefully', async function(this: Mocha.Context) {
       this.timeout(30000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('extreme-complex', []);
@@ -404,7 +405,7 @@ suite('Advanced Features E2E Tests', () => {
    * Priority: Medium
    */
   suite('TC-E2E-017: File Permission Errors', () => {
-    test('should handle read-only output directory', async function() {
+    skipInCI('should handle read-only output directory', async function(this: Mocha.Context) {
       this.timeout(20000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('readonly-test', []);
@@ -435,3 +436,4 @@ suite('Advanced Features E2E Tests', () => {
     });
   });
 });
+

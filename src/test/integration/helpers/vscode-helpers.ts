@@ -16,7 +16,9 @@ export class VSCodeTestHelper {
   private originalShowQuickPick: any;
   private originalShowWarning: any;
   private originalShowError: any;
+  private originalShowSaveDialog: any;
   private mockResponses: Map<string, any> = new Map();
+  private mockSaveDialogPath: string | undefined;
 
   /**
    * Execute a VS Code command
@@ -50,6 +52,7 @@ export class VSCodeTestHelper {
     this.originalShowQuickPick = vscode.window.showQuickPick;
     this.originalShowWarning = (vscode.window as any).showWarningMessage;
     this.originalShowError = (vscode.window as any).showErrorMessage;
+    this.originalShowSaveDialog = vscode.window.showSaveDialog;
 
     // Mock showInformationMessage
     (vscode.window as any).showInformationMessage = async (message: string, ...items: any[]) => {
@@ -96,6 +99,27 @@ export class VSCodeTestHelper {
       const response = this.mockResponses.get(message) || this.mockResponses.get('*');
       return response !== undefined ? response : (items && items.length ? items[0] : undefined);
     };
+
+    // Mock showSaveDialog - return predetermined path or generate one based on defaultUri
+    (vscode.window as any).showSaveDialog = async (options?: vscode.SaveDialogOptions) => {
+      console.log('[TEST] showSaveDialog mock called', {
+        mockPath: this.mockSaveDialogPath,
+        defaultUri: options?.defaultUri?.fsPath
+      });
+      
+      if (this.mockSaveDialogPath) {
+        console.log('[TEST] Returning mock path:', this.mockSaveDialogPath);
+        return vscode.Uri.file(this.mockSaveDialogPath);
+      }
+      // If no mock path set, generate one from the defaultUri
+      if (options?.defaultUri) {
+        console.log('[TEST] Returning defaultUri:', options.defaultUri.fsPath);
+        return options.defaultUri;
+      }
+      // Otherwise return undefined (user cancelled)
+      console.log('[TEST] Returning undefined (cancelled)');
+      return undefined;
+    };
   }
 
   /**
@@ -103,6 +127,13 @@ export class VSCodeTestHelper {
    */
   setMockResponse(messageOrPlaceholder: string, response: any): void {
     this.mockResponses.set(messageOrPlaceholder, response);
+  }
+
+  /**
+   * Set the mock path to return from showSaveDialog
+   */
+  setMockSaveDialogPath(path: string | undefined): void {
+    this.mockSaveDialogPath = path;
   }
 
   /**
@@ -128,7 +159,11 @@ export class VSCodeTestHelper {
     if (this.originalShowError) {
       (vscode.window as any).showErrorMessage = this.originalShowError;
     }
+    if (this.originalShowSaveDialog) {
+      (vscode.window as any).showSaveDialog = this.originalShowSaveDialog;
+    }
     this.mockResponses.clear();
+    this.mockSaveDialogPath = undefined;
   }
 
   /**

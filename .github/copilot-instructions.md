@@ -167,7 +167,7 @@ const outputPath = normalizePath(config.outputDirectory);
 ### **Why Smart File Naming?**
 **Decision**: Hash-based naming with sequences in `fileProcessor.ts`
 **Rationale**:
-- Prevents filename collisions on batch exports
+- Prevents filename collisions on export folders
 - Maintains relation between source and output files
 - Enables incremental exports without overwriting
 - Supports version control friendly workflows

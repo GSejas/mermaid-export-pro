@@ -188,7 +188,7 @@ describe('OperationTimeoutManager', () => {
     });
 
     it('should use different timeouts for batch operations', async () => {
-      manager.startOperation('batch-1', 'Batch Export', 'batchExport', mockProgress, mockCallbacks);
+      manager.startOperation('batch-1', 'Export Folder', 'batchExport', mockProgress, mockCallbacks);
       
       // Batch operations have longer soft timeout (30s)
       await vi.advanceTimersByTimeAsync(29_000);

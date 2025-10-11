@@ -1,10 +1,10 @@
 /**
- * Runs the interactive, guided "Batch Export" workflow for Mermaid diagrams.
+ * Runs the interactive, guided "Export Folder" workflow for Mermaid diagrams.
  *
  * Summary:
  * - Orchestrates a multi-step UI-driven flow to discover Mermaid diagrams in a workspace or folder,
  *   gather user preferences (formats, theme, output location, advanced options), and then execute a
- *   tracked, cancellable batch export operation.
+ *   tracked, cancellable export folder operation.
  * - Keeps orchestration and UI logic here while delegating core discovery, export engine, progress
  *   tracking and error handling to services and strategies under services/* and strategies/*.
  *
@@ -41,7 +41,7 @@
  *   is intentionally left to dedicated services to make unit testing and reuse easier.
  *
  * @param context - The vscode.ExtensionContext provided to the extension activation. Used to
- *   create the batch export engine and to access extension state if required.
+ *   create the export folder engine and to access extension state if required.
  * @param folderUri - Optional Uri provided by VS Code when the command is invoked from a file
  *   explorer context; when provided, it is used as the source folder default.
  * @returns A promise that resolves when the workflow completes (user cancelled, succeeded, or failed).
@@ -63,12 +63,12 @@
  */
 /**
  * src/commands/batchExportCommand.v2.ts
- * Mermaid Export Pro — Batch export command (v2)
+ * Mermaid Export Pro — Folder export command (v2)
  *
- * Interactive, guided batch export workflow:
+ * Interactive, guided export folder workflow:
  *  - Discovers mermaid diagrams in a workspace or folder
  *  - Guides user to select formats, theme, output and advanced options
- *  - Executes a tracked, cancellable batch export and presents results/reports
+ *  - Executes a tracked, cancellable export folder and presents results/reports
  *
  * Note: Keep orchestration and UI logic here. Core business logic must remain
  * in services/* and strategies/* modules to preserve testability and reuse.
@@ -94,7 +94,7 @@ import { ErrorHandler } from '../ui/errorHandler';
 import { batchExportStatusBar } from '../ui/batchExportStatusBarManager';
 
 /**
- * User interface options for batch export configuration
+ * User interface options for export folder configuration
  */
 interface BatchExportUIOptions {
   /** Source folder selection */
@@ -132,7 +132,7 @@ interface BatchExportUIOptions {
 }
 
 /**
- * Main entry point for batch export command
+ * Main entry point for export folder command
  */
 export async function runBatchExportV2(
   context: vscode.ExtensionContext, 
@@ -141,23 +141,23 @@ export async function runBatchExportV2(
   const operationId = `batch-export-${Date.now()}`;
   
   try {
-    ErrorHandler.logInfo('=== Mermaid Export Pro v2.0 - Batch Export Started ===');
+    ErrorHandler.logInfo('=== Mermaid Export Pro v2.0 - Export Folder Started ===');
     
     // Step 1: Get comprehensive export configuration from user
     const config = await getComprehensiveBatchConfig(folderUri);
     if (!config) {
-      ErrorHandler.logInfo('Batch export cancelled by user');
+      ErrorHandler.logInfo('Folder export cancelled by user');
       return;
     }
     
     // Step 2: Show operation summary and get final confirmation
     const confirmed = await showOperationSummary(config);
     if (!confirmed) {
-      ErrorHandler.logInfo('Batch export cancelled after summary');
+      ErrorHandler.logInfo('Folder export cancelled after summary');
       return;
     }
     
-    // Step 3: Execute batch export with progress tracking
+    // Step 3: Execute export folder with progress tracking
     await executeBatchExportWithTracking(context, config, operationId);
     
   } catch (error) {
@@ -167,10 +167,8 @@ export async function runBatchExportV2(
       additionalInfo: { operationId }
     });
     
-    ErrorHandler.logError(`Batch export failed: ${batchError.message}`);
-    
-    await vscode.window.showErrorMessage(
-      `Batch export failed: ${batchError.message}`,
+      ErrorHandler.logError(`Folder export failed: ${batchError.message}`);    await vscode.window.showErrorMessage(
+      `Folder export failed: ${batchError.message}`,
       'Show Error Report'
     ).then(action => {
       if (action === 'Show Error Report') {
@@ -181,7 +179,7 @@ export async function runBatchExportV2(
 }
 
 /**
- * Get comprehensive batch export configuration through guided UI flow
+ * Get comprehensive export folder configuration through guided UI flow
  */
 async function getComprehensiveBatchConfig(folderUri?: vscode.Uri): Promise<BatchExportConfig | null> {
   try {
@@ -238,7 +236,7 @@ async function getComprehensiveBatchConfig(folderUri?: vscode.Uri): Promise<Batc
       }
     };
     
-    ErrorHandler.logInfo(`Batch Export Command: Final config created with backgroundColor: "${finalConfig.backgroundColor}" and theme: ${finalConfig.theme}`);
+    ErrorHandler.logInfo(`Export Folder Command: Final config created with backgroundColor: "${finalConfig.backgroundColor}" and theme: ${finalConfig.theme}`);
     
     return finalConfig;
     
@@ -289,7 +287,7 @@ async function selectSourceFolder(folderUri?: vscode.Uri): Promise<string | null
         value: 'browse'
       }
     ], {
-      placeHolder: 'Select source folder for batch export',
+      placeHolder: 'Select source folder for export folder',
       ignoreFocusOut: true,
       title: '📍 Step 1/6: Source Folder Selection'
     });
@@ -742,7 +740,7 @@ async function showOperationSummary(config: BatchExportConfig): Promise<boolean>
   const totalOutputs = totalDiagrams * config.formats.length;
   
   const summary = [
-    '# Batch Export Summary',
+    '# Export Folder Summary',
     '',
     `**Files Found**: ${files.length} files`,
     `**Diagrams Found**: ${totalDiagrams} diagrams`,
@@ -753,11 +751,11 @@ async function showOperationSummary(config: BatchExportConfig): Promise<boolean>
     `**Organization**: ${config.organizeByFormat ? 'By format' : 'Flat'}`,
     `**Naming**: ${config.namingStrategy}`,
     '',
-    '**Ready to start batch export?**'
+    '**Ready to start export folder?**'
   ].join('\n');
   
   const proceed = await vscode.window.showInformationMessage(
-    `🚀 Batch Export Ready\n\n${files.length} files • ${totalDiagrams} diagrams • ${totalOutputs} outputs\n\nProceed with export?`,
+    `🚀 Export Folder Ready\n\n${files.length} files • ${totalDiagrams} diagrams • ${totalOutputs} outputs\n\nProceed with export?`,
     { modal: true },
     'Start Export',
     'Show Details',
@@ -784,7 +782,7 @@ async function showOperationSummary(config: BatchExportConfig): Promise<boolean>
 }
 
 /**
- * Execute batch export with comprehensive progress tracking
+ * Execute export folder with comprehensive progress tracking
  */
 async function executeBatchExportWithTracking(
   context: vscode.ExtensionContext,
@@ -794,7 +792,7 @@ async function executeBatchExportWithTracking(
   const engine = createBatchExportEngine(context);
   const reporter = progressTrackingService.createReporter(operationId);
   
-  // Start the batch export with animated status bar
+  // Start the export folder with animated status bar
   let isCancelled = false;
   
   batchExportStatusBar.startBatchExport(() => {
@@ -907,7 +905,7 @@ async function executeBatchExportWithTracking(
           });
 
           vscode.window.showErrorMessage(
-            batchError.message || 'Batch export failed',
+            batchError.message || 'Folder export failed',
             'Show Error Report'
           ).then(action => {
             if (action === 'Show Error Report') {
@@ -933,7 +931,7 @@ async function showBatchResults(result: BatchResult): Promise<void> {
   if (successfulJobs === totalJobs) {
     // Complete success - non-blocking notification
     vscode.window.showInformationMessage(
-      `🎉 Batch Export Complete! ✅ ${successfulJobs} diagrams exported in ${duration}s`,
+      `🎉 Export Folder Complete! ✅ ${successfulJobs} diagrams exported in ${duration}s`,
       'Open Output Folder',
       'Show Report'
     ).then(action => {
@@ -947,7 +945,7 @@ async function showBatchResults(result: BatchResult): Promise<void> {
   } else if (successfulJobs > 0) {
     // Partial success - non-blocking notification
     vscode.window.showWarningMessage(
-      `⚠️ Batch Export: ${successfulJobs} successful, ${failedJobs} failed (${duration}s)`,
+      `⚠️ Export Folder: ${successfulJobs} successful, ${failedJobs} failed (${duration}s)`,
       'Open Output Folder',
       'Show Error Report',
       'Show Full Report'
@@ -964,7 +962,7 @@ async function showBatchResults(result: BatchResult): Promise<void> {
   } else {
     // Complete failure - non-blocking notification
     vscode.window.showErrorMessage(
-      `❌ Batch Export Failed - No files exported (${duration}s)`,
+      `❌ Export Folder Failed - No files exported (${duration}s)`,
       'Show Error Report'
     ).then(action => {
       if (action === 'Show Error Report') {
@@ -994,7 +992,7 @@ async function showBatchReport(result: BatchResult): Promise<void> {
 function generateBatchReport(result: BatchResult): string {
   const lines = [];
   
-  lines.push('# Mermaid Export Pro v2.0 - Batch Export Report');
+  lines.push('# Mermaid Export Pro v2.0 - Export Folder Report');
   lines.push(`Generated: ${result.timeline.completedAt.toISOString()}`);
   lines.push('');
   

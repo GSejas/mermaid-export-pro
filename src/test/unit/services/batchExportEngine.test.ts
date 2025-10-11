@@ -1,7 +1,7 @@
 /**
- * Test Suite for Batch Export Engine
+ * Test Suite for Export Folder Engine
  * 
- * Comprehensive tests for the batch export orchestration engine including:
+ * Comprehensive tests for the export folder orchestration engine including:
  * - Batch creation and job planning
  * - Job optimization and execution strategies
  * - Error handling and recovery

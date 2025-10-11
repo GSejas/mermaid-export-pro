@@ -55,12 +55,12 @@
       },
       {
         "command": "mermaidExportPro.exportAs",
-        "title": "Export Mermaid Pro - Export As...",
+        "title": "Export As...",
         "category": "Mermaid Export Pro"
       },
       {
         "command": "mermaidExportPro.exportFile",
-        "title": "Export Mermaid Pro - Auto Save",
+        "title": "Quick Export",
         "category": "Mermaid Export Pro"
       },
       {
@@ -70,7 +70,7 @@
       },
       {
         "command": "mermaidExportPro.batchExport",
-        "title": "Batch Export",
+        "title": "Export Folder...",
         "category": "Mermaid Export Pro"
       },
       {
@@ -90,12 +90,12 @@
       },
       {
         "command": "mermaidExportPro.runSetup",
-        "title": "Setup Export Tools",
+        "title": "Set Up Export Tools",
         "category": "Mermaid Export Pro"
       },
       {
         "command": "mermaidExportPro.cycleTheme",
-        "title": "Cycle Mermaid Theme",
+        "title": "Switch Theme",
         "category": "Mermaid Export Pro"
       },
       {
@@ -246,14 +246,14 @@
           "default": 5,
           "minimum": 1,
           "maximum": 20,
-          "description": "Maximum folder depth to scan during batch export (1-20, default: 5)"
+          "description": "Maximum folder depth to scan during export folder (1-20, default: 5)"
         },
         "mermaidExportPro.batchExportDefaultDepth": {
           "type": "number",
           "default": 3,
           "minimum": 1,
           "maximum": 20,
-          "description": "Default folder depth for batch export when not specified (1-20, default: 3)"
+          "description": "Default folder depth for export folder when not specified (1-20, default: 3)"
         },
         "mermaidExportPro.organizeByFormat": {
           "type": "boolean",

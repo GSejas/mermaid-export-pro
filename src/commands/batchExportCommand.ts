@@ -1,5 +1,5 @@
 /**
- * Batch Export Command - Export multiple mermaid files from folders
+ * Export Folder Command - Export multiple mermaid files from folders
  * 
  * Purpose: Recursively discover and export all mermaid files in a directory tree
  * Features:
@@ -31,7 +31,7 @@ import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy, MermaidFile 
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 
 /**
- * Result of processing a single file during batch export
+ * Result of processing a single file during export folder
  */
 interface BatchResult {
   /** File path that was processed */
@@ -47,7 +47,7 @@ interface BatchResult {
 }
 
 export async function runBatchExport(context: vscode.ExtensionContext, folderUri?: vscode.Uri): Promise<void> {
-  ErrorHandler.logInfo('Starting Mermaid Export Pro - Batch Export command...');
+  ErrorHandler.logInfo('Starting Mermaid Export Pro - Export Folder command...');
 
   try {
     // Get target folder - use provided URI or ask user to select
@@ -71,14 +71,14 @@ export async function runBatchExport(context: vscode.ExtensionContext, folderUri
 
     const folderName = path.basename(targetFolder);
     const logMessage = folderUri 
-      ? `Batch export: Found ${mermaidFiles.length} mermaid files in "${folderName}"`
+      ? `Folder export: Found ${mermaidFiles.length} mermaid files in "${folderName}"`
       : `Found ${mermaidFiles.length} mermaid files to export`;
     ErrorHandler.logInfo(logMessage);
 
     // Show initial discovery message when called from context menu
     if (folderUri && mermaidFiles.length > 0) {
       vscode.window.showInformationMessage(
-        `Found ${mermaidFiles.length} mermaid diagram(s) in "${folderName}" ready for batch export`
+        `Found ${mermaidFiles.length} mermaid diagram(s) in "${folderName}" ready for export folder`
       );
     }
 
@@ -114,10 +114,10 @@ export async function runBatchExport(context: vscode.ExtensionContext, folderUri
       return;
     }
 
-    // Run Mermaid Export Pro - Batch Export
+    // Run Mermaid Export Pro - Export Folder
     const progressTitle = (exportOptions as any).allFormats ? 
-      `Batch Exporting ${finalMermaidFiles.length} files to ${(exportOptions as any).allFormats.length} formats` :
-      `Batch Exporting ${finalMermaidFiles.length} files to ${exportOptions.format.toUpperCase()}`;
+      `Export Foldering ${finalMermaidFiles.length} files to ${(exportOptions as any).allFormats.length} formats` :
+      `Export Foldering ${finalMermaidFiles.length} files to ${exportOptions.format.toUpperCase()}`;
     
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
@@ -127,7 +127,7 @@ export async function runBatchExport(context: vscode.ExtensionContext, folderUri
       const results: BatchResult[] = [];
       const strategy = await selectBestStrategy(context);
       
-      ErrorHandler.logInfo(`Using ${strategy.name} for Mermaid Export Pro - Batch Export`);
+      ErrorHandler.logInfo(`Using ${strategy.name} for Mermaid Export Pro - Export Folder`);
       
       let completed = 0;
       const total = finalMermaidFiles.length;
@@ -160,23 +160,23 @@ export async function runBatchExport(context: vscode.ExtensionContext, folderUri
 
       if (failed.length === 0) {
         vscode.window.showInformationMessage(
-          `Mermaid Export Pro - Batch Export completed successfully! ${successful.length} files exported.`
+          `Mermaid Export Pro - Export Folder completed successfully! ${successful.length} files exported.`
         );
       } else {
         vscode.window.showWarningMessage(
-          `Mermaid Export Pro - Batch Export completed with ${failed.length} failures. ${successful.length} files exported successfully.`
+          `Mermaid Export Pro - Export Folder completed with ${failed.length} failures. ${successful.length} files exported successfully.`
         );
       }
     });
 
   } catch (error) {
-    ErrorHandler.logError(`Mermaid Export Pro - Batch Export failed: ${error}`);
-    vscode.window.showErrorMessage(`Mermaid Export Pro - Batch Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    ErrorHandler.logError(`Mermaid Export Pro - Export Folder failed: ${error}`);
+    vscode.window.showErrorMessage(`Mermaid Export Pro - Export Folder failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
- * Get target folder for Mermaid Export Pro - Batch Export
+ * Get target folder for Mermaid Export Pro - Export Folder
  */
 async function getTargetFolder(): Promise<string | null> {
   // Try workspace folder first
@@ -350,10 +350,10 @@ function detectDiagramType(content: string): string {
 }
 
 /**
- * Get Mermaid Export Pro - Batch Export options
+ * Get Mermaid Export Pro - Export Folder options
  */
 /**
- * Comprehensive guided batch export options flow
+ * Comprehensive guided export folder options flow
  * Step 1: Format Selection (all formats, then individual descriptions)
  * Step 2: Background Color Selection  
  * Step 3: Theme Selection
@@ -381,9 +381,9 @@ async function getComprehensiveBatchExportOptions(
       detail: 'More control over export settings'
     }
   ], {
-    placeHolder: '📋 Batch Export: Choose your export strategy',
+    placeHolder: '📋 Export Folder: Choose your export strategy',
     ignoreFocusOut: true,
-    title: '🎨 Mermaid Export Pro - Batch Export Configuration (Step 1/4)'
+    title: '🎨 Mermaid Export Pro - Export Folder Configuration (Step 1/4)'
   });
 
   if (!formatChoice) return null;
@@ -723,14 +723,14 @@ async function selectBestStrategy(context: vscode.ExtensionContext): Promise<Exp
 }
 
 /**
- * Show Mermaid Export Pro - Batch Export results
+ * Show Mermaid Export Pro - Export Folder results
  */
 async function showBatchResults(results: BatchResult[], outputDirectory: string, cancelled: boolean): Promise<void> {
   const successful = results.filter(r => r.success);
   const failed = results.filter(r => !r.success);
   
   // Generate report
-  let report = `# Mermaid Export Pro - Batch Export Report\n\n`;
+  let report = `# Mermaid Export Pro - Export Folder Report\n\n`;
   report += `**Timestamp**: ${new Date().toISOString()}\n`;
   report += `**Output Directory**: ${outputDirectory}\n`;
   report += `**Total Files**: ${results.length}\n`;
@@ -759,7 +759,7 @@ async function showBatchResults(results: BatchResult[], outputDirectory: string,
   
   // Show completion dialog
   const action = await vscode.window.showInformationMessage(
-    `Mermaid Export Pro - Batch Export ${cancelled ? 'cancelled' : 'completed'}. Report saved to ${path.basename(reportPath)}`,
+    `Mermaid Export Pro - Export Folder ${cancelled ? 'cancelled' : 'completed'}. Report saved to ${path.basename(reportPath)}`,
     'Open Report',
     'Open Output Folder'
   );

@@ -1,5 +1,5 @@
 /**
- * Simple Tests for Batch Export Engine
+ * Simple Tests for Export Folder Engine
  * 
  * Focus on core batch planning and job optimization without external dependencies.
  * 

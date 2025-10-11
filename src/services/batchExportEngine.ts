@@ -1,7 +1,7 @@
 /**
- * Batch Export Engine
+ * Export Folder Engine
  * 
- * Core orchestration engine for multi-format batch exports with:
+ * Core orchestration engine for multi-format export folders with:
  * - Intelligent job planning and optimization
  * - Multi-format export coordination
  * - Parallel execution with resource management
@@ -59,7 +59,7 @@ const EXECUTION_LIMITS = {
 };
 
 /**
- * Implementation of the batch export engine
+ * Implementation of the export folder engine
  */
 export class BatchExportEngineImpl implements BatchExportEngine {
   private strategies = new Map<string, ExportStrategy>();
@@ -77,7 +77,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     const startTime = Date.now();
     const batchId = this.generateBatchId();
     
-    ErrorHandler.logInfo(`Creating batch export: ${files.length} files, ${config.formats.length} formats`);
+    ErrorHandler.logInfo(`Creating export folder: ${files.length} files, ${config.formats.length} formats`);
     
     try {
       // Validate configuration
@@ -97,7 +97,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
       
       const batch: ExportBatch = {
         id: batchId,
-        name: `Batch Export - ${new Date().toISOString()}`,
+        name: `Export Folder - ${new Date().toISOString()}`,
         jobs: optimizedJobs,
         config,
         metadata,
@@ -160,7 +160,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
       await this.cleanupTemporaryFiles(batch);
       
       // Phase 5: Complete
-      reporter.setPhase('completed', 'Batch export completed successfully');
+      reporter.setPhase('completed', 'Folder export completed successfully');
       
       const result = this.createBatchResult(batch, jobResults, startTime);
       
@@ -169,7 +169,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
       return result;
       
     } catch (error) {
-      reporter.setPhase('failed', `Batch export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      reporter.setPhase('failed', `Folder export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       ErrorHandler.logError(`Batch execution failed: ${error}`);
       
       return this.createBatchResult(batch, jobResults, startTime, error);
@@ -395,7 +395,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
       height: config.dimensions?.height || 800
     };
     
-    ErrorHandler.logInfo(`Batch Export Engine: Created job with backgroundColor: "${config.backgroundColor}" for ${file.relativePath} (${format})`);
+    ErrorHandler.logInfo(`Export Folder Engine: Created job with backgroundColor: "${config.backgroundColor}" for ${file.relativePath} (${format})`);
     
     const job: ExportJob = {
       id: `job_${this.generateJobId(file.path, diagram.id, format)}`,
@@ -886,7 +886,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
 }
 
 /**
- * Factory function for creating batch export engine
+ * Factory function for creating export folder engine
  */
 export function createBatchExportEngine(context: vscode.ExtensionContext): BatchExportEngine {
   return new BatchExportEngineImpl(context);

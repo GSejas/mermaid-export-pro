@@ -11,14 +11,14 @@
 ### Before This Work
 - **E2E Coverage:** 11% (4/37 scenarios)
 - **E2E Test Count:** 3 basic tests
-- **Batch Export Testing:** 0% (completely untested)
+- **Export Folder Testing:** 0% (completely untested)
 - **High-Risk Scenarios:** 18 (49%)
 - **Project Readiness:** 68%
 
 ### After This Work
 - **E2E Coverage:** 46% (17/37 scenarios with full or partial coverage)
 - **E2E Test Count:** 29 comprehensive tests across 3 suites
-- **Batch Export Testing:** 80% (all critical paths covered)
+- **Export Folder Testing:** 80% (all critical paths covered)
 - **High-Risk Scenarios:** 8 (22% - reduced by 56%)
 - **Project Readiness:** 78% (+10 points)
 
@@ -102,7 +102,7 @@ verifyOrganizedStructure(baseDir, formats) // Directory layout
 **Focus:** Batch export workflows
 
 **Test Coverage:**
-- ✅ TC-E2E-001: Basic batch export (2 tests)
+- ✅ TC-E2E-001: Basic export folder (2 tests)
   - Export 5 diagrams from folder
   - Handle empty folders gracefully
 
@@ -152,7 +152,7 @@ verifyOrganizedStructure(baseDir, formats) // Directory layout
 
 **Test Coverage:**
 - ✅ TC-E2E-012: Export cancellation (2 tests)
-  - Stop batch export when cancelled
+  - Stop export folder when cancelled
   - Cleanup temporary files
 
 - ✅ TC-E2E-013: Auto-save integration (2 tests)
@@ -283,7 +283,7 @@ npm run test:integration
 ### Run Specific Suite
 ```bash
 # Batch export only
-npm run test:integration -- --grep "Batch Export"
+npm run test:integration -- --grep "Export Folder"
 
 # Export strategies only
 npm run test:integration -- --grep "Export Strategies"
@@ -343,7 +343,7 @@ npm run test:integration -- --grep "TC-E2E-001" --timeout 999999
    - Infrastructure exists for expansion
 
 🟢 LOW RISK (46%): 17 scenarios ⬆️ +350%
-   - All critical batch export paths
+   - All critical export folder paths
    - Strategy failover tested
    - Error scenarios validated
    - Real exports confirmed
@@ -460,7 +460,7 @@ npm run test:integration -- --grep "TC-E2E-001" --timeout 999999
 ### Confidence Levels
 | Area | Before | After |
 |------|--------|-------|
-| **Batch Export** | 🔴 No validation | 🟢 80% tested |
+| **Export Folder** | 🔴 No validation | 🟢 80% tested |
 | **Single File Export** | 🟡 Unit only | 🟢 E2E validated |
 | **Strategy Failover** | 🔴 Unknown | 🟢 Confirmed working |
 | **Error Handling** | 🟡 Partial | 🟢 Comprehensive |
