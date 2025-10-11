@@ -17,10 +17,10 @@ export class PathUtils {
     let outputDirectory: string;
     
     if (outputDir) {
-      // If outputDir is absolute, use it; otherwise, resolve relative to input file
+      // If outputDir is absolute, use it; otherwise, join relative to input file
       outputDirectory = path.isAbsolute(outputDir) 
         ? outputDir 
-        : path.resolve(parsedPath.dir, outputDir);
+        : path.join(parsedPath.dir, outputDir);
     } else {
       // Default to same directory as input file
       outputDirectory = parsedPath.dir;
