@@ -18,11 +18,18 @@ import * as path from 'path';
 import { FixtureManager, DiagramFixture } from '../helpers/fixture-manager';
 import { VSCodeTestHelper } from '../helpers/vscode-helpers';
 import { ExportValidator } from '../helpers/export-validator';
+import { ExtensionSetup } from '../helpers/extension-setup';
 
 suite('Advanced Features E2E Tests', () => {
   let fixtureManager: FixtureManager;
   let vscodeHelper: VSCodeTestHelper;
   let exportValidator: ExportValidator;
+
+  suiteSetup(async function() {
+    this.timeout(30000);
+    // Ensure extension is activated before any tests run
+    await ExtensionSetup.ensureActivated();
+  });
 
   setup(() => {
     fixtureManager = new FixtureManager();
