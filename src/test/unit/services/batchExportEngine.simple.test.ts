@@ -9,6 +9,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
+import * as os from 'os';
+import * as path from 'path';
 import { BatchExportEngineImpl } from '../../../services/batchExportEngine';
 import { 
   BatchExportConfig,
@@ -45,7 +47,7 @@ describe('BatchExportEngine - Core Functionality', () => {
       const config: BatchExportConfig = {
         formats: ['svg', 'png'] as ExportFormat[],
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/test/output',
+        outputDirectory: path.join(os.tmpdir(), 'test-output'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: false,
@@ -72,7 +74,7 @@ describe('BatchExportEngine - Core Functionality', () => {
       const config: BatchExportConfig = {
         formats: ['svg'] as ExportFormat[],
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/test/output',
+        outputDirectory: path.join(os.tmpdir(), 'test-output'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: false,
@@ -94,7 +96,7 @@ describe('BatchExportEngine - Core Functionality', () => {
       const config: BatchExportConfig = {
         formats: ['svg', 'png', 'pdf'] as ExportFormat[],
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/test/output',
+        outputDirectory: path.join(os.tmpdir(), 'test-output'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: true,
@@ -143,7 +145,7 @@ describe('BatchExportEngine - Core Functionality', () => {
       const config: BatchExportConfig = {
         formats: ['svg'] as ExportFormat[],
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/test/output',
+        outputDirectory: path.join(os.tmpdir(), 'test-output'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: false,
@@ -199,7 +201,7 @@ describe('BatchExportEngine - Core Functionality', () => {
       const invalidConfig: BatchExportConfig = {
         formats: [] as ExportFormat[], // Invalid - empty formats
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/test/output',
+        outputDirectory: path.join(os.tmpdir(), 'test-output'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: false,
@@ -238,7 +240,7 @@ describe('BatchExportEngine - Core Functionality', () => {
 function createMockFiles(): EnhancedMermaidFile[] {
   return [
     {
-      path: '/test/file1.md',
+      path: path.join(os.tmpdir(), 'test', 'file1.md'),
       relativePath: 'file1.md',
       content: 'test content 1',
       type: 'markdown',
@@ -283,7 +285,7 @@ function createMockFiles(): EnhancedMermaidFile[] {
       }
     },
     {
-      path: '/test/file2.mmd',
+      path: path.join(os.tmpdir(), 'test', 'file2.mmd'),
       relativePath: 'file2.mmd',
       content: 'test content 2',
       type: 'mmd',
@@ -343,7 +345,7 @@ function createMockJobs(): ExportJob[] {
       sourceFile: mockFiles[0],
       format: 'svg' as ExportFormat,
       options: { format: 'svg', theme: 'default' } as any,
-      outputPath: '/output/test1.svg',
+      outputPath: path.join(os.tmpdir(), 'output', 'test1.svg'),
       priority: 8,
       dependencies: [],
       retryConfig: {
@@ -360,7 +362,7 @@ function createMockJobs(): ExportJob[] {
       sourceFile: mockFiles[1],
       format: 'png' as ExportFormat,
       options: { format: 'png', theme: 'default' } as any,
-      outputPath: '/output/test2.png',
+      outputPath: path.join(os.tmpdir(), 'output', 'test2.png'),
       priority: 5,
       dependencies: [],
       retryConfig: {
@@ -377,7 +379,7 @@ function createMockJobs(): ExportJob[] {
       sourceFile: mockFiles[0],
       format: 'pdf' as ExportFormat,
       options: { format: 'pdf', theme: 'default' } as any,
-      outputPath: '/output/test3.pdf',
+      outputPath: path.join(os.tmpdir(), 'output', 'test3.pdf'),
       priority: 3,
       dependencies: [],
       retryConfig: {
@@ -398,7 +400,7 @@ function createBatchConfig(formats: ExportFormat[]): BatchExportConfig {
   return {
     formats,
     theme: 'default' as MermaidTheme,
-    outputDirectory: '/test/output',
+    outputDirectory: path.join(os.tmpdir(), 'test-output'),
     maxDepth: 3,
     namingStrategy: 'sequential',
     organizeByFormat: false,

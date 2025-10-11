@@ -10,13 +10,13 @@ describe('PathUtils', () => {
   });
 
   it('generateOutputPath uses same directory when outputDir not provided', () => {
-    const input = path.join('C:', 'project', 'docs', 'diagram.mmd');
+    const input = path.join('project', 'docs', 'diagram.mmd');
     const out = PathUtils.generateOutputPath(input, 'png');
     expect(out).toBe(path.join(path.parse(input).dir, 'diagram.png'));
   });
 
   it('generateOutputPath resolves relative outputDir against input file dir', () => {
-    const input = path.join('C:', 'project', 'diagrams', 'file.mmd');
+    const input = path.join('project', 'diagrams', 'file.mmd');
     const out = PathUtils.generateOutputPath(input, 'svg', 'out');
     expect(out).toBe(path.join(path.parse(input).dir, 'out', 'file.svg'));
   });
@@ -58,14 +58,14 @@ describe('PathUtils', () => {
 
   it('getUniqueFilePath returns same path when not existing', async () => {
     const spy = vi.spyOn(PathUtils, 'fileExists').mockResolvedValueOnce(false);
-    const target = path.join('C:', 'tmp', 'a.png');
+    const target = path.join('tmp', 'a.png');
     const result = await PathUtils.getUniqueFilePath(target);
     expect(spy).toHaveBeenCalled();
     expect(result).toBe(target);
   });
 
   it('getUniqueFilePath increments filename when target exists', async () => {
-    const target = path.join('C:', 'tmp', 'file.png');
+    const target = path.join('tmp', 'file.png');
     const mock = vi.spyOn(PathUtils, 'fileExists')
       .mockResolvedValueOnce(true) // target exists
       .mockResolvedValueOnce(true) // file (1) exists
@@ -95,12 +95,12 @@ describe('PathUtils', () => {
   });
 
   it('getDisplayPath returns relative when shorter and inside workspace', () => {
-    const workspace = path.join('C:', 'project');
+    const workspace = path.join('project');
     const full = path.join(workspace, 'sub', 'file.mmd');
     const disp = PathUtils.getDisplayPath(full, workspace);
     expect(disp).toBe(path.relative(workspace, full));
 
-    const outside = path.join('C:', 'other', 'file.mmd');
+    const outside = path.join('other', 'file.mmd');
     expect(PathUtils.getDisplayPath(outside, workspace)).toBe(outside);
   });
 });

@@ -315,7 +315,7 @@ describe('BatchExportEngine', () => {
       const config: BatchExportConfig = {
         formats: ['svg'] as ExportFormat[],
         theme: 'default' as MermaidTheme,
-        outputDirectory: '/invalid/path/that/does/not/exist',
+        outputDirectory: path.join(os.tmpdir(), 'invalid-path-that-does-not-exist'),
         maxDepth: 3,
         namingStrategy: 'sequential',
         organizeByFormat: false,
@@ -419,7 +419,7 @@ describe('BatchExportEngine', () => {
   function createMockFiles(): EnhancedMermaidFile[] {
     return [
       {
-        path: '/test/file1.md',
+        path: path.join(os.tmpdir(), 'test', 'file1.md'),
         relativePath: 'file1.md',
         content: 'test content 1',
         type: 'markdown',
@@ -464,7 +464,7 @@ describe('BatchExportEngine', () => {
         }
       },
       {
-        path: '/test/file2.mmd',
+        path: path.join(os.tmpdir(), 'test', 'file2.mmd'),
         relativePath: 'file2.mmd',
         content: 'test content 2',
         type: 'mmd',
@@ -524,7 +524,7 @@ describe('BatchExportEngine', () => {
         sourceFile: mockFiles[0],
         format: 'svg' as ExportFormat,
         options: { format: 'svg', theme: 'default' } as any,
-        outputPath: '/output/test1.svg',
+        outputPath: path.join(os.tmpdir(), 'output', 'test1.svg'),
         priority: 8,
         dependencies: [],
         retryConfig: {
@@ -541,7 +541,7 @@ describe('BatchExportEngine', () => {
         sourceFile: mockFiles[1],
         format: 'png' as ExportFormat,
         options: { format: 'png', theme: 'default' } as any,
-        outputPath: '/output/test2.png',
+        outputPath: path.join(os.tmpdir(), 'output', 'test2.png'),
         priority: 5,
         dependencies: [],
         retryConfig: {
@@ -563,7 +563,7 @@ describe('BatchExportEngine', () => {
     
     for (let i = 0; i < count; i++) {
       files.push({
-        path: `/test/file${i}.md`,
+        path: path.join(os.tmpdir(), 'test', `file${i}.md`),
         relativePath: `file${i}.md`,
         content: `test content ${i}`,
         type: 'markdown',
