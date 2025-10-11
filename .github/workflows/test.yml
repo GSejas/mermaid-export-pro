@@ -53,7 +53,7 @@ jobs:
         run: npm run compile
 
       - name: Run unit tests with coverage
-        run: npm run test:unit -- --coverage --reporter=verbose
+        run: npm run test:unit
         continue-on-error: false
 
       - name: Run integration tests
