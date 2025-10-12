@@ -1,11 +1,13 @@
 import { defineConfig } from 'vitest/config';
-import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const vscodeMockPath = fileURLToPath(new URL('./src/test/unit/vscode-mock.ts', import.meta.url));
 
 export default defineConfig({
   resolve: {
     alias: {
       // Map imports of 'vscode' to our test mock
-      vscode: path.resolve(__dirname, 'src/test/unit/vscode-mock.ts')
+      vscode: vscodeMockPath
     }
   },
   test: {

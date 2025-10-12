@@ -4,7 +4,8 @@
       "Bash(npm run test:*)",
       "Bash(npm run test:coverage:*)",
       "Bash(npm run test:integration:*)",
-      "Bash(npm run test:unit:*)"
+      "Bash(npm run test:unit:*)",
+      "Bash(npm run clean:*)"
     ],
     "deny": [],
     "ask": []
