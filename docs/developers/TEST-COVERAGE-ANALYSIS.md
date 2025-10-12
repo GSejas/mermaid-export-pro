@@ -1,5 +1,7 @@
 # Test Coverage Analysis
 
+> **2025-10-12 Update:** Integration suites `minimal-dialog-test` and `export-strategies` are temporarily skipped in CI while we investigate missing export outputs in the headless runner. Track this under TODO `ci-testing`.
+
 ## 📊 Current Test Coverage
 
 ### **Overall Coverage: ~4%** 🔴
