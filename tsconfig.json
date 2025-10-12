@@ -17,6 +17,7 @@
 	"exclude": [
 		"vitest.config.*",
 		"src/test/unit/**/*",
+		"src/test/integration/suite/__skip__/**/*",
 		"node_modules/**/*"
 	]
 }

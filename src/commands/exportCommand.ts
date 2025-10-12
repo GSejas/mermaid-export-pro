@@ -18,9 +18,15 @@ import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 import { getDialogService } from '../services/dialogService';
 
-export async function runExportCommand(context: vscode.ExtensionContext, preferAuto = false, documentUri?: vscode.Uri): Promise<void> {
+export async function runExportCommand(
+  context: vscode.ExtensionContext, 
+  preferAuto = false, 
+  documentUri?: vscode.Uri,
+  testOutputPath?: string // NEW: For testing - bypasses dialog
+): Promise<void> {
   console.log('[DEBUG exportCommand] Starting export command...');
   console.log('[DEBUG exportCommand] preferAuto:', preferAuto);
+  console.log('[DEBUG exportCommand] testOutputPath:', testOutputPath);
   ErrorHandler.logInfo('Starting export command...');
 
   // Check export throttling
@@ -57,22 +63,56 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
 
     ErrorHandler.logInfo(`Found mermaid content: ${mermaidContent.length} characters`);
 
-    // Get export options from user
-    const exportOptions = await getExportOptions();
-    if (!exportOptions) {
-      return; // User cancelled
+    // Get export options from user (or derive from testOutputPath for testing)
+    let exportOptions: ExportOptions | null;
+    
+    if (testOutputPath) {
+      // TEST MODE: Derive format from output path extension
+      const ext = path.extname(testOutputPath).toLowerCase().slice(1);
+      
+      // Validate format
+      const validFormats: ExportFormat[] = ['svg', 'png', 'jpg', 'jpeg', 'pdf'];
+      if (!validFormats.includes(ext as ExportFormat)) {
+        throw new Error(`Invalid test output format: ${ext}. Must be one of: ${validFormats.join(', ')}`);
+      }
+      
+      // Normalize jpeg to jpg
+      const normalizedFormat = (ext === 'jpeg' ? 'jpg' : ext) as ExportFormat;
+      
+      console.log('[DEBUG exportCommand] Test mode - derived format:', normalizedFormat);
+      exportOptions = {
+        format: normalizedFormat,
+        theme: 'default' as MermaidTheme,
+        width: 1200,
+        height: 800,
+        backgroundColor: 'transparent'
+      };
+    } else {
+      // Normal mode: Ask user for format/theme
+      exportOptions = await getExportOptions();
+      if (!exportOptions) {
+        return; // User cancelled
+      }
     }
 
+    console.log('[DEBUG exportCommand] Creating FormatPreferenceManager...');
     // Determine output path. Persist per-file format choice and optionally auto-save.
     const formatPrefManager = new FormatPreferenceManager(context);
 
+    console.log('[DEBUG exportCommand] About to persist format preference...');
     // Persist the user's chosen format for this file
     await formatPrefManager.setFileFormatPreference(document.fileName, exportOptions.format);
+    console.log('[DEBUG exportCommand] Format preference persisted');
 
     let outputPath: string | null = null;
 
     console.log('[DEBUG exportCommand] Checking preferAuto flag:', preferAuto);
-    if (preferAuto) {
+    
+    // TEST MODE: If testOutputPath is provided, use it directly
+    if (testOutputPath) {
+      console.log('[DEBUG exportCommand] Using testOutputPath:', testOutputPath);
+      outputPath = testOutputPath;
+    } else if (preferAuto) {
       // Auto-generate smart name next to file (skip save dialog)
       console.log('[DEBUG exportCommand] preferAuto=true, generating smart name...');
       const outputDir = path.dirname(document.fileName);
@@ -90,15 +130,19 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
 
     exportOptions.outputPath = outputPath;
 
+    console.log('[DEBUG exportCommand] About to start withProgress...');
+
     // Select strategy and export with timeout monitoring
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
       title: `Exporting to ${exportOptions.format.toUpperCase()}...`,
       cancellable: false
     }, async (progress) => {
+      console.log('[DEBUG exportCommand] Inside withProgress callback');
       const timeoutManager = OperationTimeoutManager.getInstance();
       const operationId = `export-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       
+      console.log('[DEBUG exportCommand] Starting timeout monitoring...');
       // Start timeout monitoring
       timeoutManager.startOperation(
         operationId,
@@ -151,41 +195,55 @@ export async function runExportCommand(context: vscode.ExtensionContext, preferA
           }
         }
       );
+      console.log('[DEBUG exportCommand] Timeout monitoring started');
       try {
+        console.log('[DEBUG exportCommand] About to select strategy...');
         timeoutManager.updateProgress(operationId, 'Selecting export strategy...');
         
         const strategy = await selectBestStrategy(context);
+        console.log('[DEBUG exportCommand] Strategy selected:', strategy.name);
         ErrorHandler.logInfo(`Using strategy: ${strategy.name}`);
         
+        console.log('[DEBUG exportCommand] About to call strategy.export()...');
         timeoutManager.updateProgress(operationId, `Exporting with ${strategy.name}...`);
         
         const buffer = await strategy.export(mermaidContent, exportOptions);
+        console.log('[DEBUG exportCommand] Export completed, buffer size:', buffer.length);
         
+        console.log('[DEBUG exportCommand] About to write file to:', outputPath);
         timeoutManager.updateProgress(operationId, 'Saving file...');
         
         await fs.promises.writeFile(outputPath, buffer);
+        console.log('[DEBUG exportCommand] File written successfully');
         
         const stats = await fs.promises.stat(outputPath);
+        console.log('[DEBUG exportCommand] File stats:', stats.size, 'bytes');
         ErrorHandler.logInfo(`Export completed: ${outputPath} (${stats.size} bytes)`);
         
+        console.log('[DEBUG exportCommand] Completing operation...');
         // Mark operation as completed
         timeoutManager.completeOperation(operationId);
+        console.log('[DEBUG exportCommand] Operation marked complete');
         
-        // Show success message with actions
-        const action = await vscode.window.showInformationMessage(
-          `Mermaid diagram exported successfully to ${path.basename(outputPath)} (${formatBytes(stats.size)})`,
-          'Open File',
-          'Show in Explorer',
-          'Copy Path'
-        );
+        // Show success message with actions (skip in test mode)
+        if (!testOutputPath) {
+          const action = await vscode.window.showInformationMessage(
+            `Mermaid diagram exported successfully to ${path.basename(outputPath)} (${formatBytes(stats.size)})`,
+            'Open File',
+            'Show in Explorer',
+            'Copy Path'
+          );
 
-        if (action === 'Open File') {
-          await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(outputPath));
-        } else if (action === 'Show in Explorer') {
-          await vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(outputPath));
-        } else if (action === 'Copy Path') {
-          await vscode.env.clipboard.writeText(outputPath);
-          vscode.window.showInformationMessage('File path copied to clipboard');
+          if (action === 'Open File') {
+            await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(outputPath));
+          } else if (action === 'Show in Explorer') {
+            await vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(outputPath));
+          } else if (action === 'Copy Path') {
+            await vscode.env.clipboard.writeText(outputPath);
+            vscode.window.showInformationMessage('File path copied to clipboard');
+          }
+        } else {
+          console.log('[DEBUG exportCommand] Test mode - skipping success dialog');
         }
 
       } catch (error) {
@@ -322,6 +380,9 @@ async function getOutputPath(document: vscode.TextDocument, format: ExportFormat
     : vscode.Uri.file(path.join(path.dirname(document.fileName), defaultName));
 
   const dialogService = getDialogService();
+  console.log('[DEBUG getOutputPath] dialogService:', dialogService.constructor.name);
+  console.log('[DEBUG getOutputPath] Calling showSaveDialog with defaultUri:', defaultUri.fsPath);
+  
   const result = await dialogService.showSaveDialog({
     defaultUri,
     filters: {
@@ -330,6 +391,7 @@ async function getOutputPath(document: vscode.TextDocument, format: ExportFormat
     title: `Save ${format.toUpperCase()} file`
   });
 
+  console.log('[DEBUG getOutputPath] showSaveDialog result:', result?.fsPath);
   return result?.fsPath || null;
 }
 

@@ -6,10 +6,14 @@
  * - Auto-save/watch functionality
  * - CodeLens integration
  * - Onboarding flows
+ * - Complex diagram performance testing
+ *
+ * NOTE: Performance tests use _testExport for CI compatibility.
+ *       Batch tests use batchExport which requires dialog interaction (tested separately).
  *
  * @author Claude/Jorge
- * @version 1.0.0
- * @date 2025-10-10
+ * @version 1.0.1
+ * @date 2025-10-11
  */
 
 import * as assert from 'assert';
@@ -18,7 +22,6 @@ import * as path from 'path';
 import { FixtureManager, DiagramFixture } from '../helpers/fixture-manager';
 import { VSCodeTestHelper } from '../helpers/vscode-helpers';
 import { ExportValidator } from '../helpers/export-validator';
-import { skipInCI } from '../helpers/ci-helper';
 import { ExtensionSetup } from '../helpers/extension-setup';
 
 suite('Advanced Features E2E Tests', () => {
@@ -321,7 +324,7 @@ suite('Advanced Features E2E Tests', () => {
    * Priority: Medium
    */
   suite('TC-E2E-016: Complex Diagram Performance', () => {
-    skipInCI('should export very complex diagram within timeout', async function(this: Mocha.Context) {
+    test('should export very complex diagram within timeout', async function(this: Mocha.Context) {
       this.timeout(40000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('complex-perf', []);
@@ -334,24 +337,16 @@ suite('Advanced Features E2E Tests', () => {
         complexDiagram
       );
 
-      await vscodeHelper.openFile(diagramPath);
-
-      vscodeHelper.setupMockDialogs();
-      vscodeHelper.setDefaultMockResponse('Yes');
-
+      const outputPath = diagramPath.replace('.mmd', '.svg');
       const startTime = Date.now();
 
       // Execute export
       try {
-        await vscodeHelper.executeCommand('mermaidExportPro.exportCurrent');
-
-        // Wait for export
-        await vscodeHelper.sleep(15000);
+        await vscodeHelper.executeTestExport(outputPath, vscode.Uri.file(diagramPath));
 
         const duration = Date.now() - startTime;
 
         // Check if output was created
-        const outputPath = diagramPath.replace('.mmd', '.svg');
         const exists = await exportValidator.verifyFileExists(outputPath);
 
         if (exists) {
@@ -369,7 +364,7 @@ suite('Advanced Features E2E Tests', () => {
       }
     });
 
-    skipInCI('should handle extremely complex diagram gracefully', async function(this: Mocha.Context) {
+    test('should handle extremely complex diagram gracefully', async function(this: Mocha.Context) {
       this.timeout(30000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('extreme-complex', []);
@@ -382,14 +377,10 @@ suite('Advanced Features E2E Tests', () => {
         extremeDiagram
       );
 
-      await vscodeHelper.openFile(diagramPath);
-
-      vscodeHelper.setupMockDialogs();
-      vscodeHelper.setDefaultMockResponse('Yes');
+      const outputPath = diagramPath.replace('.mmd', '.svg');
 
       try {
-        await vscodeHelper.executeCommand('mermaidExportPro.exportCurrent');
-        await vscodeHelper.sleep(10000);
+        await vscodeHelper.executeTestExport(outputPath, vscode.Uri.file(diagramPath));
 
         // Either succeeds or fails gracefully
         assert.ok(true, 'Extreme complexity handled without crashing');
@@ -405,7 +396,7 @@ suite('Advanced Features E2E Tests', () => {
    * Priority: Medium
    */
   suite('TC-E2E-017: File Permission Errors', () => {
-    skipInCI('should handle read-only output directory', async function(this: Mocha.Context) {
+    test('should handle read-only output directory', async function(this: Mocha.Context) {
       this.timeout(20000);
 
       const workspaceDir = await fixtureManager.createTestWorkspace('readonly-test', []);
@@ -418,14 +409,10 @@ suite('Advanced Features E2E Tests', () => {
       // Note: Making a directory read-only is platform-dependent
       // This test will verify error handling even if we can't actually make it read-only
 
-      await vscodeHelper.openFile(diagramPath);
-
-      vscodeHelper.setupMockDialogs();
-      vscodeHelper.setDefaultMockResponse('OK');
+      const outputPath = diagramPath.replace('.mmd', '.svg');
 
       try {
-        await vscodeHelper.executeCommand('mermaidExportPro.exportCurrent');
-        await vscodeHelper.sleep(3000);
+        await vscodeHelper.executeTestExport(outputPath, vscode.Uri.file(diagramPath));
 
         // Should complete (either success or graceful error)
         assert.ok(true, 'File permission scenario handled');

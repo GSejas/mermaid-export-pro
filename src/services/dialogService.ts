@@ -47,6 +47,7 @@ let instance: IDialogService = new DialogService();
  * Get the dialog service instance
  */
 export function getDialogService(): IDialogService {
+  console.log('[DialogService] getDialogService() called, returning:', instance.constructor.name);
   return instance;
 }
 
@@ -54,7 +55,9 @@ export function getDialogService(): IDialogService {
  * Set a custom dialog service (for testing)
  */
 export function setDialogService(service: IDialogService): void {
+  console.log('[DialogService] setDialogService() called, setting:', service.constructor.name);
   instance = service;
+  console.log('[DialogService] Current instance is now:', instance.constructor.name);
 }
 
 /**

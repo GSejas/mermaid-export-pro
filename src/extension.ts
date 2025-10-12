@@ -262,6 +262,33 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
+  // TEST-ONLY command: Export with explicit output path (bypasses all dialogs)
+  // This command is ONLY for integration testing - not exposed in package.json
+  // Usage: vscode.commands.executeCommand('mermaidExportPro._testExport', undefined, '/path/to/output.svg')
+  const testExportCommand = vscode.commands.registerCommand(
+    'mermaidExportPro._testExport',
+    async (resource: vscode.Uri | undefined, outputPath: string) => {
+      try {
+        console.log('[TEST COMMAND] _testExport called');
+        console.log('[TEST COMMAND] resource:', resource);
+        console.log('[TEST COMMAND] outputPath:', outputPath);
+        console.log('[TEST COMMAND] outputPath type:', typeof outputPath);
+        console.log('[TEST COMMAND] outputPath is truthy:', !!outputPath);
+        
+        if (!outputPath || typeof outputPath !== 'string') {
+          throw new Error('_testExport requires explicit outputPath parameter');
+        }
+        
+        console.log('[TEST COMMAND] Calling runExportCommand with testOutputPath:', outputPath);
+        await runExportCommand(context, false, resource, outputPath);
+        console.log('[TEST COMMAND] runExportCommand completed');
+      } catch (error) {
+        console.log('[TEST COMMAND] Error:', error);
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Test export failed'), 'Test Export');
+      }
+    }
+  );
+
   // Register all commands
   context.subscriptions.push(
     exportCurrentCommand,
@@ -278,6 +305,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     cycleThemeCommand,
     showExportOptionsCommand,
     exportFileCommand,
+    testExportCommand, // Add test command to subscriptions
     diagnosticsCommand,
     healthCheckCommand
   );

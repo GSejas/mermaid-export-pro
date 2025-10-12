@@ -1,6 +1,30 @@
 import * as vscode from 'vscode';
 import { MermaidExportError, ErrorInfo } from '../types';
 
+/**
+ * Provides a centralized mechanism for handling and logging errors within the VS Code extension.
+ *
+ * This is a static utility class that manages a dedicated VS Code `OutputChannel` for detailed logging.
+ * It differentiates between generic `Error` types and custom `MermaidExportError` to provide
+ * tailored user feedback and recovery options. It can display error messages to the user with
+ * actionable buttons, such as installing dependencies, opening documentation, or reporting an issue on GitHub.
+ *
+ * All methods are static, so this class should not be instantiated.
+ *
+ * @example
+ * try {
+ *   // Some operation that might fail
+ *   throw new Error('Something went wrong');
+ * } catch (error) {
+ *   if (error instanceof Error) {
+ *     ErrorHandler.handleError(error, 'ExportOperation');
+ *   }
+ * }
+ *
+ * @see {@link vscode.OutputChannel}
+ * @see {@link vscode.window.showErrorMessage}
+ * @see {@link MermaidExportError}
+ */
 export class ErrorHandler {
   private static outputChannel: vscode.OutputChannel;
 

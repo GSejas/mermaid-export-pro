@@ -1,4 +1,24 @@
-
+/**
+ * Implements the `ExportStrategy` interface by utilizing the `@mermaid-js/mermaid-cli` (mmdc)
+ * command-line tool. This strategy is designed for server-side or environments where spawning
+ * child processes is permissible.
+ *
+ * The export process involves the following steps:
+ * 1. A temporary input file with the Mermaid diagram content is created.
+ * 2. A temporary output file path is generated based on the desired format.
+ * 3. The `mmdc` command is invoked as a child process, with arguments constructed from the
+ *    provided `ExportOptions` (e.g., theme, dimensions, background color).
+ * 4. The CLI tool reads the input file and writes the converted diagram to the output file.
+ * 5. The content of the output file is read into a `Buffer` and returned.
+ * 6. Both temporary files are cleaned up, regardless of whether the export succeeded or failed.
+ *
+ * This approach is particularly robust for complex diagrams and is the required method for
+ * generating PDF outputs. It also includes platform-specific optimizations, such as attempting
+ * to locate a system-installed Chrome/Edge on Windows to avoid issues with bundled Puppeteer/Chromium
+ * installations.
+ *
+ * @implements {ExportStrategy}
+ */
 
 
 import * as fs from 'fs';
@@ -11,7 +31,18 @@ import { ErrorHandler } from '../ui/errorHandler';
 
 
 
+/**
+ * Implements the `ExportStrategy` interface using the `@mermaid-js/mermaid-cli` (mmdc) command-line tool.
+ *
+ * This strategy works by writing the Mermaid diagram content to a temporary file
+ * and then invoking the `mmdc` executable as a separate process to perform the conversion.
+ * It is suitable for environments where spawning child processes is allowed and can be more
+ * robust for complex diagrams or specific output formats like PDF.
+ *
+ * @implements {ExportStrategy}
+ */
 export class CLIExportStrategy implements ExportStrategy {
+  
   readonly name = 'CLI Export Strategy';
   private readonly cliCommand = 'mmdc';
 

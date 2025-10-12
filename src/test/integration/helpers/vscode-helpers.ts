@@ -10,6 +10,75 @@
  */
 
 import * as vscode from 'vscode';
+import { IDialogService, setDialogService, resetDialogService } from '../../../services/dialogService';
+
+/**
+ * Mock implementation of IDialogService for testing
+ */
+class MockDialogService implements IDialogService {
+  constructor(private helper: VSCodeTestHelper) {}
+
+  async showSaveDialog(options?: vscode.SaveDialogOptions): Promise<vscode.Uri | undefined> {
+    console.log('[TEST] MockDialogService.showSaveDialog called!');
+    console.log('[TEST] MockDialogService - helper:', this.helper.constructor.name);
+    console.log('[TEST] MockDialogService - mockPath:', this.helper['mockSaveDialogPath']);
+    console.log('[TEST] MockDialogService - defaultUri:', options?.defaultUri?.fsPath);
+    
+    if (this.helper['mockSaveDialogPath']) {
+      console.log('[TEST] Returning mock path:', this.helper['mockSaveDialogPath']);
+      return vscode.Uri.file(this.helper['mockSaveDialogPath']);
+    }
+    // If no mock path set, generate one from the defaultUri
+    if (options?.defaultUri) {
+      console.log('[TEST] Returning defaultUri:', options.defaultUri.fsPath);
+      return options.defaultUri;
+    }
+    // Otherwise return undefined (user cancelled)
+    console.log('[TEST] Returning undefined (cancelled)');
+    return undefined;
+  }
+
+  async showInformationMessage(message: string, ...items: string[]): Promise<string | undefined> {
+    const response = this.helper['mockResponses'].get(message) || this.helper['mockResponses'].get('*');
+    return response !== undefined ? response : (items && items.length ? items[0] : undefined);
+  }
+
+  async showErrorMessage(message: string, ...items: string[]): Promise<string | undefined> {
+    const response = this.helper['mockResponses'].get(message) || this.helper['mockResponses'].get('*');
+    return response !== undefined ? response : (items && items.length ? items[0] : undefined);
+  }
+
+  async showWarningMessage(message: string, ...items: string[]): Promise<string | undefined> {
+    const response = this.helper['mockResponses'].get(message) || this.helper['mockResponses'].get('*');
+    return response !== undefined ? response : (items && items.length ? items[0] : undefined);
+  }
+
+  async showQuickPick<T extends vscode.QuickPickItem>(
+    items: T[] | Thenable<T[]>,
+    options?: vscode.QuickPickOptions
+  ): Promise<T | undefined> {
+    const resolved = Array.isArray(items) ? items : await items;
+    const label = options?.placeHolder || '*';
+    const response = this.helper['mockResponses'].get(label);
+
+    if (response !== undefined) {
+      // If response is a number, return that index
+      if (typeof response === 'number') {
+        return resolved[response];
+      }
+      // If response is a string, find matching label
+      if (typeof response === 'string') {
+        return resolved.find((item: any) =>
+          (typeof item === 'string' ? item : item.label) === response
+        );
+      }
+      return response;
+    }
+
+    // Default: return first item
+    return resolved && resolved.length ? resolved[0] : undefined;
+  }
+}
 
 export class VSCodeTestHelper {
   private originalShowInformation: any;
@@ -19,12 +88,22 @@ export class VSCodeTestHelper {
   private originalShowSaveDialog: any;
   private mockResponses: Map<string, any> = new Map();
   private mockSaveDialogPath: string | undefined;
+  private mockDialogService: MockDialogService | null = null;
 
   /**
    * Execute a VS Code command
    */
   async executeCommand<T = any>(command: string, ...args: any[]): Promise<T> {
     return await vscode.commands.executeCommand<T>(command, ...args);
+  }
+
+  /**
+   * Execute test export command (bypasses all dialogs)
+   * @param outputPath - Full path where the export should be saved
+   * @param resource - Optional resource URI (defaults to active editor)
+   */
+  async executeTestExport(outputPath: string, resource?: vscode.Uri): Promise<void> {
+    await this.executeCommand('mermaidExportPro._testExport', resource, outputPath);
   }
 
   /**
@@ -48,6 +127,7 @@ export class VSCodeTestHelper {
    * Set up mock responses for VS Code dialogs
    */
   setupMockDialogs(): void {
+    console.log('[TEST] setupMockDialogs() called');
     this.originalShowInformation = vscode.window.showInformationMessage;
     this.originalShowQuickPick = vscode.window.showQuickPick;
     this.originalShowWarning = (vscode.window as any).showWarningMessage;
@@ -120,6 +200,13 @@ export class VSCodeTestHelper {
       console.log('[TEST] Returning undefined (cancelled)');
       return undefined;
     };
+
+    // Set up mock dialog service
+    console.log('[TEST] Creating MockDialogService...');
+    this.mockDialogService = new MockDialogService(this);
+    console.log('[TEST] Calling setDialogService with MockDialogService...');
+    setDialogService(this.mockDialogService);
+    console.log('[TEST] setupMockDialogs() complete');
   }
 
   /**
@@ -164,6 +251,12 @@ export class VSCodeTestHelper {
     }
     this.mockResponses.clear();
     this.mockSaveDialogPath = undefined;
+    
+    // Reset dialog service
+    if (this.mockDialogService) {
+      resetDialogService();
+      this.mockDialogService = null;
+    }
   }
 
   /**
