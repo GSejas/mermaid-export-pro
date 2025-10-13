@@ -36,6 +36,7 @@ jobs:
       - name: Build VSIX package
         run: |
           npm run package
+          npx @vscode/vsce package
           VSIX_FILE=$(ls *.vsix | head -n 1)
           echo "VSIX_PATH=$VSIX_FILE" >> $GITHUB_ENV
           echo "VSIX_NAME=$(basename $VSIX_FILE)" >> $GITHUB_ENV
