@@ -36,8 +36,10 @@ jobs:
       - name: Build VSIX package
         run: |
           npm run package
-          echo "VSIX_PATH=$(ls *.vsix)" >> $GITHUB_ENV
-          echo "VSIX_NAME=$(basename *.vsix)" >> $GITHUB_ENV
+          VSIX_FILE=$(ls *.vsix | head -n 1)
+          echo "VSIX_PATH=$VSIX_FILE" >> $GITHUB_ENV
+          echo "VSIX_NAME=$(basename $VSIX_FILE)" >> $GITHUB_ENV
+          echo "Found VSIX: $VSIX_FILE"
 
       - name: Extract version from tag
         id: version
