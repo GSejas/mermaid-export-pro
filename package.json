@@ -112,6 +112,21 @@
         "command": "mermaidExportPro.healthCheck",
         "title": "Quick Health Check",
         "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.showTelemetry",
+        "title": "Show Usage Statistics",
+        "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.exportTelemetry",
+        "title": "Export Usage Data (for bug reports)",
+        "category": "Mermaid Export Pro"
+      },
+      {
+        "command": "mermaidExportPro.clearTelemetry",
+        "title": "Clear Usage Data",
+        "category": "Mermaid Export Pro"
       }
     ],
     "menus": {
@@ -259,6 +274,11 @@
           "type": "boolean",
           "default": false,
           "description": "Organize exported files into subfolders by format (e.g., png/, svg/, pdf/)"
+        },
+        "mermaidExportPro.telemetry.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "**[OPT-IN]** Help improve Mermaid Export Pro by sharing anonymous usage data.\n\n- ✅ **Anonymous**: No personal information collected\n- 🔒 **Local Storage**: Data stays on your machine\n- 📊 **Reviewable**: Export and review your data anytime\n- 🗑️ **Deletable**: Clear data whenever you want\n\n**What's collected:**\n- Export formats and strategies used\n- Performance metrics (export times)\n- Error types (sanitized, no personal data)\n- Command usage patterns\n\n**What's NOT collected:**\n- File names or paths\n- Diagram content\n- Personal information\n- IP addresses\n\nYou can review your data at any time: `Mermaid Export Pro: Show Usage Statistics`"
         }
       }
     }

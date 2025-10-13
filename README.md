@@ -1,7 +1,7 @@
 # Mermaid Export Pro
 
 
-[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.5-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
+[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.6-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
 
 ![](media/mermaid-lens_temp_128.gif)
 
@@ -112,17 +112,49 @@ This extension contributes the following settings:
 3. Or use Command Palette: `Ctrl+Shift+P` → "Mermaid Export Pro"
 
 ### Commands
-- **Export Current**: Export active file diagrams
-- **Export Folder...**: Export all diagrams in folder
+- **Export Current Diagram**: Export the active mermaid file
+- **Export As...**: Choose format and location interactively
+- **Quick Export**: Fast export with remembered preferences
+- **Export All Diagrams in File**: Extract and export all mermaid blocks from markdown
+- **Export Folder...**: Batch export all diagrams in a folder
 - **Toggle Auto Export**: Enable/disable auto-export on save
-- **Set Up Export Tools**: Configure CLI tools
+- **Show Export Log**: View export history and debug information
+- **Set Up Export Tools**: Install and configure CLI dependencies
+- **Switch Theme**: Cycle through mermaid themes
+- **Show Diagnostics & Health Report**: Complete system health check
+- **Show Usage Statistics**: View your extension usage data (opt-in telemetry)
 - **Debug Export**: Run comprehensive test suite with quality comparison
-- **Export As**: Choose specific format and options for current file
 
 ### Context Menus
-- Right-click `.mmd` files → Export Current
-- Right-click folders → Export Folder...
+- Right-click `.mmd` or `.md` files → **Quick Export** / **Export As...**
+- Right-click folders → **Export Folder...**
 - CodeLens buttons above mermaid blocks in markdown
+
+## Privacy & Telemetry
+
+### Opt-In Usage Statistics
+
+Mermaid Export Pro includes **optional, opt-in** anonymous usage statistics to help improve the extension:
+
+**What's Collected (when enabled):**
+- ✅ Export formats and strategies used
+- ✅ Performance metrics (export times)
+- ✅ Error types (sanitized, no personal info)
+- ✅ Command usage patterns
+
+**What's NOT Collected:**
+- ❌ File names or paths
+- ❌ Diagram content
+- ❌ Personal information
+- ❌ IP addresses
+
+**Your Control:**
+- 🔒 **Disabled by default** - You must opt-in
+- 📊 **Review anytime**: Command: `Show Usage Statistics`
+- 📤 **Export your data**: Command: `Export Usage Data`
+- 🗑️ **Clear anytime**: Command: `Clear Usage Data`
+
+Enable in settings: `mermaidExportPro.telemetry.enabled`
 
 ## Release Notes
 

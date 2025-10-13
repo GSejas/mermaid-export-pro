@@ -2,21 +2,96 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [Unreleased] - 2025-10-12
+
+### ✨ New Features
+
+#### 📊 Privacy-First Telemetry System
+
+- **Opt-In Anonymous Usage Tracking**: Collect anonymous usage statistics to improve the extension (disabled by default)
+- **Three New Commands**:
+  - `mermaidExportPro.showTelemetry` - View telemetry summary in a modal
+  - `mermaidExportPro.exportTelemetry` - Export telemetry data as JSON for diagnostics
+  - `mermaidExportPro.clearTelemetry` - Clear all collected telemetry data
+- **Privacy-First Design**:
+  - No personally identifiable information (PII) collected
+  - File paths, emails, and user names automatically sanitized
+  - Local storage only (no external transmission)
+  - User has full control (view, export, delete)
+- **What's Tracked** (when enabled):
+  - Export format usage (png, svg, pdf)
+  - Export strategy success rates (CLI vs Web)
+  - Error types and frequencies
+  - Command usage patterns
+  - Performance metrics (export duration)
+
+#### 🧪 Comprehensive Test Coverage
+
+- **Unit Tests**: 20 comprehensive tests for TelemetryService
+  - Singleton pattern validation
+  - Privacy sanitization verification
+  - Data persistence and export
+  - Configuration handling
+- **Integration Tests**: 15+ tests for telemetry commands
+  - Command workflows end-to-end
+  - Settings integration
+  - Privacy validation
+- **All Tests Passing**: 100% test success rate for telemetry functionality
+
+### 📚 Documentation
+
+#### New Documentation
+
+- **`docs/PRIVACY-TELEMETRY.md`**: Comprehensive privacy policy and data collection details
+- **`docs/developers/testing/TELEMETRY-TEST-COVERAGE.md`**: Complete test coverage documentation
+- **`TELEMETRY-COMPLETE.md`**: Implementation summary and usage guide
+
+#### Updated Documentation
+
+- **README.md**: Added telemetry section with privacy information
+- **docs/users/USER-GUIDE.md**: Updated command reference with telemetry commands
+- **docs/developers/README.md**: Enhanced developer documentation structure
+
+### 🔧 Configuration
+
+#### New Settings
+
+```json
+{
+  "mermaidExportPro.telemetry.enabled": {
+    "type": "boolean",
+    "default": false,
+    "description": "Enable anonymous telemetry collection for improving the extension"
+  }
+}
+```
+
+### 🎯 Developer Experience
+
+- **Better Folder Structure**: Reorganized `docs/developers/` into logical categories (architecture, guides, testing, decisions)
+- **Navigation Index**: Added comprehensive README for developer documentation
+- **Test Infrastructure**: Enhanced test framework with proper mocking for ESM modules
+
+---
+
 ## [1.0.6] - 2025-08-28
 
 ### 🐛 Critical Fixes
 
 #### Auto-Save Functionality Restored
+
 - **Fixed Right-Click "Auto Save"**: Resolved issue where right-click "Quick Export" was incorrectly showing save dialog instead of auto-generating filenames
 - **Command Consolidation**: Removed redundant `exportMarkdown` command that was duplicating `exportCurrent` functionality
 - **Proper Auto-Naming**: Right-click auto-save now correctly uses smart filename generation next to source files
 
 #### Code Cleanup and Optimization
+
 - **Removed Dead Commands**: Eliminated unused `mermaidExportPro.exportMarkdown` command from codebase
 - **Updated Documentation**: Cleaned up references to removed commands in CLAUDE.md and project documentation
 - **Command Analysis**: Comprehensive audit identified and removed redundant functionality
 
 ### 🔧 Technical Improvements
+
 - **Streamlined Command Set**: Reduced command complexity while maintaining all functionality
 - **Better Architecture**: Cleaner separation between dialog-based and auto-save export modes
 - **Documentation Updates**: Updated internal documentation to reflect command consolidation
@@ -26,6 +101,7 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 ### 🚀 Major Quality and Testing Enhancements
 
 #### Comprehensive Testing Infrastructure
+
 - **Debug Command Expansion**: Added testing for all 10 mermaid diagram types (flowchart, sequence, class, state, entity-relationship, user-journey, gantt, pie, gitgraph, mindmap)
 - **Test Matrix Coverage**: 60 test combinations (10 diagrams × 2 complexity × 3 formats × 2 strategies)
 - **Quality Comparison**: Side-by-side CLI vs Web export validation with detailed metrics

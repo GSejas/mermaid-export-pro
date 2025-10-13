@@ -38,9 +38,9 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 |---------|-------------|---------------|
 | **Export Current Diagram** | Export the active Mermaid file | Command Palette: `Mermaid Export Pro: Export Current Diagram` |
 | **Export As...** | Choose format and location interactively | Right-click menu, Command Palette |
-| **Export Mermaid (Auto-save)** | Quick export with default settings | Right-click menu (primary option) |
-| **Mermaid Export Pro - Export Folder** | Export multiple files at once | Command Palette: `Mermaid Export Pro: Mermaid Export Pro - Export Folder` |
-| **Export Markdown Diagrams** | Extract and export diagrams from Markdown | Command Palette: `Mermaid Export Pro: Export Markdown Diagrams` |
+| **Quick Export** | Fast export with remembered preferences | Right-click menu, status bar |
+| **Export Folder...** | Batch export all diagrams in a folder | Command Palette: `Mermaid Export Pro: Export Folder...` |
+| **Export All Diagrams in File** | Extract and export all mermaid blocks from markdown | Command Palette: `Mermaid Export Pro: Export All Diagrams in File` |
 
 ### Utility Commands
 
@@ -49,9 +49,20 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 | **Toggle Auto Export** | Enable/disable automatic export on save | Command Palette: `Mermaid Export Pro: Toggle Auto Export` |
 | **Show Export Log** | View export history and debug information | Command Palette: `Mermaid Export Pro: Show Export Log` |
 | **Set Up Export Tools** | Install and configure CLI dependencies | Command Palette: `Mermaid Export Pro: Set Up Export Tools` |
-| **Switch Theme** | Switch between available themes | Command Palette: `Mermaid Export Pro: Switch Theme` |
+| **Switch Theme** | Cycle through available mermaid themes | Command Palette: `Mermaid Export Pro: Switch Theme` |
 | **Show Export Options** | View current configuration | Command Palette: `Mermaid Export Pro: Show Export Options` |
+| **Show Diagnostics & Health Report** | Complete system diagnostic | Command Palette: `Mermaid Export Pro: Show Diagnostics & Health Report` |
 | **Debug: Export Hardcoded Diagram** | Test export functionality | Command Palette: `Mermaid Export Pro: Debug: Export Hardcoded Diagram` |
+
+### Telemetry Commands (Optional)
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| **Show Usage Statistics** | View your anonymous usage data | Command Palette: `Mermaid Export Pro: Show Usage Statistics` |
+| **Export Usage Data** | Export data for bug reports/analysis | Command Palette: `Mermaid Export Pro: Export Usage Data (for bug reports)` |
+| **Clear Usage Data** | Delete all collected telemetry | Command Palette: `Mermaid Export Pro: Clear Usage Data` |
+
+> **Privacy Note**: Telemetry is opt-in and disabled by default. All data is stored locally and you have full control. Enable in settings: `mermaidExportPro.telemetry.enabled`
 
 ## 🔄 User Flows
 

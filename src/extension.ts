@@ -22,6 +22,7 @@ import { MermaidCodeLensProvider } from './providers/mermaidCodeLensProvider';
 import { MermaidHoverProvider } from './providers/mermaidHoverProvider';
 import { FormatPreferenceManager } from './services/formatPreferenceManager';
 import { BackgroundHealthMonitor } from './services/backgroundHealthMonitor';
+import { TelemetryService } from './services/telemetryService';
 
 // Extension state
 let configManager: ConfigManager;
@@ -31,6 +32,7 @@ let statusBarManager: StatusBarManager;
 let themeStatusBarManager: ThemeStatusBarManager;
 let formatPreferenceManager: FormatPreferenceManager;
 let backgroundHealthMonitor: BackgroundHealthMonitor;
+let telemetryService: TelemetryService;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('[mermaidExportPro] Activating extension...');
@@ -45,6 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
     themeStatusBarManager = new ThemeStatusBarManager(context);
     formatPreferenceManager = new FormatPreferenceManager(context);
     backgroundHealthMonitor = BackgroundHealthMonitor.getInstance(context);
+    telemetryService = TelemetryService.getInstance(context);
 
   // Register commands
   console.log('[mermaidExportPro] registering commands');
@@ -289,6 +292,66 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
+  // Show telemetry summary command
+  const showTelemetryCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.showTelemetry',
+    async () => {
+      try {
+        await telemetryService.showSummary();
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Show telemetry failed'), 'Telemetry');
+      }
+    }
+  );
+
+  // Export telemetry data command
+  const exportTelemetryCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.exportTelemetry',
+    async () => {
+      try {
+        const exportPath = await telemetryService.exportData();
+        const choice = await vscode.window.showInformationMessage(
+          `Usage data exported to: ${exportPath}`,
+          'Open File',
+          'Open Folder',
+          'Copy Path'
+        );
+        
+        if (choice === 'Open File') {
+          const doc = await vscode.workspace.openTextDocument(exportPath);
+          await vscode.window.showTextDocument(doc);
+        } else if (choice === 'Open Folder') {
+          await vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(exportPath));
+        } else if (choice === 'Copy Path') {
+          await vscode.env.clipboard.writeText(exportPath);
+          vscode.window.showInformationMessage('Path copied to clipboard!');
+        }
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export telemetry failed'), 'Telemetry');
+      }
+    }
+  );
+
+  // Clear telemetry data command
+  const clearTelemetryCommand = vscode.commands.registerCommand(
+    'mermaidExportPro.clearTelemetry',
+    async () => {
+      try {
+        const choice = await vscode.window.showWarningMessage(
+          'Are you sure you want to clear all usage data?',
+          { modal: true },
+          'Clear Data'
+        );
+        
+        if (choice === 'Clear Data') {
+          await telemetryService.clearData();
+        }
+      } catch (error) {
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Clear telemetry failed'), 'Telemetry');
+      }
+    }
+  );
+
   // Register all commands
   context.subscriptions.push(
     exportCurrentCommand,
@@ -307,7 +370,10 @@ function registerCommands(context: vscode.ExtensionContext): void {
     exportFileCommand,
     testExportCommand, // Add test command to subscriptions
     diagnosticsCommand,
-    healthCheckCommand
+    healthCheckCommand,
+    showTelemetryCommand,
+    exportTelemetryCommand,
+    clearTelemetryCommand
   );
 
   // Listen for configuration changes
@@ -665,9 +731,17 @@ async function showSaveDialog(document: vscode.TextDocument, format: ExportForma
 }
 
 export function deactivate() {
+  console.log('[mermaidExportPro] Deactivating extension...');
+  
   ErrorHandler.dispose();
   disposeAutoExport();
-  console.log('Mermaid Export Pro extension deactivated');
+  
+  // Save telemetry data before shutdown
+  if (telemetryService) {
+    telemetryService.dispose();
+  }
+  
+  console.log('[mermaidExportPro] Extension deactivated');
 }
 
 /**
