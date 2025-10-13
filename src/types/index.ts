@@ -5,6 +5,7 @@
 export type ExportFormat = 'svg' | 'png' | 'pdf' | 'webp' | 'jpg' | 'jpeg';
 export type MermaidTheme = 'default' | 'dark' | 'forest' | 'neutral';
 export type ExportStrategyType = 'cli' | 'web' | 'auto';
+export type AutoNamingMode = 'versioned' | 'overwrite';
 
 export interface ExportOptions {
   format: ExportFormat;
@@ -61,6 +62,7 @@ export interface ConfigurationManager {
   getDefaultWidth(): number;
   getDefaultHeight(): number;
   getBackgroundColor(): string;
+  getAutoNamingMode(): AutoNamingMode;
 }
 
 export interface FileProcessor {

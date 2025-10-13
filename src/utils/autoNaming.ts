@@ -7,16 +7,58 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
-import { ExportFormat } from '../types';
+import { ExportFormat, AutoNamingMode } from '../types';
 
 export interface AutoNameOptions {
   baseName: string;
   format: ExportFormat;
   content: string;
   outputDirectory: string;
+  mode?: AutoNamingMode;
 }
 
 export class AutoNaming {
+  /**
+   * Generate filename based on configured naming mode
+   * Routes to appropriate naming strategy based on mode:
+   * - versioned: diagram-01-a4b2c8ef.svg (default)
+   * - overwrite: diagram1.svg
+   */
+  static async generateFileName(options: AutoNameOptions): Promise<string> {
+    const mode = options.mode || 'versioned';
+
+    switch (mode) {
+      case 'overwrite':
+        return this.generateOverwriteName(options);
+      case 'versioned':
+      default:
+        return this.generateSmartName(options);
+    }
+  }
+
+  /**
+   * Generate simple overwrite filename
+   * Format: ${baseName}${diagramNumber}.${format}
+   * Example: diagram1.svg
+   * Note: This will overwrite existing files with the same name
+   */
+  private static async generateOverwriteName(options: AutoNameOptions): Promise<string> {
+    const { baseName, format, outputDirectory } = options;
+
+    // Find the diagram number from the base name
+    // diagram1 -> 1, architecture-flow2 -> 2, etc.
+    const numberMatch = baseName.match(/(\d+)$/);
+    const diagramNumber = numberMatch ? numberMatch[1] : '1';
+
+    // Remove any trailing numbers and separators from baseName
+    const cleanBaseName = baseName.replace(/[-_]?\d+$/, '');
+
+    // Build simple filename: diagram1.svg
+    const fileName = `${cleanBaseName}${diagramNumber}.${format}`;
+
+    return path.join(outputDirectory, fileName);
+  }
+
   /**
    * Generate smart filename with sequence and content hash
    * Format: ${baseName}-${sequence}-${hash8}.${format}

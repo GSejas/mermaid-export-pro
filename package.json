@@ -2,7 +2,7 @@
   "name": "mermaid-export-pro",
   "displayName": "Mermaid Export Pro",
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publisher": "GSejas",
   "icon": "media/icon.png",
   "repository": {
@@ -274,6 +274,19 @@
           "type": "boolean",
           "default": false,
           "description": "Organize exported files into subfolders by format (e.g., png/, svg/, pdf/)"
+        },
+        "mermaidExportPro.autoNaming.mode": {
+          "type": "string",
+          "enum": [
+            "versioned",
+            "overwrite"
+          ],
+          "default": "versioned",
+          "markdownDescription": "**File naming strategy for exported diagrams:**\n\n- `versioned` **(default)**: Create new file with sequence and hash (`diagram-01-a4b2c8ef.svg`)\n  - ✅ Preserves export history\n  - ✅ Content-based deduplication\n  - ✅ Safe for version control\n\n- `overwrite`: Overwrite existing file with simple name (`diagram1.svg`)\n  - ✅ Consistent filenames for presentations\n  - ✅ No duplicate files\n  - ⚠️ Previous exports are replaced\n\n**Use Case:** Enable `overwrite` mode for presentations (Marp, reveal.js) that need consistent asset paths.",
+          "enumDescriptions": [
+            "Create versioned exports with sequence and hash (diagram-01-a4b2c8ef.svg) - preserves history",
+            "Overwrite with simple name (diagram1.svg) - for presentations with fixed asset paths"
+          ]
         },
         "mermaidExportPro.telemetry.enabled": {
           "type": "boolean",
