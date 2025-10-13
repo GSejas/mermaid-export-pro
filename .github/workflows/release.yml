@@ -27,8 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Xvfb (for integration tests)
+        run: sudo apt-get install -y xvfb
+
       - name: Run tests
-        run: npm test
+        run: xvfb-run -a npm test
 
       - name: Build VSIX package
         run: |
