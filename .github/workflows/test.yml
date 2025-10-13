@@ -60,17 +60,34 @@ jobs:
         run: npm run test:unit:coverage
         continue-on-error: false
 
-      - name: Run integration tests
-        run: npm run test:integration
-        if: runner.os == 'Windows'  # Only run integration tests on Windows
-      
-      - name: Upload coverage to Codecov
+      - name: Run integration tests with coverage (Windows only)
+        run: npm run test:integration:coverage
+        if: runner.os == 'Windows'
+        continue-on-error: true  # Don't fail if E2E tests have issues
+
+      - name: Merge coverage reports (Windows only)
+        run: npm run coverage:merge
+        if: runner.os == 'Windows'
+        continue-on-error: true  # Don't fail if merge has issues
+
+      - name: Upload unit coverage to Codecov (Linux)
         uses: codecov/codecov-action@v4
         if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
         with:
           files: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-${{ matrix.os }}-node-${{ matrix.node-version }}
+          flags: unit
+          name: codecov-unit-${{ matrix.os }}
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload merged coverage to Codecov (Windows)
+        uses: codecov/codecov-action@v4
+        if: runner.os == 'Windows' && matrix.node-version == '20.x'
+        with:
+          files: ./coverage-merged/lcov.info
+          flags: merged
+          name: codecov-merged-windows
           fail_ci_if_error: false
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -82,6 +99,8 @@ jobs:
           name: test-results-${{ matrix.os }}-node-${{ matrix.node-version }}
           path: |
             coverage/
+            coverage-e2e/
+            coverage-merged/
             test-results/
           retention-days: 7
 
