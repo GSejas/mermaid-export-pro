@@ -1,7 +1,6 @@
 # Mermaid Export Pro
 
-
-[![Build](https://img.shields.io/badge/Build-passing-brightgreen?style=flat)](#build-status) [![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=flat)](#test-coverage) [![Version](https://img.shields.io/badge/Version-v1.0.6-blue?style=flat)](#version) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](#license)
+[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.7-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.7) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
 ![](media/mermaid-lens_temp_128.gif)
 
@@ -156,9 +155,51 @@ Mermaid Export Pro includes **optional, opt-in** anonymous usage statistics to h
 
 Enable in settings: `mermaidExportPro.telemetry.enabled`
 
+## Quality Assurance
+
+### Automated Testing & CI/CD
+
+[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro)
+
+**Test Coverage:** ~46% (343+ unit tests + 29 E2E tests)
+
+- ✅ **Continuous Integration**: GitHub Actions running on every commit
+- ✅ **Multi-Platform Testing**: Automated tests on Windows and Linux
+- ✅ **Unit Test Suite**: 343+ tests covering commands, strategies, services, and UI
+- ✅ **E2E Integration Tests**: 29 tests validating real VS Code workflows
+- ✅ **Coverage Merge Pipeline**: Combined unit + E2E coverage tracking
+- ✅ **Code Quality**: ESLint + TypeScript strict mode
+- ✅ **Automated Builds**: VSIX package generation on every release
+
+**View Test Results**: [GitHub Actions](https://github.com/GSejas/mermaid-export-pro/actions)
+**View Coverage Report**: [Codecov](https://codecov.io/gh/GSejas/mermaid-export-pro)
+
 ## Release Notes
 
-### 1.0.5 (Latest)
+### 1.0.7 (Latest)
+
+**Command Naming Improvements & Test Infrastructure:**
+
+- **Better Command Names**: Improved clarity and consistency
+  - "Auto Save" → "Quick Export" (clearer intent)
+  - "Batch Export" → "Export Folder..." (more descriptive)
+  - "Setup Export Tools" → "Set Up Export Tools" (correct grammar)
+  - "Cycle Mermaid Theme" → "Switch Theme" (simpler)
+- **CI/CD Coverage Pipeline**: Merged unit + E2E coverage in GitHub Actions
+- **Test Infrastructure**: Fixed TypeScript compilation and ESM module resolution
+- **Documentation**: Comprehensive testing and architecture documentation
+- **Technical Debt**: Documented extension test refactoring for v1.0.8
+
+### 1.0.6
+
+**Testing & Coverage Improvements:**
+
+- Coverage merge pipeline combining unit and E2E test results
+- 343+ unit tests with Vitest
+- 29 E2E integration tests
+- ~46% combined test coverage
+
+### 1.0.5
 
 **Major Quality and Testing Improvements:**
 

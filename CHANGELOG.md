@@ -4,6 +4,38 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ## [1.0.7] - 2025-10-12
 
+### ✨ Improvements
+
+#### 📝 Command Naming Improvements
+
+- **Better Command Names**: Improved clarity and consistency for all user-facing commands
+  - `mermaidExportPro.exportFile`: "Auto Save" → **"Quick Export"** (clearer intent)
+  - `mermaidExportPro.batchExport`: "Batch Export" → **"Export Folder..."** (more descriptive)
+  - `mermaidExportPro.runSetup`: "Setup Export Tools" → **"Set Up Export Tools"** (correct grammar)
+  - `mermaidExportPro.cycleTheme`: "Cycle Mermaid Theme" → **"Switch Theme"** (simpler)
+  - `mermaidExportPro.exportAs`: Removed redundant "Export Mermaid Pro -" prefix
+- **Impact**: More intuitive command palette experience and better discoverability
+
+#### 🔧 CI/CD & Test Infrastructure
+
+- **Coverage Merge Pipeline**: Integrated unit + E2E coverage reporting in GitHub Actions
+  - Windows: Full merged coverage (~46%) uploaded to Codecov
+  - Linux: Unit coverage (~42%) uploaded separately
+  - Artifacts: All coverage reports archived for 7 days
+- **Test Infrastructure Fixes**:
+  - Fixed TypeScript `outDir` configuration for proper compilation
+  - Resolved Vitest ESM module resolution issues
+  - Documented extension test technical debt for v1.0.8
+- **Test Status**: 27/27 test files passing (343+ tests)
+- **Coverage Strategy**: Dual-tool approach (Vitest V8 + NYC) with merge script
+
+#### 📊 Quality Badges
+
+- Added real GitHub Actions workflow badge
+- Added Codecov coverage badge showing merged results
+- Updated version badge to v1.0.7
+- All badges now link to live dashboards
+
 ### ✨ New Features
 
 #### 📊 Privacy-First Telemetry System

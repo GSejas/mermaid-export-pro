@@ -8,7 +8,8 @@
       "Bash(npm run clean:*)",
       "Bash(if exist out rmdir /s /q out)",
       "Bash(if exist dist rmdir /s /q dist)",
-      "Bash(npm run compile:*)"
+      "Bash(npm run compile:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
