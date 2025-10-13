@@ -99,8 +99,11 @@ This extension contributes the following settings:
 * `mermaidExportPro.outputDirectory`: Custom output directory (relative or absolute)
 * `mermaidExportPro.autoExport`: Automatically export on file save
 * `mermaidExportPro.exportStrategy`: Export strategy preference (cli, web, auto)
+* `mermaidExportPro.autoNaming.mode`: File naming strategy (versioned, overwrite) - **NEW in v1.0.8!**
+  - `versioned` (default): Create versioned exports (`diagram-01-a4b2c8ef.svg`)
+  - `overwrite`: Simple names that overwrite (`diagram1.svg`) - ideal for presentations
 * `mermaidExportPro.width`: Default export width in pixels
-* `mermaidExportPro.height`: Default export height in pixels  
+* `mermaidExportPro.height`: Default export height in pixels
 * `mermaidExportPro.backgroundColor`: Background color for exports
 
 ![](media\getting-started-banner.png)

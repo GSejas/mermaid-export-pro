@@ -2,6 +2,37 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.8] - 2025-10-13
+
+### ✨ New Features
+
+#### 📝 Overwrite Mode for Auto-Naming
+
+- **New Configuration**: `mermaidExportPro.autoNaming.mode` - Control how exported files are named
+  - `versioned` (default): Create versioned exports with sequence and hash (`diagram-01-a4b2c8ef.svg`)
+    - Preserves export history
+    - Content-based deduplication
+    - Safe for version control
+  - `overwrite`: Overwrite with simple name (`diagram1.svg`)
+    - Consistent filenames for presentations (Marp, reveal.js, etc.)
+    - No duplicate files
+    - Previous exports are replaced
+- **Use Case**: Enable overwrite mode when using diagrams in presentations that reference fixed asset paths
+- **Implementation**: Automatic extraction of diagram numbers from filenames
+- **Impact**: Solves GitHub issue for users needing consistent filenames in presentation frameworks
+
+### 🧪 Testing
+
+- Added 7 new unit tests for overwrite mode functionality
+- All tests passing: 27/27 test files (350+ tests)
+- Test coverage: Cross-platform path handling validated
+
+### 📚 Documentation
+
+- Updated package.json with comprehensive configuration description
+- Feature specification document: `docs/features/OVERWRITE-MODE-FEATURE.md`
+- GitHub issue template ready for tracking
+
 ## [1.0.7] - 2025-10-12
 
 ### ✨ Improvements

@@ -671,18 +671,21 @@ async function getSmartOutputPath(document: vscode.TextDocument, mermaidContent:
   const defaultPref: 'dialog' | 'auto' | 'folder' = preferAuto ? 'auto' : 'dialog';
   const savePreference = context.workspaceState.get<'dialog' | 'auto' | 'folder'>('mermaidExportPro.exportSavePreference', defaultPref);
   const baseName = AutoNaming.getBaseName(document.fileName);
-  
+  const configManager = new ConfigManager();
+  const namingMode = configManager.getAutoNamingMode();
+
   switch (savePreference) {
     case 'auto':
-      // Auto-save next to file with smart naming
+      // Auto-save next to file with configured naming mode
       const fileDirectory = path.dirname(document.fileName);
-      return await AutoNaming.generateSmartName({
+      return await AutoNaming.generateFileName({
         baseName,
         format,
         content: mermaidContent,
-        outputDirectory: fileDirectory
+        outputDirectory: fileDirectory,
+        mode: namingMode
       });
-      
+
     case 'folder':
       // Auto-save to specific folder
       const customFolder = context.workspaceState.get('mermaidExportPro.autoExportFolder');
@@ -694,18 +697,19 @@ async function getSmartOutputPath(document: vscode.TextDocument, mermaidContent:
           // Fall back to dialog
           return await showSaveDialog(document, format);
         }
-        
-        return await AutoNaming.generateSmartName({
+
+        return await AutoNaming.generateFileName({
           baseName,
-          format, 
+          format,
           content: mermaidContent,
-          outputDirectory: customFolder
+          outputDirectory: customFolder,
+          mode: namingMode
         });
       } else {
         // No folder configured, show dialog
         return await showSaveDialog(document, format);
       }
-      
+
     case 'dialog':
     default:
       // Traditional save dialog

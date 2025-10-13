@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ConfigurationManager, ExportFormat, MermaidTheme, ExportStrategyType } from '../types';
+import { ConfigurationManager, ExportFormat, MermaidTheme, ExportStrategyType, AutoNamingMode } from '../types';
 
 /**
  * Manages reading, updating, and watching the extension configuration for "mermaidExportPro".
@@ -95,6 +95,10 @@ export class ConfigManager implements ConfigurationManager {
 
   getBackgroundColor(): string {
     return this.getConfiguration().get<string>('backgroundColor', 'transparent');
+  }
+
+  getAutoNamingMode(): AutoNamingMode {
+    return this.getConfiguration().get<AutoNamingMode>('autoNaming.mode', 'versioned');
   }
 
   async updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void> {

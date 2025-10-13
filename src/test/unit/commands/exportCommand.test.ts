@@ -36,6 +36,7 @@ vi.mock('../../../ui/errorHandler', () => ({
 
 vi.mock('../../../utils/autoNaming', () => ({
   AutoNaming: {
+    generateFileName: vi.fn(() => Promise.resolve('/test/output.svg')),
     generateSmartName: vi.fn(() => Promise.resolve('/test/output.svg')),
   },
 }));
@@ -43,6 +44,12 @@ vi.mock('../../../utils/autoNaming', () => ({
 vi.mock('../../../services/formatPreferenceManager', () => ({
   FormatPreferenceManager: vi.fn(() => ({
     setFileFormatPreference: vi.fn(),
+  })),
+}));
+
+vi.mock('../../../services/configManager', () => ({
+  ConfigManager: vi.fn(() => ({
+    getAutoNamingMode: vi.fn(() => 'versioned'),
   })),
 }));
 
@@ -226,11 +233,12 @@ describe('Export Command Tests', () => {
       await runExportCommand(mockContext, true);
 
       // Assert
-      expect(vi.mocked(AutoNaming.generateSmartName)).toHaveBeenCalledWith({
+      expect(vi.mocked(AutoNaming.generateFileName)).toHaveBeenCalledWith({
         baseName: 'file',
         format: 'svg',
         content: 'graph TD\nA --> B',
-        outputDirectory: '/test'
+        outputDirectory: '/test',
+        mode: 'versioned'
       });
       
   // The CLIExportStrategy constructor is mocked; check its exported mock instance was used

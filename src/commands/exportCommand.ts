@@ -17,6 +17,7 @@ import { AutoNaming } from '../utils/autoNaming';
 import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 import { getDialogService } from '../services/dialogService';
+import { ConfigManager } from '../services/configManager';
 
 export async function runExportCommand(
   context: vscode.ExtensionContext, 
@@ -113,11 +114,19 @@ export async function runExportCommand(
       console.log('[DEBUG exportCommand] Using testOutputPath:', testOutputPath);
       outputPath = testOutputPath;
     } else if (preferAuto) {
-      // Auto-generate smart name next to file (skip save dialog)
-      console.log('[DEBUG exportCommand] preferAuto=true, generating smart name...');
+      // Auto-generate filename based on configured naming mode
+      console.log('[DEBUG exportCommand] preferAuto=true, generating filename...');
+      const configManager = new ConfigManager();
+      const namingMode = configManager.getAutoNamingMode();
       const outputDir = path.dirname(document.fileName);
-      outputPath = await AutoNaming.generateSmartName({ baseName: path.basename(document.fileName, path.extname(document.fileName)), format: exportOptions.format, content: mermaidContent, outputDirectory: outputDir });
-      console.log('[DEBUG exportCommand] Generated outputPath:', outputPath);
+      outputPath = await AutoNaming.generateFileName({
+        baseName: path.basename(document.fileName, path.extname(document.fileName)),
+        format: exportOptions.format,
+        content: mermaidContent,
+        outputDirectory: outputDir,
+        mode: namingMode
+      });
+      console.log('[DEBUG exportCommand] Generated outputPath with mode', namingMode, ':', outputPath);
     } else {
       // Fall back to save dialog
       console.log('[DEBUG exportCommand] preferAuto=false, showing save dialog...');
