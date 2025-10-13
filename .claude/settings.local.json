@@ -5,7 +5,10 @@
       "Bash(npm run test:coverage:*)",
       "Bash(npm run test:integration:*)",
       "Bash(npm run test:unit:*)",
-      "Bash(npm run clean:*)"
+      "Bash(npm run clean:*)",
+      "Bash(if exist out rmdir /s /q out)",
+      "Bash(if exist dist rmdir /s /q dist)",
+      "Bash(npm run compile:*)"
     ],
     "deny": [],
     "ask": []

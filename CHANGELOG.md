@@ -2,7 +2,7 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
-## [Unreleased] - 2025-10-12
+## [1.0.7] - 2025-10-12
 
 ### ✨ New Features
 
