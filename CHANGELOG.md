@@ -2,6 +2,52 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.10] - 2025-10-14
+
+### 🐛 Critical Bug Fixes
+
+#### Telemetry Integration Fix
+
+- **Fixed**: Telemetry service not tracking exports despite being enabled
+  - Root cause: Service instantiated but never connected to export commands
+  - Solution: Added dependency injection throughout call chain
+  - Impact: Users can now see accurate usage statistics
+- **Tracking Now Includes**:
+  - Export count by format (SVG, PNG, PDF, etc.)
+  - Export strategy used (CLI vs Web)
+  - Export duration and file sizes
+  - Error tracking for failed exports
+- **Files Modified**: `exportCommand.ts`, `quickExportCommand.ts`, `extension.ts`
+
+#### UX Improvements
+
+- **Fixed**: Progress notification flash in versioned/skip mode
+  - No longer shows "Exporting..." when skipping unchanged diagrams
+  - Early return pattern prevents unnecessary UI updates
+  - Cleaner user experience in versioned mode
+
+### 📚 Documentation
+
+- **Added**: `TELEMETRY-INTEGRATION-BUG.md` - Post-mortem analysis
+  - Why the bug wasn't caught initially
+  - Lessons learned about integration testing
+  - Prevention strategies for future
+- **Added**: `RELEASE-CHECKLIST.md` - 85-item comprehensive checklist
+  - Manual E2E testing procedures
+  - Feature verification workflows
+  - Prevents similar issues in future releases
+
+### ✅ Testing
+
+- **371/371 unit tests passing** (including 20 telemetry service tests)
+- **21 integration tests** for auto-naming feature
+- **TypeScript compilation**: Zero errors
+
+### 🔗 Related Issues
+
+- Telemetry not tracking exports (#telemetry-not-tracking)
+- Progress notification flash in versioned mode
+
 ## [1.0.9] - 2025-10-13
 
 ### 🔧 CI/CD Improvements

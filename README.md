@@ -1,6 +1,6 @@
 # Mermaid Export Pro
 
-[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.7-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.7) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.10-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.10) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
 ![](media/mermaid-lens_temp_128.gif)
 
