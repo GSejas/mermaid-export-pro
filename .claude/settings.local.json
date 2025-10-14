@@ -9,7 +9,8 @@
       "Bash(if exist out rmdir /s /q out)",
       "Bash(if exist dist rmdir /s /q dist)",
       "Bash(npm run compile:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
