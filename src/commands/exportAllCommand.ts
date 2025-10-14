@@ -136,7 +136,7 @@ export async function runExportAllCommand(context: vscode.ExtensionContext, docu
       ignoreFocusOut: true
     });
 
-    if (!choice) return;
+    if (!choice) {return;}
 
     if (choice.label.includes('Export All')) {
       await exportAllDiagrams(document, diagrams, context);
@@ -162,7 +162,7 @@ export async function extractAllMermaidDiagrams(document: vscode.TextDocument): 
   // If .mmd file, treat entire content as one diagram
   if (fileName.endsWith('.mmd')) {
     const trimmedContent = content.trim();
-    if (!trimmedContent) return [];
+    if (!trimmedContent) {return [];}
     
     return [{
       content: trimmedContent,
@@ -243,7 +243,7 @@ async function exportAllDiagrams(document: vscode.TextDocument, diagrams: Diagra
 async function exportAllWithCustomOptions(document: vscode.TextDocument, diagrams: DiagramInfo[], context: vscode.ExtensionContext): Promise<void> {
   // Get custom export options
   const exportOptions = await getCustomExportOptions();
-  if (!exportOptions) return;
+  if (!exportOptions) {return;}
 
   await exportMultipleDiagrams(document, diagrams, exportOptions, context);
 }
@@ -270,7 +270,7 @@ async function selectAndExportSingleDiagram(document: vscode.TextDocument, diagr
     ignoreFocusOut: true
   });
 
-  if (!selected) return;
+  if (!selected) {return;}
 
   // Create a selection for the chosen diagram and use standard export
   const range = new vscode.Range(selected.diagram.startLine, 0, selected.diagram.endLine, 0);
@@ -376,7 +376,7 @@ async function getCustomExportOptions(): Promise<ExportOptions | null> {
     ignoreFocusOut: true
   });
 
-  if (!format) return null;
+  if (!format) {return null;}
 
   // Theme selection
   const theme = await vscode.window.showQuickPick([
@@ -389,7 +389,7 @@ async function getCustomExportOptions(): Promise<ExportOptions | null> {
     ignoreFocusOut: true
   });
 
-  if (!theme) return null;
+  if (!theme) {return null;}
 
   return {
     format: format.value as ExportFormat,

@@ -152,7 +152,7 @@ async function showPremiumExportOptions(fileName: string): Promise<ExportOptions
     title: 'Export Format'
   });
 
-  if (!selectedFormat) return undefined;
+  if (!selectedFormat) {return undefined;}
 
   // Size options for premium exports
   const sizeItems = [
@@ -168,7 +168,7 @@ async function showPremiumExportOptions(fileName: string): Promise<ExportOptions
     title: 'Export Size'
   });
 
-  if (!selectedSize) return undefined;
+  if (!selectedSize) {return undefined;}
 
   let width = 1200, height = 900;
   
@@ -182,7 +182,7 @@ async function showPremiumExportOptions(fileName: string): Promise<ExportOptions
       }
     });
     
-    if (!widthInput) return undefined;
+    if (!widthInput) {return undefined;}
     
     const heightInput = await vscode.window.showInputBox({
       prompt: 'Enter height in pixels',
@@ -193,7 +193,7 @@ async function showPremiumExportOptions(fileName: string): Promise<ExportOptions
       }
     });
     
-    if (!heightInput) return undefined;
+    if (!heightInput) {return undefined;}
     
     width = parseInt(widthInput);
     height = parseInt(heightInput);

@@ -386,7 +386,7 @@ async function getComprehensiveBatchExportOptions(
     title: '🎨 Mermaid Export Pro - Export Folder Configuration (Step 1/4)'
   });
 
-  if (!formatChoice) return null;
+  if (!formatChoice) {return null;}
 
   let selectedFormats: ExportFormat[];
   
@@ -431,7 +431,7 @@ async function getComprehensiveBatchExportOptions(
       title: '📊 Choose Export Format (Step 1/4)'
     });
     
-    if (!individualFormat) return null;
+    if (!individualFormat) {return null;}
     selectedFormats = [individualFormat.value as ExportFormat];
   }
 
@@ -467,7 +467,7 @@ async function getComprehensiveBatchExportOptions(
     title: '🖌️ Background Color (Step 2/4)'
   });
 
-  if (!backgroundColor) return null;
+  if (!backgroundColor) {return null;}
 
   let finalBackgroundColor = backgroundColor.value;
   
@@ -477,14 +477,14 @@ async function getComprehensiveBatchExportOptions(
       placeHolder: '#ffffff, rgb(255,255,255), lightblue, etc.',
       value: '#ffffff',
       validateInput: (value) => {
-        if (!value.trim()) return 'Please enter a color value';
+        if (!value.trim()) {return 'Please enter a color value';}
         // Basic validation for common formats
         const colorRegex = /^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|rgb\(\d+,\s*\d+,\s*\d+\)|rgba\(\d+,\s*\d+,\s*\d+,\s*[\d\.]+\)|[a-zA-Z]+)$/;
         return colorRegex.test(value.trim()) ? undefined : 'Please enter a valid color (hex, rgb, or name)';
       }
     });
     
-    if (!customColor) return null;
+    if (!customColor) {return null;}
     finalBackgroundColor = customColor.trim();
   }
 
@@ -520,7 +520,7 @@ async function getComprehensiveBatchExportOptions(
     title: '🎭 Visual Theme (Step 3/4)'
   });
 
-  if (!theme) return null;
+  if (!theme) {return null;}
 
   // === STEP 4: OUTPUT DIRECTORY SELECTION ===
   const outputChoice = await vscode.window.showQuickPick([
@@ -548,7 +548,7 @@ async function getComprehensiveBatchExportOptions(
     title: '💾 Output Location (Step 5/5)'
   });
 
-  if (!outputChoice) return null;
+  if (!outputChoice) {return null;}
 
   let outputDirectory: string;
   
@@ -568,7 +568,7 @@ async function getComprehensiveBatchExportOptions(
         defaultUri: vscode.Uri.file(sourceFolder)
       });
       
-      if (!browseResult || browseResult.length === 0) return null;
+      if (!browseResult || browseResult.length === 0) {return null;}
       outputDirectory = browseResult[0].fsPath;
       break;
     default:

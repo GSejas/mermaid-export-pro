@@ -529,8 +529,8 @@ export class BatchExportEngineImpl implements BatchExportEngine {
   }
 
   private selectExecutionStrategy(jobCount: number, config: BatchExportConfig): any {
-    if (jobCount <= 5) return 'sequential';
-    if (jobCount <= 20) return 'mixed';
+    if (jobCount <= 5) {return 'sequential';}
+    if (jobCount <= 20) {return 'mixed';}
     return 'parallel';
   }
 
@@ -557,7 +557,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     let completed = 0;
     
     for (const job of batch.jobs) {
-      if (reporter.isCancelled()) break;
+      if (reporter.isCancelled()) {break;}
       
       reporter.setCurrentJob(job, 0);
       const result = await this.executeJob(job, strategy);
@@ -581,7 +581,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     const concurrentJobs = Math.min(EXECUTION_LIMITS.maxConcurrentJobs, batch.jobs.length);
     
     const executeJobWithProgress = async (job: ExportJob) => {
-      if (reporter.isCancelled()) return null;
+      if (reporter.isCancelled()) {return null;}
       
       reporter.setCurrentJob(job, 0);
       const result = await this.executeJob(job, strategy);
@@ -593,7 +593,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     const jobBatches = this.chunkArray(batch.jobs, concurrentJobs);
     
     for (const jobBatch of jobBatches) {
-      if (reporter.isCancelled()) break;
+      if (reporter.isCancelled()) {break;}
       
       const batchPromises = jobBatch.map(executeJobWithProgress);
       const batchResults = await Promise.all(batchPromises);
@@ -612,11 +612,11 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     const strategy = await this.selectBestStrategy();
     
     for (const [filePath, fileJobs] of jobsByFile) {
-      if (reporter.isCancelled()) break;
+      if (reporter.isCancelled()) {break;}
       
       // Execute all formats for a file in parallel
       const filePromises = fileJobs.map(async (job) => {
-        if (reporter.isCancelled()) return null;
+        if (reporter.isCancelled()) {return null;}
         
         reporter.setCurrentJob(job, 0);
         const result = await this.executeJob(job, strategy);
@@ -854,8 +854,8 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     const recursionStack = new Set<string>();
     
     const hasCycle = (jobId: string): boolean => {
-      if (recursionStack.has(jobId)) return true;
-      if (visited.has(jobId)) return false;
+      if (recursionStack.has(jobId)) {return true;}
+      if (visited.has(jobId)) {return false;}
       
       visited.add(jobId);
       recursionStack.add(jobId);
@@ -863,7 +863,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
       const job = jobs.find(j => j.id === jobId);
       if (job) {
         for (const depId of job.dependencies) {
-          if (hasCycle(depId)) return true;
+          if (hasCycle(depId)) {return true;}
         }
       }
       
@@ -873,7 +873,7 @@ export class BatchExportEngineImpl implements BatchExportEngine {
     
     for (const job of jobs) {
       if (!visited.has(job.id)) {
-        if (hasCycle(job.id)) return true;
+        if (hasCycle(job.id)) {return true;}
       }
     }
     

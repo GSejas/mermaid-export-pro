@@ -21,7 +21,7 @@ suite('Extension Integration Tests', () => {
 
     // Auto-select 'Skip Setup' when presented with the welcome message to avoid interactive prompts
     (vscode.window as any).showInformationMessage = async (message: any, ...items: any[]) => {
-      if (items && items.includes('Skip Setup')) return 'Skip Setup';
+      if (items && items.includes('Skip Setup')) {return 'Skip Setup';}
       return items && items.length ? items[0] : undefined;
     };
 

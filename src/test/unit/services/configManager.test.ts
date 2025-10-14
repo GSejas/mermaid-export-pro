@@ -35,7 +35,7 @@ describe('ConfigManager', () => {
   describe('Configuration Getters', () => {
     it('should return default format when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'defaultFormat') return 'svg';
+        if (key === 'defaultFormat') {return 'svg';}
         return defaultValue;
       });
 
@@ -54,7 +54,7 @@ describe('ConfigManager', () => {
 
     it('should return theme when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'theme') return 'dark';
+        if (key === 'theme') {return 'dark';}
         return defaultValue;
       });
 
@@ -73,7 +73,7 @@ describe('ConfigManager', () => {
 
     it('should return output directory when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'outputDirectory') return './output';
+        if (key === 'outputDirectory') {return './output';}
         return defaultValue;
       });
 
@@ -92,7 +92,7 @@ describe('ConfigManager', () => {
 
     it('should return auto export enabled status', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'autoExport') return true;
+        if (key === 'autoExport') {return true;}
         return defaultValue;
       });
 
@@ -111,7 +111,7 @@ describe('ConfigManager', () => {
 
     it('should return export strategy when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'exportStrategy') return 'cli';
+        if (key === 'exportStrategy') {return 'cli';}
         return defaultValue;
       });
 
@@ -130,7 +130,7 @@ describe('ConfigManager', () => {
 
     it('should return default width when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'width') return 1024;
+        if (key === 'width') {return 1024;}
         return defaultValue;
       });
 
@@ -149,7 +149,7 @@ describe('ConfigManager', () => {
 
     it('should return default height when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'height') return 768;
+        if (key === 'height') {return 768;}
         return defaultValue;
       });
 
@@ -168,7 +168,7 @@ describe('ConfigManager', () => {
 
     it('should return background color when configured', () => {
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'backgroundColor') return 'white';
+        if (key === 'backgroundColor') {return 'white';}
         return defaultValue;
       });
 
@@ -310,7 +310,7 @@ describe('ConfigManager', () => {
 
       // Simulate configuration update
       mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
-        if (key === 'defaultFormat') return 'svg';
+        if (key === 'defaultFormat') {return 'svg';}
         return defaultValue;
       });
 

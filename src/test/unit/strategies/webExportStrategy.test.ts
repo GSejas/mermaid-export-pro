@@ -24,7 +24,7 @@ function createMockPanel() {
 
   // helper to simulate incoming messages
   const sendMessage = (msg: any) => {
-    for (const cb of listeners) cb(msg);
+    for (const cb of listeners) {cb(msg);}
   };
 
   return { panel, webview, sendMessage };
@@ -54,7 +54,7 @@ describe('WebExportStrategy', () => {
     // Mock workspace.fs.stat to behave for isAvailable tests
     (vscode.workspace as any).fs = {
       stat: vi.fn((uri: any) => {
-        if ((uri.path && uri.path.includes('webview.js')) || (uri.fsPath && uri.fsPath.includes('webview.js'))) return Promise.resolve({});
+        if ((uri.path && uri.path.includes('webview.js')) || (uri.fsPath && uri.fsPath.includes('webview.js'))) {return Promise.resolve({});}
         return Promise.reject(new Error('not found'));
       })
     };

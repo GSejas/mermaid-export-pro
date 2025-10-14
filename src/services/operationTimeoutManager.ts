@@ -201,7 +201,7 @@ export class OperationTimeoutManager {
    */
   completeOperation(id: string): void {
     const operation = this.activeOperations.get(id);
-    if (!operation) return;
+    if (!operation) {return;}
 
     operation.isCompleted = true;
     this.clearAllTimeouts(operation);
@@ -213,7 +213,7 @@ export class OperationTimeoutManager {
    */
   async cancelOperation(id: string, reason: 'user' | 'timeout' = 'user'): Promise<void> {
     const operation = this.activeOperations.get(id);
-    if (!operation) return;
+    if (!operation) {return;}
 
     operation.isCancelled = true;
     this.clearAllTimeouts(operation);
@@ -292,7 +292,7 @@ export class OperationTimeoutManager {
   }
 
   private handleSoftTimeout(operation: ActiveOperation): void {
-    if (operation.isCompleted || operation.isCancelled) return;
+    if (operation.isCompleted || operation.isCancelled) {return;}
     
     operation.isWarned = true;
     
@@ -308,7 +308,7 @@ export class OperationTimeoutManager {
   }
 
   private async handleMediumTimeout(operation: ActiveOperation): Promise<void> {
-    if (operation.isCompleted || operation.isCancelled) return;
+    if (operation.isCompleted || operation.isCancelled) {return;}
     
     operation.progress.report({ 
       message: `${operation.config.name} seems stuck - checking for issues...` 
@@ -346,7 +346,7 @@ export class OperationTimeoutManager {
   }
 
   private async handleHardTimeout(operation: ActiveOperation): Promise<void> {
-    if (operation.isCompleted || operation.isCancelled) return;
+    if (operation.isCompleted || operation.isCancelled) {return;}
     
     operation.progress.report({ 
       message: `Force cleaning up stuck operation...` 
@@ -375,7 +375,7 @@ export class OperationTimeoutManager {
   }
 
   private async handleNuclearTimeout(operation: ActiveOperation): Promise<void> {
-    if (operation.isCompleted || operation.isCancelled) return;
+    if (operation.isCompleted || operation.isCancelled) {return;}
     
     // Nuclear option - something is seriously wrong
     if (operation.callbacks.onNuclearTimeout) {

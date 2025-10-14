@@ -306,10 +306,10 @@ export class DiagramDiscoveryServiceImpl implements DiagramDiscoveryService {
     const normalizedScore = Math.min(10, Math.max(0, rawScore / 10));
     
     let category: DiagramComplexity['category'];
-    if (normalizedScore <= 2) category = 'simple';
-    else if (normalizedScore <= 5) category = 'moderate';
-    else if (normalizedScore <= 8) category = 'complex';
-    else category = 'very-complex';
+    if (normalizedScore <= 2) {category = 'simple';}
+    else if (normalizedScore <= 5) {category = 'moderate';}
+    else if (normalizedScore <= 8) {category = 'complex';}
+    else {category = 'very-complex';}
 
     // Estimate render time based on complexity
     const baseRenderTime = 100; // ms
@@ -550,7 +550,7 @@ export class DiagramDiscoveryServiceImpl implements DiagramDiscoveryService {
     
     // Check include patterns
     const matchesInclude = includePatterns.some(pattern => this.matchesPattern(fileName, pattern, options.caseSensitive));
-    if (!matchesInclude) return false;
+    if (!matchesInclude) {return false;}
     
     // Check exclude patterns
     const matchesExclude = excludePatterns.some(pattern => this.matchesPattern(fileName, pattern, options.caseSensitive));
@@ -577,8 +577,8 @@ export class DiagramDiscoveryServiceImpl implements DiagramDiscoveryService {
 
   private detectEncoding(content: string): string {
     // Simple encoding detection
-    if (content.charCodeAt(0) === 0xFEFF) return 'utf8-bom';
-    if (/^[\x00-\x7F]*$/.test(content)) return 'ascii';
+    if (content.charCodeAt(0) === 0xFEFF) {return 'utf8-bom';}
+    if (/^[\x00-\x7F]*$/.test(content)) {return 'ascii';}
     return 'utf8';
   }
 

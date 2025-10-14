@@ -236,7 +236,7 @@ export class ProgressTrackingServiceImpl extends EventEmitter implements Progres
    */
   updateProgress(batchId: string, updates: Partial<BatchProgress>): void {
     const state = this.progressStates.get(batchId);
-    if (!state) return;
+    if (!state) {return;}
 
     // Merge updates
     state.progress = { ...state.progress, ...updates };
@@ -260,7 +260,7 @@ export class ProgressTrackingServiceImpl extends EventEmitter implements Progres
    */
 
   private startProgressUpdates(): void {
-    if (this.updateTimer) return;
+    if (this.updateTimer) {return;}
 
     this.updateTimer = setInterval(() => {
       for (const [batchId, state] of this.progressStates) {
@@ -359,7 +359,7 @@ export class ProgressTrackingServiceImpl extends EventEmitter implements Progres
 
   private notifySubscribers(batchId: string): void {
     const state = this.progressStates.get(batchId);
-    if (!state) return;
+    if (!state) {return;}
 
     const progressCopy = { ...state.progress };
     
@@ -439,7 +439,7 @@ class ProgressReporterImpl implements ProgressReporter {
 
   completeJob(job: ExportJob, result: JobResult): void {
     const state = (this.service as any).progressStates.get(this.batchId);
-    if (!state) return;
+    if (!state) {return;}
 
     const progress = state.progress;
     
@@ -518,7 +518,7 @@ class ProgressReporterImpl implements ProgressReporter {
    */
   startJob(job: ExportJob): void {
     const state = (this.service as any).progressStates.get(this.batchId);
-    if (!state) return;
+    if (!state) {return;}
 
     const progress = state.progress;
     progress.jobCounts.pending = Math.max(0, progress.jobCounts.pending - 1);
@@ -532,7 +532,7 @@ class ProgressReporterImpl implements ProgressReporter {
    */
   skipJob(job: ExportJob, reason: string): void {
     const state = (this.service as any).progressStates.get(this.batchId);
-    if (!state) return;
+    if (!state) {return;}
 
     const progress = state.progress;
     progress.jobCounts.pending = Math.max(0, progress.jobCounts.pending - 1);

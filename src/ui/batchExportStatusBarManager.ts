@@ -171,7 +171,7 @@ export class BatchExportStatusBarManager {
    * Update the status bar with current progress information
    */
   public updateProgress(progress: BatchExportProgress): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     this.currentPhase = progress.phase;
     this.updateDisplay(progress);
@@ -181,7 +181,7 @@ export class BatchExportStatusBarManager {
    * Complete the export folder and show final status briefly before hiding
    */
   public completeBatchExport(success: boolean, finalMessage: string, duration?: number): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     this.currentPhase = success ? 'success' : 'error';
     this.stopAnimation();
@@ -211,7 +211,7 @@ export class BatchExportStatusBarManager {
    * Cancel the current export folder operation
    */
   public cancelBatchExport(): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     this.currentPhase = 'cancelled';
     this.stopAnimation();
@@ -287,7 +287,7 @@ export class BatchExportStatusBarManager {
    * Advance to the next animation frame
    */
   private animateFrame(): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     this.animationFrame = (this.animationFrame + 1) % this.animationConfig.icons.length;
     
@@ -299,7 +299,7 @@ export class BatchExportStatusBarManager {
    * Update the status bar display with progress information
    */
   private updateDisplay(progress: BatchExportProgress): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     // Update separate animation bar
     const icon = this.getCurrentAnimationIcon();
@@ -327,7 +327,7 @@ export class BatchExportStatusBarManager {
    * Refresh the display with current animation frame (used during animation)
    */
   private refreshDisplay(): void {
-    if (!this.isActive) return;
+    if (!this.isActive) {return;}
 
     // Only update the animation bar during animation
     const icon = this.getCurrentAnimationIcon();

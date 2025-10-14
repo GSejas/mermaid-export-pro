@@ -47,7 +47,7 @@ export class ExtensionSetup {
 
     // Auto-dismiss all dialogs
     (vscode.window as any).showInformationMessage = async (message: any, ...items: any[]) => {
-      if (items && items.includes('Skip Setup')) return 'Skip Setup';
+      if (items && items.includes('Skip Setup')) {return 'Skip Setup';}
       return items && items.length ? items[0] : undefined;
     };
 

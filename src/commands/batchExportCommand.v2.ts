@@ -185,7 +185,7 @@ async function getComprehensiveBatchConfig(folderUri?: vscode.Uri): Promise<Batc
   try {
     // === STEP 1: SOURCE FOLDER SELECTION ===
     const sourceFolder = await selectSourceFolder(folderUri);
-    if (!sourceFolder) return null;
+    if (!sourceFolder) {return null;}
     
     // === STEP 2: INITIAL FILE DISCOVERY ===
     const discoveryOptions = createInitialDiscoveryOptions(sourceFolder);
@@ -206,19 +206,19 @@ async function getComprehensiveBatchConfig(folderUri?: vscode.Uri): Promise<Batc
     
     // === STEP 3: FORMAT SELECTION ===
     const formatSelection = await selectExportFormats(discoveredFiles);
-    if (!formatSelection) return null;
+    if (!formatSelection) {return null;}
     
     // === STEP 4: THEME AND STYLING ===
     const themeConfig = await selectThemeAndStyling();
-    if (!themeConfig) return null;
+    if (!themeConfig) {return null;}
     
     // === STEP 5: OUTPUT CONFIGURATION ===
     const outputConfig = await configureOutput(sourceFolder);
-    if (!outputConfig) return null;
+    if (!outputConfig) {return null;}
     
     // === STEP 6: ADVANCED OPTIONS (OPTIONAL) ===
     const advancedConfig = await configureAdvancedOptions(discoveryOptions);
-    if (advancedConfig === null) return null;
+    if (advancedConfig === null) {return null;}
     
     // === STEP 7: BUILD FINAL CONFIGURATION ===
     const finalConfig: BatchExportConfig = {
@@ -292,7 +292,7 @@ async function selectSourceFolder(folderUri?: vscode.Uri): Promise<string | null
       title: '📍 Step 1/6: Source Folder Selection'
     });
     
-    if (!useWorkspace) return null;
+    if (!useWorkspace) {return null;}
     
     if (useWorkspace.value === 'workspace') {
       return workspaceFolders[0].uri.fsPath;
@@ -377,7 +377,7 @@ async function selectExportFormats(discoveredFiles: any[]): Promise<{ formats: E
     title: '📊 Step 2/6: Export Format Selection'
   });
   
-  if (!selection) return null;
+  if (!selection) {return null;}
   
   if (selection.formats.length === 0) {
     // Custom selection
@@ -434,7 +434,7 @@ async function selectCustomFormats(totalDiagrams: number): Promise<{ formats: Ex
     title: '🎨 Custom Format Selection'
   });
   
-  if (!selectedFormats || selectedFormats.length === 0) return null;
+  if (!selectedFormats || selectedFormats.length === 0) {return null;}
   
   const formats = selectedFormats.map(s => s.format);
   const label = `Custom (${formats.map(f => f.toUpperCase()).join(', ')})`;
@@ -479,7 +479,7 @@ async function selectThemeAndStyling(): Promise<{ value: MermaidTheme; backgroun
     title: '🎭 Step 3/6: Theme Selection'
   });
   
-  if (!themeSelection) return null;
+  if (!themeSelection) {return null;}
   
   // Optional: Custom background color
   const backgroundChoice = await vscode.window.showQuickPick([
@@ -509,7 +509,7 @@ async function selectThemeAndStyling(): Promise<{ value: MermaidTheme; backgroun
     title: '🖌️ Background Style'
   });
   
-  if (!backgroundChoice) return null;
+  if (!backgroundChoice) {return null;}
   
   let backgroundColor = backgroundChoice.value;
   
@@ -519,12 +519,12 @@ async function selectThemeAndStyling(): Promise<{ value: MermaidTheme; backgroun
       placeHolder: '#ffffff, rgb(255,255,255), lightblue, etc.',
       value: '#ffffff',
       validateInput: (value) => {
-        if (!value.trim()) return 'Please enter a color value';
+        if (!value.trim()) {return 'Please enter a color value';}
         return undefined; // Accept any string for now
       }
     });
     
-    if (!customColor) return null;
+    if (!customColor) {return null;}
     backgroundColor = customColor.trim();
   }
   
@@ -572,7 +572,7 @@ async function configureOutput(sourceFolder: string): Promise<{
     title: '💾 Step 4/6: Output Location'
   });
   
-  if (!outputChoice) return null;
+  if (!outputChoice) {return null;}
   
   let directory: string;
   switch (outputChoice.value) {
@@ -590,7 +590,7 @@ async function configureOutput(sourceFolder: string): Promise<{
         title: 'Select output directory',
         openLabel: 'Select Directory'
       });
-      if (!customDir) return null;
+      if (!customDir) {return null;}
       directory = customDir[0].fsPath;
       break;
     default:
@@ -625,7 +625,7 @@ async function configureOutput(sourceFolder: string): Promise<{
     title: '📝 File Naming Strategy'
   });
   
-  if (!namingChoice) return null;
+  if (!namingChoice) {return null;}
   
   // Organization preference
   const orgChoice = await vscode.window.showQuickPick([
@@ -646,7 +646,7 @@ async function configureOutput(sourceFolder: string): Promise<{
     ignoreFocusOut: true
   });
   
-  if (orgChoice === undefined) return null;
+  if (orgChoice === undefined) {return null;}
   
   return {
     directory,
@@ -681,7 +681,7 @@ async function configureAdvancedOptions(currentOptions: DiscoveryOptions): Promi
     title: '⚙️ Step 5/6: Advanced Options'
   });
   
-  if (!showAdvanced) return null;
+  if (!showAdvanced) {return null;}
   
   if (showAdvanced.value === 'default') {
     return {
@@ -701,7 +701,7 @@ async function configureAdvancedOptions(currentOptions: DiscoveryOptions): Promi
     ignoreFocusOut: true
   });
   
-  if (!depthChoice) return null;
+  if (!depthChoice) {return null;}
   
   const overwriteChoice = await vscode.window.showQuickPick([
     {
@@ -719,7 +719,7 @@ async function configureAdvancedOptions(currentOptions: DiscoveryOptions): Promi
     ignoreFocusOut: true
   });
   
-  if (overwriteChoice === undefined) return null;
+  if (overwriteChoice === undefined) {return null;}
   
   return {
     maxDepth: depthChoice.value,
@@ -851,7 +851,7 @@ async function executeBatchExportWithTracking(
       
       // Set up progress reporting for batch execution
       progressTrackingService.onProgress(operationId, (batchProgress) => {
-        if (isCancelled) return;
+        if (isCancelled) {return;}
         
         // Update based on the progress information we receive
         batchExportStatusBar.updateProgress({

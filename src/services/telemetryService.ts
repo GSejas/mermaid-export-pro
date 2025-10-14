@@ -137,7 +137,7 @@ export class TelemetryService {
 		diagramType?: string,
 		success: boolean = true
 	): void {
-		if (!this.enabled) return;
+		if (!this.enabled) {return;}
 
 		this.addEvent({
 			timestamp: new Date().toISOString(),
@@ -161,7 +161,7 @@ export class TelemetryService {
 	 * Track an error
 	 */
 	public trackError(errorType: string, errorMessage: string, action: string): void {
-		if (!this.enabled) return;
+		if (!this.enabled) {return;}
 
 		this.addEvent({
 			timestamp: new Date().toISOString(),
@@ -182,7 +182,7 @@ export class TelemetryService {
 	 * Track command usage
 	 */
 	public trackCommand(command: string, source: 'palette' | 'context-menu' | 'codelens' | 'status-bar'): void {
-		if (!this.enabled) return;
+		if (!this.enabled) {return;}
 
 		this.addEvent({
 			timestamp: new Date().toISOString(),
@@ -201,7 +201,7 @@ export class TelemetryService {
 	 * Track system health check
 	 */
 	public trackHealthCheck(cliAvailable: boolean, nodeVersion?: string): void {
-		if (!this.enabled) return;
+		if (!this.enabled) {return;}
 
 		this.addEvent({
 			timestamp: new Date().toISOString(),
@@ -222,7 +222,7 @@ export class TelemetryService {
 	 * Track performance metrics
 	 */
 	public trackPerformance(action: string, duration: number, details?: Record<string, any>): void {
-		if (!this.enabled) return;
+		if (!this.enabled) {return;}
 
 		this.addEvent({
 			timestamp: new Date().toISOString(),
@@ -334,10 +334,10 @@ export class TelemetryService {
 				
 				if (strategy === 'cli') {
 					cliExports++;
-					if (event.action === 'export_success') cliSuccesses++;
+					if (event.action === 'export_success') {cliSuccesses++;}
 				} else if (strategy === 'web') {
 					webExports++;
-					if (event.action === 'export_success') webSuccesses++;
+					if (event.action === 'export_success') {webSuccesses++;}
 				}
 			}
 			
