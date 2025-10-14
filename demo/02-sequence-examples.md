@@ -6,7 +6,7 @@ Test sequence diagrams with different complexities and features.
 
 ```mermaid
 sequenceDiagram
-    participant User
+    participant Usersh
     participant App
     participant API
     

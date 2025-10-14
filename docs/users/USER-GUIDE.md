@@ -32,6 +32,40 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 
 ## 📖 Commands Overview
 
+### CodeLens Quick Actions (NEW in v1.0.9+)
+
+**Instant exports right above your diagrams!**
+
+When you open Markdown files with Mermaid diagrams, you'll see clickable buttons above each code block:
+
+```markdown
+[Export PNG] [Export SVG] [More Options...]  ← Click for instant export!
+
+```mermaid
+graph TD
+    A[Start] --> B[End]
+```
+```
+
+**Behavior**:
+- **Export PNG/SVG** - ✨ **Instant zero-dialog export** with smart auto-naming
+- **More Options** - Opens advanced format picker and configuration
+
+| Button | Shows Dialogs? | Output Example | Use Case |
+|--------|---------------|----------------|----------|
+| **Export PNG** | ❌ Never | `diagram-a4b2c8ef.png` | Quick inline export |
+| **Export SVG** | ❌ Never | `diagram-a4b2c8ef.svg` | Quick vector export |
+| **More Options** | ✅ Maybe | User chooses | Advanced configuration |
+
+**Auto-Naming Modes** (configurable in settings):
+- **Hash** (default): `diagram-a4b2c8ef.png` - Content-based unique suffix
+- **Timestamp**: `diagram-20251014-123045.png` - Date/time suffix
+- **Sequential**: `diagram-01.png`, `diagram-02.png` - Numbered sequence
+
+> **Pro Tip**: CodeLens buttons work exactly like right-click "Quick Export" - instant results, zero friction!
+
+---
+
 ### Core Export Commands
 
 | Command | Description | Access Method |
@@ -65,6 +99,17 @@ A professional VS Code extension for exporting Mermaid diagrams with multiple fo
 > **Privacy Note**: Telemetry is opt-in and disabled by default. All data is stored locally and you have full control. Enable in settings: `mermaidExportPro.telemetry.enabled`
 
 ## 🔄 User Flows
+
+### Flow 0: CodeLens Instant Export (Fastest!)
+```
+1. Open Markdown file with Mermaid diagrams
+2. Look above any ```mermaid block
+3. Click "Export PNG" or "Export SVG" button
+4. ✨ File instantly appears with auto-generated name!
+   Example: diagram-a4b2c8ef.png
+```
+
+**No dialogs, no clicks, no friction - just instant exports!**
 
 ### Flow 1: Quick Single File Export
 ```

@@ -101,6 +101,7 @@ This extension contributes the following settings:
 * `mermaidExportPro.exportStrategy`: Export strategy preference (cli, web, auto)
 * `mermaidExportPro.autoNaming.mode`: File naming strategy (versioned, overwrite) - **NEW in v1.0.8!**
   - `versioned` (default): Create versioned exports (`diagram-01-a4b2c8ef.svg`)
+- ![Quick Export showing the auto versioning and filenaming configuration](media\Quick-Export-Versioned-Autonaming_temp_128.gif)
   - `overwrite`: Simple names that overwrite (`diagram1.svg`) - ideal for presentations
 * `mermaidExportPro.width`: Default export width in pixels
 * `mermaidExportPro.height`: Default export height in pixels

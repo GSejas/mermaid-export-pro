@@ -63,6 +63,9 @@ export class AutoNaming {
    * Generate smart filename with sequence and content hash
    * Format: ${baseName}-${sequence}-${hash8}.${format}
    * Example: architecture-01-a4b2c8ef.svg
+   * 
+   * Smart behavior: If a file with the same content hash already exists,
+   * returns that existing file path instead of creating duplicates.
    */
   static async generateSmartName(options: AutoNameOptions): Promise<string> {
     const { baseName, format, content, outputDirectory } = options;
@@ -73,13 +76,54 @@ export class AutoNaming {
       .digest('hex')
       .substring(0, 8);
     
-    // Find next available sequence number
+    // Check if a file with this hash already exists
+    const existingFile = await this.findFileByHash(baseName, hash, outputDirectory, format);
+    if (existingFile) {
+      // Content already exported - reuse existing file
+      return existingFile;
+    }
+    
+    // New content - find next available sequence number
     const sequence = await this.getNextSequenceNumber(baseName, outputDirectory, format);
     
     // Build filename
     const fileName = `${baseName}-${sequence.toString().padStart(2, '0')}-${hash}.${format}`;
     
     return path.join(outputDirectory, fileName);
+  }
+
+  /**
+   * Find existing file with matching content hash
+   * Returns the full path if found, null otherwise
+   */
+  private static async findFileByHash(baseName: string, hash: string, directory: string, format: ExportFormat): Promise<string | null> {
+    try {
+      // Check if directory exists
+      const dirExists = await fs.promises.access(directory).then(() => true).catch(() => false);
+      if (!dirExists) {
+        return null; // No directory means no existing files
+      }
+
+      // Read directory contents
+      const files = await fs.promises.readdir(directory);
+      
+      // Find files matching pattern: baseName-XX-${hash}.format
+      // We specifically look for our hash, regardless of sequence number
+      const pattern = new RegExp(`^${this.escapeRegex(baseName)}-(\\d{2})-${this.escapeRegex(hash)}\\.${format}$`);
+      
+      for (const file of files) {
+        if (pattern.test(file)) {
+          // Found existing file with same content hash
+          return path.join(directory, file);
+        }
+      }
+      
+      return null; // No existing file with this hash
+      
+    } catch (error) {
+      // If any error occurs, assume file doesn't exist
+      return null;
+    }
   }
 
   /**
@@ -113,6 +157,41 @@ export class AutoNaming {
     } catch (error) {
       // If any error occurs, start from 1
       return 1;
+    }
+  }
+
+  /**
+   * Check if a file exists and has the same content hash
+   * Returns true only if file exists AND content matches (for overwrite mode)
+   * or if filename contains the content hash (for versioned mode)
+   */
+  static async shouldSkipExport(filePath: string, content: string): Promise<boolean> {
+    try {
+      // Check if file exists
+      const fileExists = await fs.promises.access(filePath).then(() => true).catch(() => false);
+      if (!fileExists) {
+        return false; // File doesn't exist, must export
+      }
+
+      const fileName = path.basename(filePath);
+      
+      // Check if this is a versioned filename (contains hash)
+      // Pattern: baseName-XX-xxxxxxxx.format
+      const versionedPattern = /-\d{2}-[a-f0-9]{8}\./;
+      
+      if (versionedPattern.test(fileName)) {
+        // Versioned mode: filename contains hash, so if file exists, content matches
+        return true; // Skip export
+      }
+      
+      // Overwrite mode: always export (overwrite the file)
+      // We can't reliably compare binary file content with mermaid source,
+      // so in overwrite mode, we always regenerate to ensure it's up to date
+      return false;
+      
+    } catch (error) {
+      // On any error, don't skip (allow export to proceed)
+      return false;
     }
   }
 

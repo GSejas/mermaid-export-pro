@@ -18,6 +18,21 @@ import { FormatPreferenceManager } from '../services/formatPreferenceManager';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 import { getDialogService } from '../services/dialogService';
 import { ConfigManager } from '../services/configManager';
+import { extractAllMermaidDiagrams } from './exportAllCommand';
+
+/**
+ * Information about a single mermaid diagram found in a document
+ */
+interface DiagramInfo {
+  /** The mermaid diagram content (cleaned) */
+  content: string;
+  /** Starting line number in the document */
+  startLine: number;
+  /** Ending line number in the document */
+  endLine: number;
+  /** Source type: 'mmd' for .mmd files, 'markdown' for markdown blocks */
+  type: 'mmd' | 'markdown';
+}
 
 export async function runExportCommand(
   context: vscode.ExtensionContext, 
@@ -139,6 +154,20 @@ export async function runExportCommand(
 
     exportOptions.outputPath = outputPath;
 
+    console.log('[DEBUG exportCommand] Checking if should skip export...');
+    // Check if we should skip export BEFORE showing progress notification
+    const shouldSkip = await AutoNaming.shouldSkipExport(outputPath, mermaidContent);
+    
+    if (shouldSkip) {
+      // File with same content already exists - skip export
+      console.log('[DEBUG exportCommand] File with same content exists, skipping export:', outputPath);
+      
+      const fileName = path.basename(outputPath);
+      vscode.window.showInformationMessage(`✓ Using existing export: ${fileName} (same content)`);
+      return; // Exit early - don't show progress notification
+    }
+
+    console.log('[DEBUG exportCommand] File needs export, proceeding...');
     console.log('[DEBUG exportCommand] About to start withProgress...');
 
     // Select strategy and export with timeout monitoring
@@ -205,6 +234,9 @@ export async function runExportCommand(
         }
       );
       console.log('[DEBUG exportCommand] Timeout monitoring started');
+      
+      // Note: shouldSkipExport check was moved BEFORE withProgress to avoid showing progress notification unnecessarily
+      
       try {
         console.log('[DEBUG exportCommand] About to select strategy...');
         timeoutManager.updateProgress(operationId, 'Selecting export strategy...');
@@ -292,13 +324,54 @@ async function extractMermaidContent(document: vscode.TextDocument, selection: v
       }
     }
     
-    // Extract from entire document
-    const fullText = document.getText();
-    // More flexible regex to handle various spacing and newline combinations
-    const mermaidMatch = fullText.match(/```mermaid\s*([\s\S]*?)\s*```/);
-    if (mermaidMatch) {
-      return mermaidMatch[1].trim();
+    // Find all mermaid diagrams in the file
+    const allDiagrams = await extractAllMermaidDiagrams(document);
+    
+    if (allDiagrams.length === 0) {
+      return null; // No diagrams found
     }
+    
+    if (allDiagrams.length === 1) {
+      // Only one diagram, use it
+      return allDiagrams[0].content;
+    }
+    
+    // Multiple diagrams found - determine which one to export
+    if (!selection.isEmpty) {
+      // Find diagram that contains the cursor/selection
+      const cursorLine = selection.active.line;
+      const diagramAtCursor = allDiagrams.find((diagram: DiagramInfo) => 
+        cursorLine >= diagram.startLine && cursorLine <= diagram.endLine
+      );
+      if (diagramAtCursor) {
+        return diagramAtCursor.content;
+      }
+    }
+    
+    // No selection or cursor not in a diagram - ask user which diagram to export
+    interface DiagramChoice {
+      label: string;
+      description: string;
+      diagram: DiagramInfo;
+    }
+    
+    const diagramChoices: DiagramChoice[] = allDiagrams.map((diagram: DiagramInfo, index: number) => ({
+      label: `Diagram ${index + 1} (lines ${diagram.startLine + 1}-${diagram.endLine + 1})`,
+      description: diagram.content.split('\n')[0]?.substring(0, 50) + '...',
+      diagram: diagram
+    }));
+    
+    const selectedDiagram = await vscode.window.showQuickPick(diagramChoices, {
+      placeHolder: 'Multiple diagrams found. Which one would you like to export?',
+      matchOnDescription: true
+    });
+    
+    if (selectedDiagram) {
+      return selectedDiagram.diagram.content;
+    }
+    
+    // User cancelled
+    return null;
   }
   
   // Try current selection or line

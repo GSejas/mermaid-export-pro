@@ -60,7 +60,7 @@
       },
       {
         "command": "mermaidExportPro.exportFile",
-        "title": "Quick Export",
+        "title": "Quick Export (All Diagrams)",
         "category": "Mermaid Export Pro"
       },
       {

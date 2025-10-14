@@ -155,7 +155,7 @@ export async function runExportAllCommand(context: vscode.ExtensionContext, docu
 /**
  * Extract all mermaid diagrams from document
  */
-async function extractAllMermaidDiagrams(document: vscode.TextDocument): Promise<DiagramInfo[]> {
+export async function extractAllMermaidDiagrams(document: vscode.TextDocument): Promise<DiagramInfo[]> {
   const fileName = document.fileName.toLowerCase();
   const content = document.getText();
   

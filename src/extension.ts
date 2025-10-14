@@ -10,6 +10,7 @@ import { AutoNaming } from './utils/autoNaming';
 import { ExportFormat, MermaidTheme, ExportOptions } from './types';
 import { runDebugExport } from './commands/debugCommand';
 import { runExportCommand } from './commands/exportCommand';
+import { runQuickExportCommand } from './commands/quickExportCommand';
 import { runExportAllCommand } from './commands/exportAllCommand';
 import { runBatchExport } from './commands/batchExportCommand.v2';
 import { toggleAutoExport, initializeAutoExport, disposeAutoExport } from './commands/watchCommand';
@@ -92,11 +93,12 @@ function registerCommands(context: vscode.ExtensionContext): void {
   );
 
   // Export as command (alias for exportCurrent - same functionality)
+  // Export As command - Shows format picker + save dialog
   const exportAsCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportAs',
     async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context, true, resource);
+        await runExportCommand(context, false, resource); // preferAuto=false → shows dialogs
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export As failed'), 'Export As');
       }
@@ -229,14 +231,14 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Export file from explorer/tab context
+  // Quick Export (formerly Export file) - Zero dialogs, exports all diagrams with defaults
   const exportFileCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportFile',
     async (resource: vscode.Uri) => {
       try {
-        await exportFileUri(resource, context);
+        await runQuickExportCommand(context, resource);
       } catch (error) {
-        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export file failed'), 'Export File');
+        await ErrorHandler.handleError(error instanceof Error ? error : new Error('Quick Export failed'), 'Quick Export');
       }
     }
   );
@@ -438,13 +440,15 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
       backgroundColor: (config.get('backgroundColor') as string) || 'transparent'
     };
 
-  // Get output path based on user preference
-  // CodeLens-initiated export prefers auto-save next to the markdown file
-  const outputPath = await getSmartOutputPath(document, mermaidContent, format as ExportFormat, context, true);
+  // CodeLens export: ALWAYS auto-name files, never show dialogs (forceAuto=true)
+  const outputPath = await getSmartOutputPath(document, mermaidContent, format as ExportFormat, context, true, true);
     
     if (!outputPath) {
       return; // User cancelled
     }
+
+    // Check if we should skip export (content-aware check)
+    const shouldSkip = await AutoNaming.shouldSkipExport(outputPath, mermaidContent);
 
     // Select strategy and export
     const cliStrategy = new CLIExportStrategy();
@@ -452,23 +456,30 @@ async function exportMarkdownBlock(documentUri: vscode.Uri, range: vscode.Range,
 
     const strategy = await cliStrategy.isAvailable() ? cliStrategy : webStrategy;
     
-    await vscode.window.withProgress({
-      location: vscode.ProgressLocation.Notification,
-      title: `Exporting mermaid block to ${format.toUpperCase()}...`,
-      cancellable: false
-    }, async () => {
-      const buffer = await strategy.export(mermaidContent, exportOptions);
-      
-      // Ensure directory exists for auto-save modes
-      const outputDir = path.dirname(outputPath);
-      await AutoNaming.ensureDirectory(outputDir);
-      
-      // Write file
-      await fs.promises.writeFile(outputPath, buffer);
-    });
+    if (shouldSkip) {
+      // File with same content already exists - skip export, show message
+      const fileName = path.basename(outputPath);
+      vscode.window.showInformationMessage(`✓ Using existing export: ${fileName} (same content)`);
+    } else {
+      // Export new or updated diagram
+      await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        title: `Exporting mermaid block to ${format.toUpperCase()}...`,
+        cancellable: false
+      }, async () => {
+        const buffer = await strategy.export(mermaidContent, exportOptions);
+        
+        // Ensure directory exists for auto-save modes
+        const outputDir = path.dirname(outputPath);
+        await AutoNaming.ensureDirectory(outputDir);
+        
+        // Write file
+        await fs.promises.writeFile(outputPath, buffer);
+      });
 
-    const fileName = path.basename(outputPath);
-    vscode.window.showInformationMessage(`Mermaid diagram exported to ${fileName}`);
+      const fileName = path.basename(outputPath);
+      vscode.window.showInformationMessage(`Mermaid diagram exported to ${fileName}`);
+    }
     
   } catch (error) {
     vscode.window.showErrorMessage(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -666,7 +677,23 @@ function getFormatDescription(format: ExportFormat): string {
 /**
  * Get smart output path based on user preferences
  */
-async function getSmartOutputPath(document: vscode.TextDocument, mermaidContent: string, format: ExportFormat, context: vscode.ExtensionContext, preferAuto = false): Promise<string | null> {
+async function getSmartOutputPath(document: vscode.TextDocument, mermaidContent: string, format: ExportFormat, context: vscode.ExtensionContext, preferAuto = false, forceAuto = false): Promise<string | null> {
+  // If forceAuto is true (e.g., from CodeLens), always auto-name regardless of user preferences
+  if (forceAuto) {
+    const baseName = AutoNaming.getBaseName(document.fileName);
+    const configManager = new ConfigManager();
+    const namingMode = configManager.getAutoNamingMode();
+    const fileDirectory = path.dirname(document.fileName);
+    
+    return await AutoNaming.generateFileName({
+      baseName,
+      format,
+      content: mermaidContent,
+      outputDirectory: fileDirectory,
+      mode: namingMode
+    });
+  }
+  
   // If caller prefers auto (e.g., CodeLens), use auto as default when the user hasn't configured a preference
   const defaultPref: 'dialog' | 'auto' | 'folder' = preferAuto ? 'auto' : 'dialog';
   const savePreference = context.workspaceState.get<'dialog' | 'auto' | 'folder'>('mermaidExportPro.exportSavePreference', defaultPref);

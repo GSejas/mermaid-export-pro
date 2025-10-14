@@ -7,7 +7,7 @@ Test class diagrams with inheritance, composition, and complex relationships.
 ```mermaid
 classDiagram
     class Animal {
-        +String name
+        +String namesssssss
         +int age
         +makeSound()
         +eat()
