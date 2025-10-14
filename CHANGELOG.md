@@ -2,6 +2,16 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.9] - 2025-10-13
+
+### 🔧 CI/CD Improvements
+
+#### 🚀 Marketplace Publishing Automation
+
+- **Automated Publishing**: Enabled marketplace publishing in GitHub Actions workflow
+- **End-to-End Release**: Complete pipeline from tag → GitHub Release → Marketplace publish
+- **Testing Release**: Verification of marketplace publishing integration
+
 ## [1.0.8] - 2025-10-13
 
 ### ✨ New Features
