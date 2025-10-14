@@ -38,6 +38,7 @@ vi.mock('../../../utils/autoNaming', () => ({
   AutoNaming: {
     generateFileName: vi.fn(() => Promise.resolve('/test/output.svg')),
     generateSmartName: vi.fn(() => Promise.resolve('/test/output.svg')),
+    shouldSkipExport: vi.fn(() => Promise.resolve(false)),
   },
 }));
 
