@@ -14,4 +14,11 @@
     "pasteImage.basePath": "${projectRoot}",
     "pasteImage.defaultName": "Y-MM-DD-HH-mm-ss",
     "mermaidExportPro.autoExport": false,
+    // Configure Mocha Test Adapter to only look at integration tests
+    // Unit tests should run via Vitest (npm run test:unit)
+    "mochaExplorer.files": "src/test/integration/**/*.test.ts",
+    "mochaExplorer.require": ["ts-node/register", "source-map-support/register"],
+    "mochaExplorer.env": {
+        "TS_NODE_PROJECT": "tsconfig.integration.json"
+    }
 }

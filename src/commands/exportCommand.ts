@@ -19,6 +19,7 @@ import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 import { getDialogService } from '../services/dialogService';
 import { ConfigManager } from '../services/configManager';
 import { extractAllMermaidDiagrams } from './exportAllCommand';
+import { TelemetryService } from '../services/telemetryService';
 
 /**
  * Information about a single mermaid diagram found in a document
@@ -38,12 +39,16 @@ export async function runExportCommand(
   context: vscode.ExtensionContext, 
   preferAuto = false, 
   documentUri?: vscode.Uri,
-  testOutputPath?: string // NEW: For testing - bypasses dialog
+  testOutputPath?: string, // For testing - bypasses dialog
+  telemetryService?: TelemetryService // For tracking usage
 ): Promise<void> {
   console.log('[DEBUG exportCommand] Starting export command...');
   console.log('[DEBUG exportCommand] preferAuto:', preferAuto);
   console.log('[DEBUG exportCommand] testOutputPath:', testOutputPath);
   ErrorHandler.logInfo('Starting export command...');
+
+  // Track start time for telemetry
+  const startTime = Date.now();
 
   // Check export throttling
   const timeoutManager = OperationTimeoutManager.getInstance();
@@ -261,6 +266,19 @@ export async function runExportCommand(
         console.log('[DEBUG exportCommand] File stats:', stats.size, 'bytes');
         ErrorHandler.logInfo(`Export completed: ${outputPath} (${stats.size} bytes)`);
         
+        // Track successful export in telemetry
+        if (telemetryService) {
+          const exportDuration = Date.now() - startTime;
+          telemetryService.trackExport(
+            exportOptions.format,
+            strategy.name.toLowerCase().includes('cli') ? 'cli' : 'web',
+            exportDuration,
+            stats.size,
+            undefined, // diagramType - could be detected from content
+            true // success
+          );
+        }
+        
         console.log('[DEBUG exportCommand] Completing operation...');
         // Mark operation as completed
         timeoutManager.completeOperation(operationId);
@@ -293,6 +311,16 @@ export async function runExportCommand(
         
         const errorMsg = error instanceof Error ? error.message : 'Unknown export error';
         ErrorHandler.logError(`Export failed: ${errorMsg}`);
+        
+        // Track export failure in telemetry
+        if (telemetryService) {
+          telemetryService.trackError(
+            'export_failure',
+            errorMsg,
+            'export'
+          );
+        }
+        
         vscode.window.showErrorMessage(`Export failed: ${errorMsg}`);
       }
     });

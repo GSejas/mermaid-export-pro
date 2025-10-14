@@ -85,7 +85,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     'mermaidExportPro.exportCurrent',
     async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context, false, resource);
+        await runExportCommand(context, false, resource, undefined, telemetryService);
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export failed'), 'Export Current');
       }
@@ -98,7 +98,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     'mermaidExportPro.exportAs',
     async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context, false, resource); // preferAuto=false → shows dialogs
+        await runExportCommand(context, false, resource, undefined, telemetryService); // preferAuto=false → shows dialogs
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export As failed'), 'Export As');
       }
@@ -236,7 +236,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
     'mermaidExportPro.exportFile',
     async (resource: vscode.Uri) => {
       try {
-        await runQuickExportCommand(context, resource);
+        await runQuickExportCommand(context, resource, telemetryService);
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Quick Export failed'), 'Quick Export');
       }
@@ -285,7 +285,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
         }
         
         console.log('[TEST COMMAND] Calling runExportCommand with testOutputPath:', outputPath);
-        await runExportCommand(context, false, resource, outputPath);
+        await runExportCommand(context, false, resource, outputPath, telemetryService);
         console.log('[TEST COMMAND] runExportCommand completed');
       } catch (error) {
         console.log('[TEST COMMAND] Error:', error);

@@ -1,8 +1,9 @@
 {
-  "require": ["source-map-support/register", "./src/test/unit/before-tests.js", "ts-node/register"],
-  "ui": "tdd",
+  "require": ["source-map-support/register", "ts-node/register"],
+  "ui": "bdd",
   "extension": ["ts"],
-  "spec": "src/test/unit/**/*.test.ts",
-  "timeout": 5000,
-  "recursive": true
+  "spec": "src/test/integration/**/*.test.ts",
+  "timeout": 30000,
+  "recursive": true,
+  "node-option": ["loader=ts-node/esm"]
 }

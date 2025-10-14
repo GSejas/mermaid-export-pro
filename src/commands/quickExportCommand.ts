@@ -25,6 +25,7 @@ import { AutoNaming } from '../utils/autoNaming';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
 import { ConfigManager } from '../services/configManager';
 import { extractAllMermaidDiagrams } from './exportAllCommand';
+import { TelemetryService } from '../services/telemetryService';
 
 interface DiagramInfo {
   content: string;
@@ -47,9 +48,13 @@ interface ExportResult {
  */
 export async function runQuickExportCommand(
   context: vscode.ExtensionContext,
-  documentUri?: vscode.Uri
+  documentUri?: vscode.Uri,
+  telemetryService?: TelemetryService
 ): Promise<void> {
   ErrorHandler.logInfo('Starting Quick Export (zero dialogs, all diagrams)...');
+
+  // Track start time for telemetry
+  const startTime = Date.now();
 
   // Check export throttling
   const timeoutManager = OperationTimeoutManager.getInstance();
@@ -105,7 +110,7 @@ export async function runQuickExportCommand(
     ErrorHandler.logInfo(`Quick Export: Found ${diagrams.length} diagram(s), format: ${format}, theme: ${theme}`);
 
     // Export all diagrams
-    await exportAllDiagramsQuick(document, diagrams, exportOptions, context);
+    await exportAllDiagramsQuick(document, diagrams, exportOptions, context, startTime, telemetryService);
 
   } catch (error) {
     ErrorHandler.logError(`Quick Export failed: ${error}`);
@@ -123,7 +128,9 @@ async function exportAllDiagramsQuick(
   document: vscode.TextDocument,
   diagrams: DiagramInfo[],
   exportOptions: ExportOptions,
-  context: vscode.ExtensionContext
+  context: vscode.ExtensionContext,
+  startTime: number,
+  telemetryService?: TelemetryService
 ): Promise<void> {
   const baseName = path.basename(document.fileName, path.extname(document.fileName));
   const outputDir = path.dirname(document.fileName);
@@ -215,6 +222,19 @@ async function exportAllDiagramsQuick(
 
               results.exported++;
               results.outputs.push(outputName);
+
+              // Track successful export in telemetry
+              if (telemetryService) {
+                const stats = await fs.promises.stat(outputName);
+                telemetryService.trackExport(
+                  exportOptions.format,
+                  strategy.name.toLowerCase().includes('cli') ? 'cli' : 'web',
+                  Date.now() - startTime,
+                  stats.size,
+                  undefined,
+                  true
+                );
+              }
 
               ErrorHandler.logInfo(`Quick Export: Exported diagram ${i + 1} → ${path.basename(outputName)}`);
             }
