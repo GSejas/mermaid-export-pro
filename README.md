@@ -4,12 +4,13 @@
 
 ![](media/mermaid-lens_temp_128.gif)
 
-> This extension is free, the name is mainly to set it appart from older unmaintained alternatives. 
-> This extension is in BETA Mode, please report issues @ `jsequeira03@gmail.com`. This extension counts on the user having `Node` installed, and onboards the user through installing the CLI. 
+> **Free & Open Source** - The "Pro" name distinguishes this from older, unmaintained alternatives.  
+> **Beta Status** - Please report issues to `jsequeira03@gmail.com` or [GitHub Issues](https://github.com/GSejas/mermaid-export-pro/issues).  
+> **Node.js Recommended** - While optional, Node.js enables high-quality CLI exports. The extension includes a guided setup wizard.
 
 ![](.\media\mermaid-export-pro-banner.png)
 
-Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`) diagram export extension for Visual Studio Code with comprehensive format support and workflow automation.
+Export Mermaid diagrams from `.md` (markdown) and `.mmd` files to professional-quality images across Windows, macOS, and Linux with comprehensive format support and workflow automation.
 
 
 ![](media/features-overview-banner.png)
@@ -75,18 +76,23 @@ Professional cross-platform Mermaid (from markdown `.md` or Mermaid files `.mmd`
 
 ![](media/export-stragegies-banner.png)
 
-- **CLI Export**: High-quality rendering via Mermaid CLI (@mermaid-js/mermaid-cli)
-- **Web Fallback**: Browser-based export when CLI unavailable
-- **Auto-detection**: Automatically selects best available method
-- **Cross-platform**: Windows, macOS, and Linux support **[UNTESTED: Need testers!!]**
+**Dual Export Strategies for Maximum Flexibility:**
+
+- **CLI Export**: Premium quality rendering via `@mermaid-js/mermaid-cli` (requires Node.js)
+- **Web Fallback**: Browser-based export when CLI is unavailable - works anywhere
+- **Auto-Detection**: Intelligently selects the best available method
+- **Cross-Platform**: Tested on Windows | macOS & Linux support (seeking testers!)
 
 ## Requirements
 
-### Optional (Recommended)
-- **Node.js**: For CLI export strategy (best quality)
-- **@mermaid-js/mermaid-cli**: Automatically detected if globally installed
+### Recommended (For Best Quality)
 
-The extension works without these dependencies using the web export strategy.
+- **Node.js**: Required for CLI export strategy (highest quality output)
+- **@mermaid-js/mermaid-cli**: Auto-detected if globally installed, or installed via setup wizard
+
+### Fallback Option
+
+The extension works without these dependencies using the built-in web export strategy (good quality, zero setup).
 
 ## Extension Settings
 
@@ -110,98 +116,131 @@ This extension contributes the following settings:
 ![](media\getting-started-banner.png)
 
 ### Quick Start
-1. Open a file with mermaid diagrams (`.mmd` or markdown with mermaid blocks)
-2. Status bar will show diagram count - click to export
-3. Or use Command Palette: `Ctrl+Shift+P` → "Mermaid Export Pro"
 
-### Commands
-- **Export Current Diagram**: Export the active mermaid file
-- **Export As...**: Choose format and location interactively
-- **Quick Export**: Fast export with remembered preferences
-- **Export All Diagrams in File**: Extract and export all mermaid blocks from markdown
-- **Export Folder...**: Batch export all diagrams in a folder
-- **Toggle Auto Export**: Enable/disable auto-export on save
-- **Show Export Log**: View export history and debug information
-- **Set Up Export Tools**: Install and configure CLI dependencies
-- **Switch Theme**: Cycle through mermaid themes
-- **Show Diagnostics & Health Report**: Complete system health check
-- **Show Usage Statistics**: View your extension usage data (opt-in telemetry)
-- **Debug Export**: Run comprehensive test suite with quality comparison
+1. **Open** a file containing mermaid diagrams (`.mmd` file or markdown with mermaid code blocks)
+2. **Status Bar** shows diagram count - click to export instantly
+3. **Or use Command Palette**: `Ctrl+Shift+P` → "Mermaid Export Pro"
 
-### Context Menus
-- Right-click `.mmd` or `.md` files → **Quick Export** / **Export As...**
-- Right-click folders → **Export Folder...**
-- CodeLens buttons above mermaid blocks in markdown
+### Available Commands
+
+**Export Commands:**
+- **Export Current Diagram** - Export the active mermaid file
+- **Export As...** - Choose format and location interactively  
+- **Quick Export** - Fast export with remembered preferences
+- **Export All Diagrams in File** - Extract and export all mermaid blocks from markdown
+- **Export Folder...** - Batch export all diagrams in a directory
+
+**Workflow Commands:**
+- **Toggle Auto Export** - Enable/disable auto-export on file save
+- **Show Export Log** - View export history and debug information
+- **Set Up Export Tools** - Guided installation of CLI dependencies
+- **Switch Theme** - Cycle through mermaid themes (default, dark, forest, neutral)
+
+**Diagnostics:**
+- **Show Diagnostics & Health Report** - Complete system health check
+- **Show Usage Statistics** - View your extension usage data (opt-in telemetry)
+- **Debug Export** - Run comprehensive test suite with quality comparison
+
+### Context Menu Options
+
+- **Right-click `.mmd` or `.md` files** → Quick Export / Export As...
+- **Right-click folders** → Export Folder...
+- **CodeLens buttons** above mermaid blocks in markdown for instant export
 
 ## Privacy & Telemetry
 
-### Opt-In Usage Statistics
+### Opt-In Anonymous Usage Statistics
 
-Mermaid Export Pro includes **optional, opt-in** anonymous usage statistics to help improve the extension:
+Mermaid Export Pro includes **completely optional** anonymous telemetry to help improve the extension based on real-world usage patterns.
 
-**What's Collected (when enabled):**
-- ✅ Export formats and strategies used
-- ✅ Performance metrics (export times)
-- ✅ Error types (sanitized, no personal info)
-- ✅ Command usage patterns
+**What's Tracked (Only When Enabled):**
 
-**What's NOT Collected:**
-- ❌ File names or paths
-- ❌ Diagram content
-- ❌ Personal information
-- ❌ IP addresses
+- ✅ Export formats used (SVG, PNG, PDF, etc.)
+- ✅ Export strategies selected (CLI vs Web)
+- ✅ Performance metrics (export duration, file sizes)
+- ✅ Error types encountered (sanitized, no personal details)
+- ✅ Command usage frequency
 
-**Your Control:**
-- 🔒 **Disabled by default** - You must opt-in
-- 📊 **Review anytime**: Command: `Show Usage Statistics`
-- 📤 **Export your data**: Command: `Export Usage Data`
-- 🗑️ **Clear anytime**: Command: `Clear Usage Data`
+**What's NEVER Collected:**
 
-Enable in settings: `mermaidExportPro.telemetry.enabled`
+- ❌ File names or file paths
+- ❌ Diagram content or code
+- ❌ Personal information or workspace details
+- ❌ IP addresses or identifying data
+
+**You Have Full Control:**
+
+- 🔒 **Disabled by default** - Telemetry is opt-in only
+- 📊 **Review anytime** - Command: `Show Usage Statistics`
+- 📤 **Export your data** - Command: `Export Usage Data` (JSON format)
+- 🗑️ **Delete anytime** - Command: `Clear Usage Data`
+- ⚙️ **Enable/disable** - Setting: `mermaidExportPro.telemetry.enabled`
+
+All telemetry data stays on your machine unless you choose to export and share it.
 
 ## Quality Assurance
 
-### Automated Testing & CI/CD
+### Automated Testing & Continuous Integration
 
 [![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro)
 
-**Test Coverage:** ~46% (343+ unit tests + 29 E2E tests)
+**Test Coverage:** ~46% combined (371 unit tests + 29 E2E integration tests)
 
-- ✅ **Continuous Integration**: GitHub Actions running on every commit
-- ✅ **Multi-Platform Testing**: Automated tests on Windows and Linux
-- ✅ **Unit Test Suite**: 343+ tests covering commands, strategies, services, and UI
-- ✅ **E2E Integration Tests**: 29 tests validating real VS Code workflows
-- ✅ **Coverage Merge Pipeline**: Combined unit + E2E coverage tracking
-- ✅ **Code Quality**: ESLint + TypeScript strict mode
-- ✅ **Automated Builds**: VSIX package generation on every release
+**Continuous Quality Checks:**
 
-**View Test Results**: [GitHub Actions](https://github.com/GSejas/mermaid-export-pro/actions)
-**View Coverage Report**: [Codecov](https://codecov.io/gh/GSejas/mermaid-export-pro)
+- ✅ **GitHub Actions CI/CD** - Automated testing on every commit
+- ✅ **Multi-Platform Testing** - Windows and Linux validation
+- ✅ **371 Unit Tests** - Commands, strategies, services, and UI components
+- ✅ **29 E2E Tests** - Real VS Code workflows and user scenarios
+- ✅ **Merged Coverage** - Combined unit + integration coverage tracking
+- ✅ **Code Quality** - ESLint strict mode + TypeScript type checking
+- ✅ **Automated Releases** - VSIX package generation on version tags
+
+**Review Quality Metrics:**
+
+- [View Test Results](https://github.com/GSejas/mermaid-export-pro/actions) - GitHub Actions workflow runs
+- [View Coverage Report](https://codecov.io/gh/GSejas/mermaid-export-pro) - Detailed coverage analysis
 
 ## Release Notes
 
-### 1.0.7 (Latest)
+### 1.0.10 (Current)
 
-**Command Naming Improvements & Test Infrastructure:**
+**Telemetry Integration & Code Quality:**
 
-- **Better Command Names**: Improved clarity and consistency
-  - "Auto Save" → "Quick Export" (clearer intent)
-  - "Batch Export" → "Export Folder..." (more descriptive)
-  - "Setup Export Tools" → "Set Up Export Tools" (correct grammar)
-  - "Cycle Mermaid Theme" → "Switch Theme" (simpler)
-- **CI/CD Coverage Pipeline**: Merged unit + E2E coverage in GitHub Actions
-- **Test Infrastructure**: Fixed TypeScript compilation and ESM module resolution
-- **Documentation**: Comprehensive testing and architecture documentation
-- **Technical Debt**: Documented extension test refactoring for v1.0.8
+- **Fixed Telemetry Tracking** - Telemetry service now properly wired to export commands
+  - Previously: Service existed but never connected to export operations
+  - Now: Tracks export counts, formats, strategies, duration, and file sizes
+- **Post-Mortem Documentation** - Comprehensive analysis of why bug wasn't caught initially
+- **Release Checklist** - 85-item verification checklist for future releases
+- **Code Quality** - Resolved 122 ESLint warnings for cleaner codebase
+- **371 Tests Passing** - Full unit test suite validation
 
-### 1.0.6
+### 1.0.9
 
-**Testing & Coverage Improvements:**
+**Progress Notification & Auto-Naming Improvements:**
 
-- Coverage merge pipeline combining unit and E2E test results
-- 343+ unit tests with Vitest
-- 29 E2E integration tests
-- ~46% combined test coverage
+- **Fixed Progress Flash** - No more progress notifications when exports are skipped
+- **Versioned Mode Enhancement** - Skip unchanged diagrams in versioned mode
+- **21 Integration Tests** - Comprehensive auto-naming test coverage
+- **Early Return Pattern** - Check skip conditions before showing UI
+
+### 1.0.8
+
+**Auto-Naming & File Management:**
+
+- **Smart File Naming** - Versioned exports with content hashing (`diagram-01-a4b2c8ef.svg`)
+- **Overwrite Mode** - Simple naming for presentations (`diagram1.svg`)
+- **Skip Logic** - Avoid re-exporting unchanged diagrams
+
+### 1.0.7
+
+**Command Naming & Test Infrastructure:**
+
+- **Clearer Command Names** - Improved discoverability and consistency
+  - "Auto Save" → "Quick Export"
+  - "Batch Export" → "Export Folder..."
+- **CI/CD Coverage** - Merged unit + E2E coverage pipeline
+- **Enhanced Documentation** - Testing and architecture guides
 
 ### 1.0.5
 
