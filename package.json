@@ -2,7 +2,7 @@
   "name": "mermaid-export-pro",
   "displayName": "Mermaid Export Pro",
   "description": "Professional Mermaid diagram export with multiple formats and cross-platform reliability",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "publisher": "GSejas",
   "icon": "media/icon.png",
   "repository": {
@@ -269,6 +269,19 @@
           "minimum": 1,
           "maximum": 20,
           "description": "Default folder depth for export folder when not specified (1-20, default: 3)"
+        },
+        "mermaidExportPro.batchExportMode": {
+          "type": "string",
+          "enum": [
+            "interactive",
+            "automatic"
+          ],
+          "default": "interactive",
+          "markdownDescription": "**Folder export behavior:**\n\n- `interactive` **(default)**: Show guided wizard with format/theme/output prompts\n  - ✅ Full control over each export\n  - ✅ See preview before exporting\n  - ⚠️ Requires 5-6 dialog steps\n\n- `automatic`: Use settings from JSON configuration (like Quick Export)\n  - ✅ Zero dialogs - instant export\n  - ✅ Respects defaultFormat, theme, backgroundColor, outputDirectory\n  - ✅ Consistent with Quick Export behavior\n\n**Use Case:** Enable `automatic` mode if you've configured your preferred settings and want folder exports to work like Quick Export (no prompts).",
+          "enumDescriptions": [
+            "Show interactive wizard with dialogs (current behavior)",
+            "Use settings from JSON - no dialogs (like Quick Export)"
+          ]
         },
         "mermaidExportPro.organizeByFormat": {
           "type": "boolean",

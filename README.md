@@ -1,6 +1,6 @@
 # Mermaid Export Pro
 
-[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.10-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.10) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.11-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.11) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
 ![](media/mermaid-lens_temp_128.gif)
 
@@ -102,16 +102,37 @@ This extension contributes the following settings:
 
 * `mermaidExportPro.defaultFormat`: Default export format (svg, png, pdf, webp, jpg, jpeg)
 * `mermaidExportPro.theme`: Mermaid theme (default, dark, forest, neutral)
+* `mermaidExportPro.backgroundColor`: Background color for exports (transparent, white, black, custom hex)
 * `mermaidExportPro.outputDirectory`: Custom output directory (relative or absolute)
+* `mermaidExportPro.batchExportMode`: Folder export behavior - **NEW in v1.0.11!**
+  - `interactive` (default): Guided wizard with dialogs
+  - `automatic`: Zero-dialog export using your JSON settings (like Quick Export)
 * `mermaidExportPro.autoExport`: Automatically export on file save
 * `mermaidExportPro.exportStrategy`: Export strategy preference (cli, web, auto)
 * `mermaidExportPro.autoNaming.mode`: File naming strategy (versioned, overwrite) - **NEW in v1.0.8!**
   - `versioned` (default): Create versioned exports (`diagram-01-a4b2c8ef.svg`)
 - ![Quick Export showing the auto versioning and filenaming configuration](media\Quick-Export-Versioned-Autonaming_temp_128.gif)
   - `overwrite`: Simple names that overwrite (`diagram1.svg`) - ideal for presentations
+* `mermaidExportPro.organizeByFormat`: Organize exports into format subfolders (e.g., `png/`, `svg/`)
 * `mermaidExportPro.width`: Default export width in pixels
 * `mermaidExportPro.height`: Default export height in pixels
-* `mermaidExportPro.backgroundColor`: Background color for exports
+
+### ⚙️ Configuration Example
+
+For zero-dialog folder exports (respects your settings):
+
+```json
+{
+  "mermaidExportPro.batchExportMode": "automatic",
+  "mermaidExportPro.defaultFormat": "svg",
+  "mermaidExportPro.theme": "dark",
+  "mermaidExportPro.backgroundColor": "transparent",
+  "mermaidExportPro.outputDirectory": "exported-diagrams",
+  "mermaidExportPro.organizeByFormat": true
+}
+```
+
+**Result**: Right-click folder → Export Folder → Done! No dialogs, uses your configured settings.
 
 ![](media\getting-started-banner.png)
 

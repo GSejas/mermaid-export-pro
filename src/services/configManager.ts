@@ -101,6 +101,18 @@ export class ConfigManager implements ConfigurationManager {
     return this.getConfiguration().get<AutoNamingMode>('autoNaming.mode', 'versioned');
   }
 
+  getBatchExportMode(): 'interactive' | 'automatic' {
+    return this.getConfiguration().get<'interactive' | 'automatic'>('batchExportMode', 'interactive');
+  }
+
+  getOrganizeByFormat(): boolean {
+    return this.getConfiguration().get<boolean>('organizeByFormat', false);
+  }
+
+  getBatchExportDefaultDepth(): number {
+    return this.getConfiguration().get<number>('batchExportDefaultDepth', 3);
+  }
+
   async updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void> {
     const config = this.getConfiguration();
     await config.update(key, value, target ?? vscode.ConfigurationTarget.Global);

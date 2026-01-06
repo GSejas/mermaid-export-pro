@@ -92,13 +92,24 @@ function registerCommands(context: vscode.ExtensionContext): void {
     }
   );
 
-  // Export as command (alias for exportCurrent - same functionality)
-  // Export As command - Shows format picker + save dialog
+  // Export As command - Shows save dialog (uses defaultFormat if configured, otherwise prompts)
+  // Differentiates from exportCurrent by respecting defaultFormat setting
   const exportAsCommand = vscode.commands.registerCommand(
     'mermaidExportPro.exportAs',
     async (resource?: vscode.Uri) => {
       try {
-        await runExportCommand(context, false, resource, undefined, telemetryService); // preferAuto=false → shows dialogs
+        // Check if defaultFormat is configured - if so, skip format prompt
+        const configManager = new ConfigManager();
+        const defaultFormat = configManager.getDefaultFormat();
+        
+        if (defaultFormat && defaultFormat !== 'png') {
+          // User has explicitly set a format - use it without prompting
+          ErrorHandler.logInfo(`Export As: Using configured format: ${defaultFormat}`);
+          await runExportCommand(context, true, resource, undefined, telemetryService); // preferAuto=true uses settings
+        } else {
+          // No custom format configured - show format picker (original behavior)
+          await runExportCommand(context, false, resource, undefined, telemetryService); // preferAuto=false → shows dialogs
+        }
       } catch (error) {
         await ErrorHandler.handleError(error instanceof Error ? error : new Error('Export As failed'), 'Export As');
       }

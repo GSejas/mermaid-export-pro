@@ -23,6 +23,7 @@ import { ErrorHandler } from '../ui/errorHandler';
 import { ExportOptions, ExportFormat, MermaidTheme, ExportStrategy } from '../types';
 import { AutoNaming } from '../utils/autoNaming';
 import { OperationTimeoutManager } from '../services/operationTimeoutManager';
+import { ConfigManager } from '../services/configManager';
 
 /**
  * Information about a single mermaid diagram found in a document
@@ -291,7 +292,25 @@ async function exportMultipleDiagrams(
   context: vscode.ExtensionContext
 ): Promise<void> {
   const baseName = path.basename(document.fileName, path.extname(document.fileName));
-  const outputDir = path.dirname(document.fileName);
+  
+  // Check settings for output directory first, otherwise use same directory
+  const configManager = new ConfigManager();
+  const configuredOutputDir = configManager.getOutputDirectory();
+  
+  let outputDir: string;
+  if (configuredOutputDir) {
+    // Use configured output directory
+    if (path.isAbsolute(configuredOutputDir)) {
+      outputDir = configuredOutputDir;
+    } else {
+      // Relative to source file
+      outputDir = path.join(path.dirname(document.fileName), configuredOutputDir);
+    }
+    ErrorHandler.logInfo(`Export All: Using configured output directory: ${outputDir}`);
+  } else {
+    // Default to same directory as source file
+    outputDir = path.dirname(document.fileName);
+  }
   
   await vscode.window.withProgress({
     location: vscode.ProgressLocation.Notification,

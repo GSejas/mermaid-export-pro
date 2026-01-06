@@ -2,6 +2,106 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.0.11] - 2026-01-05
+
+### 🎉 Major Features
+
+#### Settings Consistency Overhaul - Export Folder Now Respects Configuration
+
+**Resolves GitHub Issue #2**: "Export Folder does not respect user JSON settings"
+
+- **New Setting**: `mermaidExportPro.batchExportMode` with two modes:
+  - `"interactive"` (default): Original guided wizard with 5-6 dialog steps
+  - `"automatic"` (NEW): Zero-dialog export using JSON configuration settings
+- **Impact**: Export Folder can now work exactly like Quick Export - no prompts, just respects your configured format, theme, background, and output directory
+- **Example Configuration**:
+  ```json
+  {
+    "mermaidExportPro.batchExportMode": "automatic",
+    "mermaidExportPro.defaultFormat": "svg",
+    "mermaidExportPro.theme": "dark",
+    "mermaidExportPro.backgroundColor": "transparent",
+    "mermaidExportPro.outputDirectory": "exported-diagrams"
+  }
+  ```
+- **User Experience**: Right-click folder → Export Folder → Done! (when in automatic mode)
+- **Backwards Compatible**: Default behavior unchanged (interactive mode)
+
+### 🐛 Bug Fixes
+
+#### Export All Command Improvements
+
+- **Fixed**: Export All always prompted for output directory even when configured
+- **Solution**: Now checks `mermaidExportPro.outputDirectory` setting first
+- **Behavior**: Only prompts if setting is empty/not configured
+- **Consistency**: Matches Quick Export and Export Folder (automatic) behavior
+
+#### Export As Command Differentiation
+
+- **Fixed**: Export As was functionally identical to Export Current
+- **Solution**: Export As now respects `mermaidExportPro.defaultFormat` setting
+- **Behavior**: 
+  - If custom format configured → uses it without prompt
+  - If default `png` → shows format picker (original behavior)
+- **Purpose**: True to command name - "Export As" means "export as configured format"
+
+### ⚙️ Configuration Enhancements
+
+#### New ConfigManager Methods
+
+- `getBatchExportMode()`: Returns 'interactive' or 'automatic'
+- `getBatchExportDefaultDepth()`: Returns folder scan depth setting
+- `getOrganizeByFormat()`: Returns format organization preference
+
+### 📊 Settings Compatibility Matrix (Updated)
+
+| Setting | Quick Export | Export Folder (auto) | Export As | Export All |
+|---------|-------------|---------------------|-----------|------------|
+| `defaultFormat` | ✅ | ✅ NEW | ✅ NEW | ❌ |
+| `theme` | ✅ | ✅ NEW | ❌ | ❌ |
+| `backgroundColor` | ✅ | ✅ NEW | ❌ | ❌ |
+| `outputDirectory` | ✅ | ✅ NEW | ❌ | ✅ NEW |
+| `organizeByFormat` | N/A | ✅ | N/A | N/A |
+
+### 📚 Documentation
+
+- **Added**: `docs/FIXES-IMPLEMENTATION-SUMMARY.md` - Complete technical implementation details
+- **Added**: `docs/COMMAND-TRACKER.csv` - Comprehensive command reference with features, issues, and status
+- **Updated**: All command implementations now consistently use ConfigManager
+
+### 🔧 Internal Improvements
+
+- **Architecture**: Unified settings access through ConfigManager
+- **Code Quality**: Consistent configuration patterns across all export commands
+- **Maintainability**: Centralized settings logic reduces duplication
+
+### ✅ Testing
+
+- **371/371 unit tests passing** (100% pass rate)
+- **TypeScript compilation**: Zero errors
+- **ESLint**: No warnings
+- **Build**: Production build successful
+
+### 🔗 Related Issues
+
+- **Closes**: #2 - Export Folder does not respect user JSON settings
+- **Fixes**: Export All always prompting for directory
+- **Improves**: Export As command differentiation from Export Current
+
+### 💡 Migration Guide
+
+**No Breaking Changes** - All existing workflows continue to work:
+- Export Folder defaults to interactive mode (original behavior)
+- Export All prompts if outputDirectory not configured
+- Export As shows picker if using default format
+
+**To Enable New Behavior**:
+1. Set `"mermaidExportPro.batchExportMode": "automatic"`
+2. Configure your preferred format, theme, and output directory
+3. Enjoy zero-dialog exports!
+
+---
+
 ## [1.0.10] - 2025-10-14
 
 ### 🐛 Critical Bug Fixes

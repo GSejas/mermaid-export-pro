@@ -1,0 +1,85 @@
+Command ID,Display Name,Category,Implementation File,Uses Settings,Shows Dialogs,Context Menu,Status,Known Issues,User Impact,Priority,Notes
+mermaidExportPro.exportCurrent,Export Current Diagram,Export,exportCommand.ts,Partial,Yes,No,Working,"Format selection required, overwrite prompt",Medium,Low,"Interactive export with format picker and save dialog"
+mermaidExportPro.exportAs,Export As...,Export,exportCommand.ts,Yes,Conditional,"Yes (file, tab, editor)",FIXED,"Uses defaultFormat if configured (no prompt), otherwise shows picker",High,Low,"NOW RESPECTS SETTINGS: Uses defaultFormat from JSON if set, only prompts if defaultFormat='png' (default)"
+mermaidExportPro.exportFile,Quick Export (All Diagrams),Export,quickExportCommand.ts,Yes,No,"Yes (file, tab, editor)",Working,None,High,High,"Zero-dialog instant export using settings from JSON - RESPECTS USER CONFIG"
+mermaidExportPro.exportAll,Export All Diagrams in File,Export,exportAllCommand.ts,Yes,Partial,No,FIXED,"Now uses outputDirectory from settings first",High,Medium,"FIXED: Checks outputDirectory setting before prompting, exports to configured location"
+mermaidExportPro.batchExport,Export Folder...,Batch Export,batchExportCommand.v2.ts,Yes (automatic mode),Conditional (interactive mode),Yes (folder),FIXED,"New 'automatic' mode respects all settings (fixes GitHub Issue #2)",High,High,"FIXED: New batchExportMode setting - 'interactive' (old behavior) or 'automatic' (respects JSON like Quick Export)"
+mermaidExportPro.exportMarkdownBlock,Export Markdown Block,CodeLens,exportCommand.ts,Yes,Minimal,No,Working,None,Low,Low,"Internal command for CodeLens buttons - exports specific diagram block"
+mermaidExportPro.toggleAutoExport,Toggle Auto Export,Automation,extension.ts,Yes,Minimal,No,Working,None,Low,Low,"Enables/disables auto-export on file save"
+mermaidExportPro.showOutput,Show Export Log,Diagnostics,extension.ts,N/A,No,No,Working,None,Low,Low,"Opens output channel with export logs"
+mermaidExportPro.debugExport,Debug: Export Hardcoded Diagram,Debug,debugCommand.ts,Yes,Yes,No,Working,None,Low,Low,"Development/testing command - exports test diagram"
+mermaidExportPro.runSetup,Set Up Export Tools,Setup,extension.ts,N/A,Yes,No,Working,None,Low,Low,"Onboarding wizard for CLI tool installation"
+mermaidExportPro.cycleTheme,Switch Theme,UI,extension.ts,Yes,Minimal,No,Working,None,Low,Low,"Cycles through mermaid themes (default/dark/forest/neutral)"
+mermaidExportPro.showExportOptions,Show Export Options,CodeLens,extension.ts,Yes,Yes,No,Working,None,Low,Low,"Shows advanced export options modal from CodeLens"
+mermaidExportPro.statusBarClick,Status Bar Click,UI,extension.ts,N/A,No,No,Working,None,Low,Low,"Internal command for status bar interaction"
+mermaidExportPro.cancelBatchExport,Cancel Batch Export,Batch Export,extension.ts,N/A,No,No,Working,None,Low,Low,"Cancels running folder export operation"
+mermaidExportPro.diagnostics,Show Diagnostics & Health Report,Diagnostics,diagnosticsCommand.ts,N/A,No,No,Working,None,Low,Low,"Generates comprehensive system diagnostic report"
+mermaidExportPro.healthCheck,Quick Health Check,Diagnostics,diagnosticsCommand.ts,N/A,Minimal,No,Working,None,Low,Low,"Quick system health validation"
+mermaidExportPro.showTelemetry,Show Usage Statistics,Telemetry,extension.ts,N/A,No,No,Working,None,Low,Low,"Displays usage statistics and metrics"
+mermaidExportPro.exportTelemetry,Export Usage Data (for bug reports),Telemetry,extension.ts,N/A,Yes,No,Working,None,Low,Low,"Exports telemetry data to JSON file"
+mermaidExportPro.clearTelemetry,Clear Usage Data,Telemetry,extension.ts,N/A,Yes,No,Working,None,Low,Low,"Clears all stored telemetry data"
+mermaidExportPro._testExport,Test Export (Internal),Testing,extension.ts,Yes,No,No,Working,None,Low,Low,"Internal testing command - bypasses all dialogs with explicit output path"
+
+SETTINGS ANALYSIS
+Setting Key,Default Value,Respected By,Ignored By,Status,Notes
+mermaidExportPro.defaultFormat,png,"exportFile, exportMarkdownBlock, exportAs (NEW), _testExport","exportCurrent (always prompts)",IMPROVED,"exportAs now respects setting - only prompts if format is default 'png'"
+mermaidExportPro.theme,default,"exportFile, exportMarkdownBlock, batchExport (automatic mode)","exportAs, exportCurrent",IMPROVED,"batchExport now respects in automatic mode"
+mermaidExportPro.backgroundColor,transparent,"exportFile, exportMarkdownBlock, batchExport (automatic mode)","exportAs, exportCurrent",IMPROVED,"batchExport now respects in automatic mode"
+mermaidExportPro.outputDirectory,"","exportFile, exportAll (NEW), batchExport (automatic mode)","exportAs, exportCurrent",IMPROVED,"exportAll and batchExport now check setting first"
+mermaidExportPro.batchExportMode,interactive,batchExport,N/A,NEW,"NEW SETTING: Controls folder export behavior - 'interactive' (dialogs) or 'automatic' (respects settings)"
+mermaidExportPro.width,800,All commands (when applicable),None,WORKING,Dimension settings work correctly
+mermaidExportPro.height,600,All commands (when applicable),None,WORKING,Dimension settings work correctly
+mermaidExportPro.autoNaming.mode,versioned,"exportFile, exportAll",N/A,WORKING,"Automatic filename generation mode"
+mermaidExportPro.exportStrategy,auto,All export commands,None,WORKING,"CLI vs Web strategy selection"
+mermaidExportPro.batchExportDefaultDepth,3,"batchExport (all modes)",N/A,WORKING,"Folder scan depth for discovery"
+mermaidExportPro.organizeByFormat,false,"batchExport (automatic mode)",N/A,WORKING,"Organize exported files into format subfolders"
+
+ISSUE SUMMARY
+Issue ID,Issue Title,Affected Commands,Severity,Status,Resolution
+#2,Export Folder ignores user JSON settings,batchExport,High,FIXED,"Implemented 'batchExportMode' setting: 'interactive' (dialogs) vs 'automatic' (respects all settings like Quick Export)"
+N/A,exportAs and exportCurrent are identical,exportAs + exportCurrent,Low,FIXED,"exportAs now checks defaultFormat - uses setting if configured, only prompts if default value"
+N/A,exportAll always prompts for directory,exportAll,Medium,FIXED,"Now checks outputDirectory setting first, only prompts if not configured"
+
+RECOMMENDED FIXES
+Priority,Command,Fix Description,Impact,Status
+1,batchExport,"Add 'mermaidExportPro.batchExportMode: interactive | automatic' setting",Fixes GitHub Issue #2,✅ COMPLETED
+2,exportAll,"Check settings.outputDirectory first, only prompt if empty/not set",Consistency with Quick Export,✅ COMPLETED
+3,exportAs vs exportCurrent,"exportAs respects defaultFormat setting, exportCurrent always prompts",Better UX differentiation,✅ COMPLETED
+
+COMMAND COMPARISON MATRIX
+Feature,Quick Export (exportFile),Export Folder (batchExport),Export As,Export All
+Uses defaultFormat setting,✅ Yes,✅ Yes (automatic mode),✅ Yes (NEW),❌ No (always prompts)
+Uses theme setting,✅ Yes,✅ Yes (automatic mode),❌ No (always prompts),❌ No (always prompts)
+Uses backgroundColor setting,✅ Yes,✅ Yes (automatic mode),❌ No (always prompts),❌ No (always prompts)
+Uses outputDirectory setting,✅ Yes (same as source),✅ Yes (automatic mode),❌ No (always prompts),✅ Yes (NEW)
+Zero-dialog operation,✅ Yes,✅ Yes (automatic mode),⚠️ Conditional,❌ No (format/theme prompts)
+Batch processing,✅ Yes (all in file),✅ Yes (all in folder),❌ No (single),✅ Yes (all in file)
+Context menu available,✅ Yes,✅ Yes (folders),✅ Yes,❌ No
+CodeLens integration,✅ Yes,❌ No,❌ No,❌ No
+Respects user config,✅ FULLY,✅ FULLY (automatic),⚠️ IMPROVED,✅ IMPROVED
+User expectation match,✅ Perfect,✅ Fixed,✅ Improved,✅ Improved
+
+ARCHITECTURAL NOTES - UPDATED
+- Quick Export (exportFile) is the reference implementation for settings-first approach
+- Export Folder (batchExport) now has TWO modes: interactive (dialogs) and automatic (settings-first)
+- Export As now differentiates from Export Current by checking defaultFormat setting
+- Export All now checks outputDirectory setting before prompting
+- ConfigManager is the single source of truth for all settings - used consistently across commands
+- batchExportCommand.v2.ts is active implementation with new automatic mode support
+
+ACTION ITEMS - UPDATED
+1. [✅] Implement 'batchExportMode' setting (interactive/automatic) - COMPLETED
+2. [✅] Update batchExportCommand.v2.ts to check setting before showing dialogs - COMPLETED
+3. [✅] Add ConfigManager usage to getComprehensiveBatchConfig() function - COMPLETED
+4. [✅] Fix exportAll to check outputDirectory from settings - COMPLETED
+5. [✅] Make exportAs respect defaultFormat setting - COMPLETED
+6. [ ] Update documentation to explain new settings and command behaviors
+7. [ ] Add integration tests for automatic mode folder export
+8. [ ] Update package.json descriptions to clarify command differences
+9. [ ] Add user notification about new automatic mode option
+
+BREAKING CHANGES: NONE
+- All changes are backwards compatible
+- Default behavior unchanged (batchExportMode = 'interactive')
+- Users must opt-in to automatic mode via settings
+- Existing workflows continue to work as before

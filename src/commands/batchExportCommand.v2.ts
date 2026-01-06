@@ -92,6 +92,7 @@ import { progressTrackingService } from '../services/progressTrackingService';
 import { errorHandlingService } from '../services/errorHandlingService';
 import { ErrorHandler } from '../ui/errorHandler';
 import { batchExportStatusBar } from '../ui/batchExportStatusBarManager';
+import { ConfigManager } from '../services/configManager';
 
 /**
  * User interface options for export folder configuration
@@ -180,12 +181,67 @@ export async function runBatchExportV2(
 
 /**
  * Get comprehensive export folder configuration through guided UI flow
+ * Checks batchExportMode setting - if 'automatic', uses settings like Quick Export
  */
 async function getComprehensiveBatchConfig(folderUri?: vscode.Uri): Promise<BatchExportConfig | null> {
   try {
+    // Check if user wants automatic mode (respects settings like Quick Export)
+    const configManager = new ConfigManager();
+    const batchMode = configManager.getBatchExportMode();
+    
     // === STEP 1: SOURCE FOLDER SELECTION ===
     const sourceFolder = await selectSourceFolder(folderUri);
     if (!sourceFolder) {return null;}
+    
+    // === AUTOMATIC MODE: Use settings without dialogs ===
+    if (batchMode === 'automatic') {
+      ErrorHandler.logInfo('Batch Export: Using automatic mode (settings-driven, no dialogs)');
+      
+      const format = configManager.getDefaultFormat();
+      const theme = configManager.getTheme();
+      const backgroundColor = configManager.getBackgroundColor();
+      const outputDir = configManager.getOutputDirectory();
+      const organizeByFormat = configManager.getOrganizeByFormat();
+      const namingMode = configManager.getAutoNamingMode();
+      
+      // Use configured output directory or create default
+      let outputDirectory: string;
+      if (outputDir && path.isAbsolute(outputDir)) {
+        outputDirectory = outputDir;
+      } else if (outputDir) {
+        outputDirectory = path.join(sourceFolder, outputDir);
+      } else {
+        outputDirectory = path.join(sourceFolder, 'exported-diagrams');
+      }
+      
+      const automaticConfig: BatchExportConfig = {
+        formats: [format],
+        theme: theme,
+        backgroundColor: backgroundColor,
+        outputDirectory: outputDirectory,
+        maxDepth: configManager.getBatchExportDefaultDepth(),
+        namingStrategy: 'sequential' as FileNamingStrategy,
+        organizeByFormat: organizeByFormat,
+        overwriteExisting: namingMode === 'overwrite',
+        dimensions: {
+          width: configManager.getDefaultWidth(),
+          height: configManager.getDefaultHeight()
+        }
+      };
+      
+      ErrorHandler.logInfo(`Batch Export Auto: format=${format}, theme=${theme}, bg=${backgroundColor}, out=${outputDirectory}`);
+      
+      // Show a brief notification about automatic mode
+      await vscode.window.showInformationMessage(
+        `📦 Folder Export (Automatic Mode): Using settings from JSON config`,
+        { modal: false }
+      );
+      
+      return automaticConfig;
+    }
+    
+    // === INTERACTIVE MODE: Show guided dialogs (original behavior) ===
+    ErrorHandler.logInfo('Batch Export: Using interactive mode (guided dialogs)');
     
     // === STEP 2: INITIAL FILE DISCOVERY ===
     const discoveryOptions = createInitialDiscoveryOptions(sourceFolder);
