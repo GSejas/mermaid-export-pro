@@ -60,15 +60,35 @@ jobs:
         run: npm run test:unit:coverage
         continue-on-error: false
 
+      - name: Debug - Verify junit.xml and working directory
+        if: ${{ !cancelled() }}
+        run: |
+          Write-Host "Working directory: $(Get-Location)"
+          Write-Host "`nSearching for junit.xml anywhere:"
+          Get-ChildItem -Path . -Filter "junit.xml" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName
+          Write-Host "`ntest-results directory contents:"
+          if (Test-Path "./test-results") {
+            Get-ChildItem -Path "./test-results" -Recurse | Select-Object FullName, Length
+          } else {
+            Write-Host "❌ test-results directory does NOT exist"
+          }
+          Write-Host "`nChecking specific file path:"
+          if (Test-Path "./test-results/junit.xml") {
+            Write-Host "✅ ./test-results/junit.xml EXISTS"
+            Get-Item "./test-results/junit.xml" | Select-Object FullName, Length
+          } else {
+            Write-Host "❌ ./test-results/junit.xml NOT found"
+          }
+        shell: pwsh
+
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./test-results/junit.xml
+          file: ./test-results/junit.xml
           flags: unit-tests
           name: unit-test-results-${{ matrix.os }}
-          report_type: test_results
           fail_ci_if_error: false
 
       - name: Run integration tests with coverage (Windows only)
