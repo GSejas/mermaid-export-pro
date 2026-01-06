@@ -6,6 +6,24 @@ All notable changes to the "mermaid-export-pro" extension will be documented in 
 
 ### 🎉 Major Features
 
+#### Font Awesome Icon Support - Export Diagrams with Icons!
+
+**Resolves GitHub Issue #3**: "[FEATURE] Font Awesome support"
+
+- **Font Awesome 6.2.0** now included by default in all exports
+- **Works with both CLI and Web export strategies** automatically
+- **New Settings**:
+  - `mermaidExportPro.fontAwesomeEnabled` (default: `true`) - Toggle Font Awesome inclusion
+  - `mermaidExportPro.customCss` (default: `[]`) - Add custom CSS URLs for exports
+- **Zero Configuration** - Just use Font Awesome icons in your diagrams!
+- **Example Usage**:
+  ```mermaid
+  flowchart LR
+      A[fa:fa-user User] --> B[fa:fa-cog Settings]
+      B --> C[fa:fa-database Database]
+  ```
+- **Custom CSS Support** - Load additional stylesheets or icon libraries
+
 #### Settings Consistency Overhaul - Export Folder Now Respects Configuration
 
 **Resolves GitHub Issue #2**: "Export Folder does not respect user JSON settings"

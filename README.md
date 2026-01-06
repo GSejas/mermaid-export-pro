@@ -103,6 +103,8 @@ This extension contributes the following settings:
 * `mermaidExportPro.defaultFormat`: Default export format (svg, png, pdf, webp, jpg, jpeg)
 * `mermaidExportPro.theme`: Mermaid theme (default, dark, forest, neutral)
 * `mermaidExportPro.backgroundColor`: Background color for exports (transparent, white, black, custom hex)
+* `mermaidExportPro.fontAwesomeEnabled`: Enable Font Awesome icons in exports (default: true) - **NEW in v1.0.11!**
+* `mermaidExportPro.customCss`: Custom CSS URLs for exports (e.g., additional icon libraries) - **NEW in v1.0.11!**
 * `mermaidExportPro.outputDirectory`: Custom output directory (relative or absolute)
 * `mermaidExportPro.batchExportMode`: Folder export behavior - **NEW in v1.0.11!**
   - `interactive` (default): Guided wizard with dialogs

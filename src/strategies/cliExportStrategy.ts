@@ -24,6 +24,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { spawn } from 'child_process';
+import * as vscode from 'vscode';
 import { ExportStrategy, ExportOptions, MermaidExportError } from '../types';
 import { PathUtils } from '../utils/pathUtils';
 import { ErrorHandler } from '../ui/errorHandler';
@@ -152,7 +153,43 @@ export class CLIExportStrategy implements ExportStrategy {
       ErrorHandler.logInfo('CLI Export: No background color specified (undefined)');
     }
 
-    // Add custom CSS file
+    // Font Awesome support: Create temporary CSS file with Font Awesome import
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const fontAwesomeEnabled = config.get<boolean>('fontAwesomeEnabled', true);
+    const customCssUrls = config.get<string[]>('customCss', []);
+    
+    if (fontAwesomeEnabled || customCssUrls.length > 0) {
+      // Create temporary CSS file with Font Awesome and custom CSS
+      const tempCssPath = PathUtils.createTempFilePath('css');
+      let cssContent = '';
+      
+      if (fontAwesomeEnabled) {
+        cssContent += '@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css");\\n';
+      }
+      
+      for (const cssUrl of customCssUrls) {
+        if (cssUrl.startsWith('http://') || cssUrl.startsWith('https://')) {
+          cssContent += `@import url("${cssUrl}");\\n`;
+        } else if (cssUrl.startsWith('file://')) {
+          // Local file - read and inline it
+          try {
+            const localPath = cssUrl.replace('file://', '');
+            const localCss = await fs.promises.readFile(localPath, 'utf8');
+            cssContent += `/* ${localPath} */\\n${localCss}\\n`;
+          } catch (error) {
+            ErrorHandler.logWarning(`Failed to read custom CSS file: ${cssUrl}`);
+          }
+        }
+      }
+      
+      if (cssContent) {
+        await fs.promises.writeFile(tempCssPath, cssContent, 'utf8');
+        args.push('--cssFile', tempCssPath);
+        ErrorHandler.logInfo(`CLI Export: Using Font Awesome and custom CSS from ${tempCssPath}`);
+      }
+    }
+
+    // Add custom CSS file (legacy option)
     if (options.cssFile && await PathUtils.fileExists(options.cssFile)) {
       args.push('--cssFile', options.cssFile);
     }

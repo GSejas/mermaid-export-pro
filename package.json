@@ -246,6 +246,19 @@
           "default": "transparent",
           "description": "Background color for exports (e.g., 'transparent', 'white', '#ffffff', 'rgba(255,255,255,0.5)')"
         },
+        "mermaidExportPro.fontAwesomeEnabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "**Enable Font Awesome icons in exported diagrams** (resolves [Issue #3](https://github.com/GSejas/mermaid-export-pro/issues/3))\n\nWhen enabled, Font Awesome icons (e.g., `fa:fa-user`, `fa:fa-cog`) will render properly in exports.\n\n- ✅ Loads Font Awesome 6.2.0 from CDN\n- ✅ Works with both CLI and Web export strategies\n- ✅ No additional setup required\n\n**Example Usage**:\n```mermaid\nflowchart LR\n    A[fa:fa-user User] --> B[fa:fa-cog Settings]\n```"
+        },
+        "mermaidExportPro.customCss": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "**Custom CSS stylesheets for exported diagrams**\n\nProvide URLs or file paths to CSS files that will be included in exports.\n\n**Use Cases**:\n- Custom fonts\n- Additional icon libraries\n- Brand-specific styling\n- Theme overrides\n\n**Example**:\n```json\n[\n  \"https://cdn.example.com/custom-icons.css\",\n  \"file:///path/to/local/styles.css\"\n]\n```\n\n**Note**: Font Awesome is already included by default (see `fontAwesomeEnabled` setting)."
+        },
         "mermaidExportPro.statusBarDisplayFormat": {
           "type": "string",
           "enum": [

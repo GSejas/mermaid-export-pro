@@ -324,14 +324,31 @@ export class WebExportStrategy implements ExportStrategy {
     const backgroundColor = options.backgroundColor || 'transparent';
     const width = options.width || 800;
     const height = options.height || 600;
+    
+    // Get Font Awesome and custom CSS settings
+    const config = vscode.workspace.getConfiguration('mermaidExportPro');
+    const fontAwesomeEnabled = config.get<boolean>('fontAwesomeEnabled', true);
+    const customCssUrls = config.get<string[]>('customCss', []);
+    
+    // Build Font Awesome link
+    const fontAwesomeLink = fontAwesomeEnabled 
+      ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />'
+      : '';
+    
+    // Build custom CSS links
+    const customCssLinks = customCssUrls
+      .map(url => `<link rel="stylesheet" href="${url}" />`)
+      .join('\n    ');
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}' ${webview.cspSource}; style-src ${webview.cspSource} 'unsafe-inline'; font-src ${webview.cspSource} data:; img-src ${webview.cspSource} data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}' ${webview.cspSource}; style-src ${webview.cspSource} 'unsafe-inline' https://cdnjs.cloudflare.com; font-src ${webview.cspSource} https://cdnjs.cloudflare.com data:; img-src ${webview.cspSource} data:;">
     <title>Mermaid Web Export</title>
+    ${fontAwesomeLink}
+    ${customCssLinks}
     <style>
         body {
             margin: 0;

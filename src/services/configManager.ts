@@ -113,6 +113,14 @@ export class ConfigManager implements ConfigurationManager {
     return this.getConfiguration().get<number>('batchExportDefaultDepth', 3);
   }
 
+  getFontAwesomeEnabled(): boolean {
+    return this.getConfiguration().get<boolean>('fontAwesomeEnabled', true);
+  }
+
+  getCustomCss(): string[] {
+    return this.getConfiguration().get<string[]>('customCss', []);
+  }
+
   async updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void> {
     const config = this.getConfiguration();
     await config.update(key, value, target ?? vscode.ConfigurationTarget.Global);
