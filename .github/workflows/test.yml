@@ -60,6 +60,15 @@ jobs:
         run: npm run test:unit:coverage
         continue-on-error: false
 
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./test-results/junit.xml
+          flags: unit-tests
+          name: unit-test-results-${{ matrix.os }}
+
       - name: Run integration tests with coverage (Windows only)
         run: npm run test:integration:coverage
         if: runner.os == 'Windows'

@@ -13,8 +13,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-  // Increase default timeout to accommodate longer integration-style unit tests
-  testTimeout: 30000,
+    // Increase default timeout to accommodate longer integration-style unit tests
+    testTimeout: 30000,
     include: ['src/test/unit/**/*.test.ts'],
     exclude: [
       '**/node_modules/**',
@@ -24,6 +24,10 @@ export default defineConfig({
       '**/extension.test.ts'
     ],
     setupFiles: ['./src/test/unit/vitest-setup.ts'],
+    reporters: ['default', 'junit'],
+    outputFile: {
+      junit: './test-results/junit.xml'
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'json']
