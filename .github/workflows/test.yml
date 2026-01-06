@@ -62,12 +62,14 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./test-results/junit.xml
+          files: ./test-results/junit.xml
           flags: unit-tests
           name: unit-test-results-${{ matrix.os }}
+          report_type: test_results
+          fail_ci_if_error: false
 
       - name: Run integration tests with coverage (Windows only)
         run: npm run test:integration:coverage
