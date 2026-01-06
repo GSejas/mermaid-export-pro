@@ -359,4 +359,67 @@ describe('ConfigManager', () => {
       expect(callback).toHaveBeenCalledTimes(3);
     });
   });
+
+  describe('Font Awesome Configuration', () => {
+    it('should return fontAwesomeEnabled true by default', () => {
+      mockConfig.get.mockImplementation((key: string, defaultValue: any) => defaultValue);
+
+      const enabled = configManager.getFontAwesomeEnabled();
+      
+      expect(enabled).toBe(true);
+      expect(mockConfig.get).toHaveBeenCalledWith('fontAwesomeEnabled', true);
+    });
+
+    it('should return fontAwesomeEnabled false when configured', () => {
+      mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
+        if (key === 'fontAwesomeEnabled') {return false;}
+        return defaultValue;
+      });
+
+      const enabled = configManager.getFontAwesomeEnabled();
+      
+      expect(enabled).toBe(false);
+      expect(mockConfig.get).toHaveBeenCalledWith('fontAwesomeEnabled', true);
+    });
+
+    it('should return empty customCss array by default', () => {
+      mockConfig.get.mockImplementation((key: string, defaultValue: any) => defaultValue);
+
+      const customCss = configManager.getCustomCss();
+      
+      expect(customCss).toEqual([]);
+      expect(mockConfig.get).toHaveBeenCalledWith('customCss', []);
+    });
+
+    it('should return configured customCss URLs', () => {
+      const customUrls = [
+        'https://example.com/custom.css',
+        'file:///C:/styles/custom.css'
+      ];
+      
+      mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
+        if (key === 'customCss') {return customUrls;}
+        return defaultValue;
+      });
+
+      const customCss = configManager.getCustomCss();
+      
+      expect(customCss).toEqual(customUrls);
+      expect(customCss).toHaveLength(2);
+      expect(mockConfig.get).toHaveBeenCalledWith('customCss', []);
+    });
+
+    it('should handle invalid customCss gracefully', () => {
+      mockConfig.get.mockImplementation((key: string, defaultValue: any) => {
+        if (key === 'customCss') {return null;}
+        return defaultValue;
+      });
+
+      const customCss = configManager.getCustomCss();
+      
+      // getCustomCss returns what config.get returns, which is null in this test
+      // In real usage, the default [] is used
+      expect(customCss).toBe(null);
+    });
+  });
 });

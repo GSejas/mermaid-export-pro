@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import { CLIExportStrategy } from '../../../strategies/cliExportStrategy';
 import { PathUtils } from '../../../utils/pathUtils';
 import * as fs from 'fs';
+import * as vscode from 'vscode';
 
 describe('CLIExportStrategy', () => {
   let strategy: CLIExportStrategy;
@@ -111,5 +112,165 @@ describe('CLIExportStrategy', () => {
   vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(false);
 
     await expect(strategy.export('x', { format: 'svg', theme: 'default' } as any)).rejects.toThrow();
+  });
+
+  describe('Font Awesome CSS File Generation', () => {
+    it('should generate CSS file with Font Awesome import when fontAwesomeEnabled is true', async () => {
+      // Mock config with Font Awesome enabled
+      const mockConfig = {
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return true;}
+          if (key === 'customCss') {return [];}
+          return defaultValue;
+        })
+      };
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue(mockConfig as any);
+
+      // Mock file operations
+      const writeSpy = vi.spyOn(fs.promises, 'writeFile').mockResolvedValue(undefined);
+      vi.spyOn(PathUtils as any, 'createTempFilePath').mockReturnValue('/tmp/styles.css');
+      vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(true);
+
+      const args = await (strategy as any).buildCliArguments('/in.mmd', '/out.png', {
+        format: 'png',
+        theme: 'default'
+      });
+
+      // Verify CSS file was created with Font Awesome import
+      expect(writeSpy).toHaveBeenCalled();
+      const cssContent = writeSpy.mock.calls[0][1] as string;
+      expect(cssContent).toContain('@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css")');
+      
+      // Verify --cssFile flag was added
+      expect(args).toContain('--cssFile');
+      const cssFileIndex = args.indexOf('--cssFile');
+      expect(args[cssFileIndex + 1]).toContain('.css');
+    });
+
+    it('should not generate CSS file when fontAwesomeEnabled is false and no customCss', async () => {
+      // Mock config with Font Awesome disabled
+      const mockConfig = {
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return false;}
+          if (key === 'customCss') {return [];}
+          return defaultValue;
+        })
+      };
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue(mockConfig as any);
+
+      const writeSpy = vi.spyOn(fs.promises, 'writeFile').mockResolvedValue(undefined);
+      vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(true);
+
+      const args = await (strategy as any).buildCliArguments('/in.mmd', '/out.png', {
+        format: 'png',
+        theme: 'default'
+      });
+
+      // Verify --cssFile flag was not added
+      expect(args).not.toContain('--cssFile');
+      
+      // writeFile should not have been called for CSS generation
+      const cssWrites = writeSpy.mock.calls.filter(call => 
+        typeof call[1] === 'string' && call[1].includes('@import')
+      );
+      expect(cssWrites).toHaveLength(0);
+    });
+
+    it('should include custom CSS URLs in generated CSS file', async () => {
+      const customUrls = [
+        'https://example.com/custom.css',
+        'https://cdn.example.com/icons.css'
+      ];
+
+      // Mock config with custom CSS
+      const mockConfig = {
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return false;}
+          if (key === 'customCss') {return customUrls;}
+          return defaultValue;
+        })
+      };
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue(mockConfig as any);
+
+      const writeSpy = vi.spyOn(fs.promises, 'writeFile').mockResolvedValue(undefined);
+      vi.spyOn(PathUtils as any, 'createTempFilePath').mockReturnValue('/tmp/styles.css');
+      vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(true);
+
+      await (strategy as any).buildCliArguments('/in.mmd', '/out.png', {
+        format: 'png',
+        theme: 'default'
+      });
+
+      // Verify CSS file includes custom URLs
+      const cssContent = writeSpy.mock.calls[0][1] as string;
+      expect(cssContent).toContain('@import url("https://example.com/custom.css")');
+      expect(cssContent).toContain('@import url("https://cdn.example.com/icons.css")');
+    });
+
+    it('should handle file:// protocol custom CSS by inlining content', async () => {
+      const fileUrl = 'file:///C:/styles/custom.css';
+      const customCssContent = '.custom { color: red; }';
+
+      // Mock config with file:// custom CSS
+      const mockConfig = {
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return false;}
+          if (key === 'customCss') {return [fileUrl];}
+          return defaultValue;
+        })
+      };
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue(mockConfig as any);
+
+      // Mock readFile for custom CSS
+      const readSpy = vi.spyOn(fs.promises, 'readFile').mockResolvedValue(customCssContent as any);
+      const writeSpy = vi.spyOn(fs.promises, 'writeFile').mockResolvedValue(undefined);
+      vi.spyOn(PathUtils as any, 'createTempFilePath').mockReturnValue('/tmp/styles.css');
+      vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(true);
+
+      await (strategy as any).buildCliArguments('/in.mmd', '/out.png', {
+        format: 'png',
+        theme: 'default'
+      });
+
+      // Verify file was read - file:// replaced with empty gives /C:/styles/custom.css
+      expect(readSpy).toHaveBeenCalledWith('/C:/styles/custom.css', 'utf8');
+
+      // Verify CSS content was inlined (not imported)
+      const writeCall = writeSpy.mock.calls.find(call => 
+        typeof call[1] === 'string' && call[1].includes('.custom')
+      );
+      expect(writeCall).toBeDefined();
+      const cssContent = writeCall![1] as string;
+      expect(cssContent).toContain('.custom { color: red; }');
+      expect(cssContent).not.toContain('file://');
+    });
+
+    it('should combine Font Awesome and custom CSS in single file', async () => {
+      const customUrls = ['https://example.com/custom.css'];
+
+      // Mock config with both Font Awesome and custom CSS
+      const mockConfig = {
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return true;}
+          if (key === 'customCss') {return customUrls;}
+          return defaultValue;
+        })
+      };
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue(mockConfig as any);
+
+      const writeSpy = vi.spyOn(fs.promises, 'writeFile').mockResolvedValue(undefined);
+      vi.spyOn(PathUtils as any, 'createTempFilePath').mockReturnValue('/tmp/styles.css');
+      vi.spyOn(PathUtils as any, 'fileExists').mockResolvedValue(true);
+
+      await (strategy as any).buildCliArguments('/in.mmd', '/out.png', {
+        format: 'png',
+        theme: 'default'
+      });
+
+      // Verify CSS file includes both Font Awesome and custom CSS
+      const cssContent = writeSpy.mock.calls[0][1] as string;
+      expect(cssContent).toContain('@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css")');
+      expect(cssContent).toContain('@import url("https://example.com/custom.css")');
+    });
   });
 });

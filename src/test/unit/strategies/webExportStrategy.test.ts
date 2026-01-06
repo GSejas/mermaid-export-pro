@@ -115,4 +115,111 @@ describe('WebExportStrategy', () => {
     expect(buf).toBeInstanceOf(Buffer);
     expect(buf.toString()).toContain('PNGDATA');
   });
+
+  describe('Font Awesome Integration', () => {
+    it('should include Font Awesome CDN link when fontAwesomeEnabled is true', async () => {
+      const { panel, webview, sendMessage } = createMockPanel();
+      (vscode.window as any).createWebviewPanel = vi.fn(() => panel as any);
+
+      // Mock config to enable Font Awesome
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue({
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return true;}
+          if (key === 'customCss') {return [];}
+          return defaultValue;
+        })
+      } as any);
+
+      const strategy = new WebExportStrategy(context);
+
+      setTimeout(() => sendMessage({ type: 'ready' }), 0);
+      setTimeout(() => sendMessage({ type: 'svg', svg: '<svg>ok</svg>' }), 10);
+
+      await strategy.export('graph TD\nA --> B', { format: 'svg', theme: 'default', width: 400, height: 200 });
+
+      // Check that the HTML includes Font Awesome CDN link
+      expect(webview.html).toContain('cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+    });
+
+    it('should not include Font Awesome CDN link when fontAwesomeEnabled is false', async () => {
+      const { panel, webview, sendMessage } = createMockPanel();
+      (vscode.window as any).createWebviewPanel = vi.fn(() => panel as any);
+
+      // Mock config to disable Font Awesome
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue({
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return false;}
+          if (key === 'customCss') {return [];}
+          return defaultValue;
+        })
+      } as any);
+
+      const strategy = new WebExportStrategy(context);
+
+      setTimeout(() => sendMessage({ type: 'ready' }), 0);
+      setTimeout(() => sendMessage({ type: 'svg', svg: '<svg>ok</svg>' }), 10);
+
+      await strategy.export('graph TD\nA --> B', { format: 'svg', theme: 'default', width: 400, height: 200 });
+
+      // Check that the HTML does not include Font Awesome CDN link
+      expect(webview.html).not.toContain('font-awesome');
+    });
+
+    it('should include custom CSS links when customCss array is provided', async () => {
+      const { panel, webview, sendMessage } = createMockPanel();
+      (vscode.window as any).createWebviewPanel = vi.fn(() => panel as any);
+
+      const customUrls = [
+        'https://example.com/custom.css',
+        'https://cdn.example.com/icons.css'
+      ];
+
+      // Mock config with custom CSS
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue({
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return true;}
+          if (key === 'customCss') {return customUrls;}
+          return defaultValue;
+        })
+      } as any);
+
+      const strategy = new WebExportStrategy(context);
+
+      setTimeout(() => sendMessage({ type: 'ready' }), 0);
+      setTimeout(() => sendMessage({ type: 'svg', svg: '<svg>ok</svg>' }), 10);
+
+      await strategy.export('graph TD\nA --> B', { format: 'svg', theme: 'default', width: 400, height: 200 });
+
+      // Check that the HTML includes both custom CSS links
+      expect(webview.html).toContain('https://example.com/custom.css');
+      expect(webview.html).toContain('https://cdn.example.com/icons.css');
+    });
+
+    it('should include CSP entries for cdnjs.cloudflare.com', async () => {
+      const { panel, webview, sendMessage } = createMockPanel();
+      (vscode.window as any).createWebviewPanel = vi.fn(() => panel as any);
+
+      // Mock config to enable Font Awesome
+      vi.spyOn(vscode.workspace, 'getConfiguration').mockReturnValue({
+        get: vi.fn((key: string, defaultValue: any) => {
+          if (key === 'fontAwesomeEnabled') {return true;}
+          if (key === 'customCss') {return [];}
+          return defaultValue;
+        })
+      } as any);
+
+      const strategy = new WebExportStrategy(context);
+
+      setTimeout(() => sendMessage({ type: 'ready' }), 0);
+      setTimeout(() => sendMessage({ type: 'svg', svg: '<svg>ok</svg>' }), 10);
+
+      await strategy.export('graph TD\nA --> B', { format: 'svg', theme: 'default', width: 400, height: 200 });
+
+      // Check that CSP includes cdnjs.cloudflare.com for style-src and font-src
+      // CSP has vscode-resource: first, then 'unsafe-inline', then cdnjs
+      expect(webview.html).toContain('https://cdnjs.cloudflare.com');
+      expect(webview.html).toContain('style-src');
+      expect(webview.html).toContain('font-src');
+    });
+  });
 });
