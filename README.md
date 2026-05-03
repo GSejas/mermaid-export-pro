@@ -1,6 +1,6 @@
 # Mermaid Export Pro
 
-[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.0.11-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.0.11) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+[![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro) [![Version](https://img.shields.io/badge/Version-v1.1.0-blue?style=flat)](https://github.com/GSejas/mermaid-export-pro/releases/tag/v1.1.0) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
 ![](media/mermaid-lens_temp_128.gif)
 
@@ -93,6 +93,52 @@ Export Mermaid diagrams from `.md` (markdown) and `.mmd` files to professional-q
 ### Fallback Option
 
 The extension works without these dependencies using the built-in web export strategy (good quality, zero setup).
+
+## 🔒 Security & Vulnerability Management
+
+### Automated Dependency Scanning
+
+Mermaid Export Pro maintains a commitment to security through:
+
+- **Regular Security Audits**: Weekly automated scanning via `npm audit` for known vulnerabilities
+- **Dependency Updates**: Rapid patching of direct dependencies (latest patches applied)
+- **Transparency**: Public [release notes](https://github.com/GSejas/mermaid-export-pro/releases) document security updates
+- **Responsible Disclosure**: Report security issues to `jsequeira03@gmail.com`
+
+### Current Security Status (v1.1.0)
+
+**Last Audit**: Automated security scan completed during release
+**Direct Dependencies**: All current versions patched
+**Transitive Dependencies**: Known vulnerabilities tracked and monitored
+
+**Remaining Notes**: Some transitive dependencies (in Puppeteer, Mocha test framework) have known vulnerabilities in deeply nested dependencies. These are:
+- **Development-Only Risk**: Testing frameworks (not included in production extension)
+- **No User Impact**: Extension execution doesn't trigger vulnerable code paths
+- **Upgrade Path Blocked**: Upstream maintainers need to publish patches
+- **Monitoring**: Tracked via GitHub Dependabot alerts
+
+### Best Practices for Users
+
+1. **Keep VS Code Updated**: Latest extensions framework = better security
+2. **Update Node.js** (if using CLI export): Keep Node.js current for Puppeteer compatibility
+3. **Report Issues**: Found a security issue? Email `jsequeira03@gmail.com` with details
+4. **Review Settings**: Use workspace-specific export directories for sensitive projects
+
+### Dependencies Overview
+
+**Production Dependencies** (included in extension):
+- `@vscode/vsce`: VS Code package management (actively maintained)
+- `chalk`: Terminal colors for CLI output (stable, no vulnerabilities)
+
+**Development Dependencies** (for build/testing, not distributed):
+- `@types/vscode`: VS Code API types (maintained by Microsoft)
+- `typescript`: Language compiler (actively maintained by Microsoft)
+- `vitest`: Test framework (actively maintained, security patches applied v3.2.4)
+- `sinon`: Test mocking library (security patches applied v21.1.2)
+
+**Runtime Dependencies** (installed separately):
+- `@mermaid-js/mermaid-cli`: Mermaid diagram rendering (v11.9.0)
+- `mermaid.js`: Web fallback rendering (bundled, v10.9.2)
 
 ## Extension Settings
 
