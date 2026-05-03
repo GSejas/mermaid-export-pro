@@ -160,8 +160,8 @@ export async function extractAllMermaidDiagrams(document: vscode.TextDocument): 
   const fileName = document.fileName.toLowerCase();
   const content = document.getText();
   
-  // If .mmd file, treat entire content as one diagram
-  if (fileName.endsWith('.mmd')) {
+  // If .mmd or .mermaid file, treat entire content as one diagram
+  if (fileName.endsWith('.mmd') || fileName.endsWith('.mermaid')) {
     const trimmedContent = content.trim();
     if (!trimmedContent) {return [];}
     

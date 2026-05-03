@@ -337,8 +337,8 @@ export async function runExportCommand(
 async function extractMermaidContent(document: vscode.TextDocument, selection: vscode.Selection): Promise<string | null> {
   const fileName = document.fileName.toLowerCase();
   
-  // If .mmd file, use entire content
-  if (fileName.endsWith('.mmd')) {
+  // If .mmd or .mermaid file, use entire content
+  if (fileName.endsWith('.mmd') || fileName.endsWith('.mermaid')) {
     return document.getText().trim();
   }
   

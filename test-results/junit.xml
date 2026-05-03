@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="386" failures="0" errors="0" time="28.2193353">
+    <testsuite name="src/test/unit/batchExportEngine.test.ts" timestamp="2026-01-06T05:22:58.986Z" hostname="Glaptop" tests="4" failures="0" errors="0" skipped="0" time="0.0328185">
+        <testcase classname="src/test/unit/batchExportEngine.test.ts" name="BatchExportEngineImpl &gt; createBatch should produce the expected number of jobs and create output dirs" time="0.0204595">
+        </testcase>
+        <testcase classname="src/test/unit/batchExportEngine.test.ts" name="BatchExportEngineImpl &gt; createBatch should throw when formats are not specified" time="0.0052911">
+        </testcase>
+        <testcase classname="src/test/unit/batchExportEngine.test.ts" name="BatchExportEngineImpl &gt; estimateDuration should return a positive integer and adjust for strategy" time="0.0014523">
+        </testcase>
+        <testcase classname="src/test/unit/batchExportEngine.test.ts" name="BatchExportEngineImpl &gt; optimizeJobOrder should order jobs by priority/complexity/format" time="0.0012711">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/commands/diagnosticsCommand.test.ts" timestamp="2026-01-06T05:22:58.992Z" hostname="Glaptop" tests="17" failures="0" errors="0" skipped="0" time="0.1269901">
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should create output channel and display diagnostics report" time="0.0171243">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should show &quot;all clear&quot; when no active operations" time="0.006685">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should list active operations with details" time="0.0059608">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should show emergency cleanup option for long-running operations" time="0.0064077">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should perform emergency cleanup when user chooses it" time="0.0044227">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should show output channel when user chooses Show Details" time="0.0042904">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should display system information" time="0.0384584">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should display memory usage information" time="0.0031568">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should check CLI strategy availability" time="0.0034902">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should check web strategy availability" time="0.0028632">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runDiagnosticsCommand() &gt; should handle errors when checking strategy availability" time="0.0031187">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should show information message when no active operations" time="0.0036531">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should show warning with active operations" time="0.0040826">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should run full diagnostics when user chooses Show Details" time="0.0028933">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should perform emergency cleanup when user chooses it" time="0.0018255">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should show monitor status bar when user chooses Monitor" time="0.0026454">
+        </testcase>
+        <testcase classname="src/test/unit/commands/diagnosticsCommand.test.ts" name="diagnosticsCommand &gt; runQuickHealthCheck() &gt; should handle undefined user choice gracefully" time="0.0069783">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/commands/exportAllCommand.test.ts" timestamp="2026-01-06T05:22:59.002Z" hostname="Glaptop" tests="22" failures="0" errors="0" skipped="0" time="0.1138626">
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle export throttling when cooldown active" time="0.0153945">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle no active editor" time="0.0032263">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle no mermaid diagrams found" time="0.0035343">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should delegate to single export when only one diagram found" time="0.0028242">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should show options when multiple diagrams found" time="0.0071522">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle &quot;Export All&quot; choice" time="0.0075773">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle &quot;Export Single&quot; choice" time="0.0032775">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle &quot;Custom Export Options&quot; choice" time="0.0186843">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle user cancellation during format selection" time="0.0037417">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle user cancellation during theme selection" time="0.0024417">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle .mmd files correctly" time="0.001679">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle export strategy fallback" time="0.0031185">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle no available export strategies" time="0.00303">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should open provided document URI before processing" time="0.0036784">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle partial export failures gracefully" time="0.0041179">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should show error when all exports fail" time="0.004708">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle &quot;Open File&quot; action for single export" time="0.0069642">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should handle &quot;Copy Paths&quot; action" time="0.0053805">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; runExportAllCommand() &gt; should extract diagrams with preserved indentation" time="0.0015472">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; Diagram Extraction &gt; should extract multiple diagrams from markdown" time="0.0029568">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; Diagram Extraction &gt; should ignore non-mermaid code blocks" time="0.0015894">
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportAllCommand.test.ts" name="exportAllCommand &gt; Diagram Extraction &gt; should handle empty mermaid blocks" time="0.0014924">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/commands/exportCommand.test.ts" timestamp="2026-01-06T05:22:59.015Z" hostname="Glaptop" tests="13" failures="0" errors="0" skipped="0" time="0.1254361">
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle no active editor gracefully" time="0.0147444">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle export throttling when cooldown active" time="0.0028027">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle missing mermaid content" time="0.003749">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should successfully export with auto naming when preferAuto is true" time="0.0151922">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should use save dialog when preferAuto is false" time="0.0092753">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mfalse[39m
+[DEBUG exportCommand] preferAuto=false, showing save dialog...
+[DialogService] getDialogService() called, returning: DialogService
+[DEBUG getOutputPath] dialogService: DialogService
+[DEBUG getOutputPath] Calling showSaveDialog with defaultUri: \test\workspace\file.png
+
+[DEBUG getOutputPath] showSaveDialog result: /custom/path.png
+
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /custom/path.png
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle user cancellation during format selection" time="0.0033976">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle user cancellation during theme selection" time="0.00368">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mfalse[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should fallback to web strategy when CLI unavailable" time="0.0072855">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: Web Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should handle export strategy errors gracefully" time="0.0262107">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; runExportCommand &gt; should open document when documentUri is provided" time="0.0060965">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; Helper Functions &gt; should extract mermaid content from .mmd files" time="0.007556">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; Helper Functions &gt; should extract mermaid content from markdown code blocks" time="0.0098646">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/commands/exportCommand.test.ts" name="Export Command Tests &gt; Helper Functions &gt; should handle selected text with mermaid syntax" time="0.0065117">
+            <system-out>
+[DEBUG exportCommand] Starting export command...
+[DEBUG exportCommand] preferAuto: [33mtrue[39m
+[DEBUG exportCommand] testOutputPath: [90mundefined[39m
+
+[DEBUG exportCommand] Creating FormatPreferenceManager...
+[DEBUG exportCommand] About to persist format preference...
+
+[DEBUG exportCommand] Format preference persisted
+[DEBUG exportCommand] Checking preferAuto flag: [33mtrue[39m
+[DEBUG exportCommand] preferAuto=true, generating filename...
+
+[DEBUG exportCommand] Generated outputPath with mode versioned : /test/output.svg
+[DEBUG exportCommand] Checking if should skip export...
+
+[DEBUG exportCommand] File needs export, proceeding...
+[DEBUG exportCommand] About to start withProgress...
+[DEBUG exportCommand] Inside withProgress callback
+[DEBUG exportCommand] Starting timeout monitoring...
+[DEBUG exportCommand] Timeout monitoring started
+[DEBUG exportCommand] About to select strategy...
+
+[DEBUG exportCommand] Strategy selected: CLI Export Strategy
+[DEBUG exportCommand] About to call strategy.export()...
+
+[DEBUG exportCommand] Export completed, buffer size: [33m16[39m
+[DEBUG exportCommand] About to write file to: /test/output.svg
+
+[DEBUG exportCommand] File written successfully
+
+[DEBUG exportCommand] File stats: [33m1024[39m bytes
+[DEBUG exportCommand] Completing operation...
+[DEBUG exportCommand] Operation marked complete
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/integration/autoNaming.integration.test.ts" timestamp="2026-01-06T05:22:59.040Z" hostname="Glaptop" tests="21" failures="0" errors="0" skipped="0" time="0.2915429">
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should create first versioned file with sequence 01" time="0.0182159">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should reuse existing file when content matches" time="0.011119">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should create new versioned file when content differs" time="0.0138795">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should reuse first file when re-exporting original content" time="0.0107622">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should handle whitespace variations consistently" time="0.0084865">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Versioned Mode - Happy Path &gt; should support multiple export formats independently" time="0.0274969">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Overwrite Mode - Happy Path &gt; should create simple filename without hash" time="0.0075427">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Overwrite Mode - Happy Path &gt; should always return same filename for same baseName" time="0.0078025">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Overwrite Mode - Happy Path &gt; should only have one file after multiple exports" time="0.0389389">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Overwrite Mode - Happy Path &gt; should extract diagram number from baseName" time="0.0139447">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; shouldSkipExport - Skip Logic &gt; should skip export when versioned file exists" time="0.0662569">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; shouldSkipExport - Skip Logic &gt; should not skip when versioned file does not exist" time="0.0031095">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; shouldSkipExport - Skip Logic &gt; should never skip in overwrite mode" time="0.006442">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; shouldSkipExport - Skip Logic &gt; should detect versioned pattern correctly" time="0.0093649">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should sanitize baseName with invalid characters" time="0.0046744">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should handle empty content gracefully" time="0.0040701">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should handle very long content" time="0.005132">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should handle concurrent exports safely" time="0.0062029">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should validate directory permissions" time="0.0031171">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Security &amp; Edge Cases &gt; should handle non-existent directory gracefully" time="0.0038249">
+        </testcase>
+        <testcase classname="src/test/unit/integration/autoNaming.integration.test.ts" name="AutoNaming Integration Tests &gt; Cross-Mode Integration &gt; should not confuse versioned and overwrite files" time="0.0141257">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/integration/batchExport.integration.test.ts" timestamp="2026-01-06T05:22:59.052Z" hostname="Glaptop" tests="7" failures="0" errors="0" skipped="0" time="3.7910281">
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should discover files and create batch successfully" time="0.066547">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should handle multi-format export correctly" time="0.2239259">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should estimate batch duration accurately" time="0.125556">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should optimize job order based on complexity and priority" time="0.0176945">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should validate batch configuration before execution" time="3.3409204">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Error Handling Integration &gt; should handle discovery errors gracefully" time="0.004182">
+        </testcase>
+        <testcase classname="src/test/unit/integration/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Error Handling Integration &gt; should handle batch creation errors" time="0.0073444">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/providers/mermaidCodeLensProvider.test.ts" timestamp="2026-01-06T05:22:59.056Z" hostname="Glaptop" tests="2" failures="0" errors="0" skipped="0" time="0.0171383">
+        <testcase classname="src/test/unit/providers/mermaidCodeLensProvider.test.ts" name="MermaidCodeLensProvider &gt; returns no CodeLenses for non-markdown documents" time="0.0074311">
+            <system-out>
+[mermaidExportPro] MermaidCodeLensProvider constructed
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/providers/mermaidCodeLensProvider.test.ts" name="MermaidCodeLensProvider &gt; detects mermaid blocks and returns CodeLenses" time="0.0057971">
+            <system-out>
+[mermaidExportPro] MermaidCodeLensProvider constructed
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/batchExport.integration.test.ts" timestamp="2026-01-06T05:22:59.060Z" hostname="Glaptop" tests="7" failures="0" errors="0" skipped="0" time="4.704525">
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should discover files and create batch successfully" time="0.0556706">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should handle multi-format export correctly" time="0.1434336">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should estimate batch duration accurately" time="0.5014846">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should optimize job order based on complexity and priority" time="0.6321098">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Service Integration &gt; should validate batch configuration before execution" time="3.3542821">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Error Handling Integration &gt; should handle discovery errors gracefully" time="0.0052545">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExport.integration.test.ts" name="Export Folder v2 - Integration Tests &gt; Error Handling Integration &gt; should handle batch creation errors" time="0.006173">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/batchExportEngine.simple.test.ts" timestamp="2026-01-06T05:22:59.064Z" hostname="Glaptop" tests="11" failures="0" errors="0" skipped="0" time="3.2338229">
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Batch Creation &gt; should create batch with proper job distribution" time="0.0184414">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Batch Creation &gt; should handle single format export" time="0.0029977">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Batch Creation &gt; should calculate batch metadata correctly" time="0.0078337">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Job Optimization &gt; should optimize job order by priority" time="0.0013911">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Job Optimization &gt; should maintain all jobs during optimization" time="0.0032747">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Duration Estimation &gt; should provide duration estimates" time="0.0039372">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Duration Estimation &gt; should scale estimates with job count" time="0.0555254">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Batch Validation &gt; should validate valid batch configuration" time="3.1223173">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Batch Validation &gt; should handle empty job lists" time="0.0053201">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Error Handling &gt; should handle invalid configuration gracefully" time="0.005068">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.simple.test.ts" name="BatchExportEngine - Core Functionality &gt; Error Handling &gt; should provide meaningful error messages" time="0.0012602">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/batchExportEngine.test.ts" timestamp="2026-01-06T05:22:59.071Z" hostname="Glaptop" tests="14" failures="0" errors="0" skipped="0" time="6.17126">
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Creation &gt; should create batch with proper job distribution" time="0.0119415">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Creation &gt; should calculate batch metadata correctly" time="0.0065672">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Creation &gt; should organize output paths by format when configured" time="0.0091829">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Job Optimization &gt; should optimize job order by priority and complexity" time="0.001061">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Job Optimization &gt; should group similar jobs for efficiency" time="0.0020947">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Duration Estimation &gt; should estimate batch duration based on job complexity" time="0.0022325">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Duration Estimation &gt; should adjust estimates for execution strategy" time="0.0019792">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Validation &gt; should validate batch configuration" time="3.3147405">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Validation &gt; should detect circular dependencies" time="1.7262142">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Batch Validation &gt; should validate output directory accessibility" time="1.0648897">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Error Handling &gt; should handle job failures gracefully" time="0.0004325">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Error Handling &gt; should provide meaningful error messages" time="0.001099">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Performance &gt; should handle large batches efficiently" time="0.0106706">
+        </testcase>
+        <testcase classname="src/test/unit/services/batchExportEngine.test.ts" name="BatchExportEngine &gt; Performance &gt; should optimize memory usage" time="0.0016329">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/configManager.test.ts" timestamp="2026-01-06T05:22:59.081Z" hostname="Glaptop" tests="35" failures="0" errors="0" skipped="0" time="0.1049157">
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return default format when configured" time="0.0287614">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return default format &quot;png&quot; when not configured" time="0.0019674">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return theme when configured" time="0.0020706">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return default theme &quot;default&quot; when not configured" time="0.0013008">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return output directory when configured" time="0.003339">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return empty string for output directory when not configured" time="0.0016199">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return auto export enabled status" time="0.0021338">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return false for auto export when not configured" time="0.0012904">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return export strategy when configured" time="0.0028712">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return &quot;auto&quot; for export strategy when not configured" time="0.0017377">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return default width when configured" time="0.0018946">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return 800 for default width when not configured" time="0.0013684">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return default height when configured" time="0.001736">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return 600 for default height when not configured" time="0.000888">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return background color when configured" time="0.0009715">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Getters &gt; should return &quot;transparent&quot; for background color when not configured" time="0.0009062">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should update configuration with global target by default" time="0.0011639">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should update configuration with specified target" time="0.0013218">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should handle boolean values" time="0.000935">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should handle number values" time="0.0008595">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should handle string values" time="0.0008111">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should handle complex object values" time="0.001889">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Updates &gt; should propagate update errors" time="0.0048588">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Change Watching &gt; should register configuration change listener" time="0.0020366">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Change Watching &gt; should call callback when mermaidExportPro configuration changes" time="0.0028836">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Change Watching &gt; should not call callback when other configuration changes" time="0.00418">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Configuration Change Watching &gt; should allow disposing the listener" time="0.0029573">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Integration Scenarios &gt; should support complete update and read cycle" time="0.0030799">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Integration Scenarios &gt; should handle multiple configuration reads efficiently" time="0.0050902">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Integration Scenarios &gt; should handle configuration changes during active use" time="0.0021268">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Font Awesome Configuration &gt; should return fontAwesomeEnabled true by default" time="0.0013027">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Font Awesome Configuration &gt; should return fontAwesomeEnabled false when configured" time="0.0011225">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Font Awesome Configuration &gt; should return empty customCss array by default" time="0.0014999">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Font Awesome Configuration &gt; should return configured customCss URLs" time="0.0038994">
+        </testcase>
+        <testcase classname="src/test/unit/services/configManager.test.ts" name="ConfigManager &gt; Font Awesome Configuration &gt; should handle invalid customCss gracefully" time="0.0014976">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/diagramDiscoveryService.simple.test.ts" timestamp="2026-01-06T05:22:59.099Z" hostname="Glaptop" tests="15" failures="0" errors="0" skipped="0" time="0.0504948">
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Extraction &gt; should extract single diagram from markdown" time="0.0193554">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Extraction &gt; should extract multiple diagrams from markdown" time="0.0037504">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Extraction &gt; should handle case-insensitive mermaid blocks" time="0.0023828">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Extraction &gt; should preserve indentation in diagrams" time="0.001617">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Type Analysis &gt; should correctly identify flowchart diagrams" time="0.0016466">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Type Analysis &gt; should correctly identify sequence diagrams" time="0.0011423">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Type Analysis &gt; should identify class diagrams" time="0.000847">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Diagram Type Analysis &gt; should handle unknown diagram types" time="0.0008173">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Complexity Calculation &gt; should calculate complexity for simple diagrams" time="0.001778">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Complexity Calculation &gt; should calculate complexity for complex diagrams" time="0.0020583">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Complexity Calculation &gt; should provide reasonable render time estimates" time="0.0007172">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Error Handling &gt; should handle malformed diagram content gracefully" time="0.0012475">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Error Handling &gt; should handle empty mermaid blocks" time="0.0005671">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Core Functionality &gt; Error Handling &gt; should handle nested code blocks correctly" time="0.0045113">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.simple.test.ts" name="DiagramDiscoveryService - Validation &gt; should provide validation for diagrams" time="0.0020103">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/diagramDiscoveryService.test.ts" timestamp="2026-01-06T05:22:59.107Z" hostname="Glaptop" tests="23" failures="0" errors="0" skipped="0" time="3.2163383">
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; File Discovery &gt; should discover .mmd files" time="0.0758167">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; File Discovery &gt; should discover markdown files with mermaid blocks" time="0.0516819">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; File Discovery &gt; should respect depth limits" time="0.0171237">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; File Discovery &gt; should exclude specified directories" time="0.0129789">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Extraction &gt; should extract single diagram from .mmd file" time="0.0045952">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Extraction &gt; should extract multiple diagrams from markdown" time="0.0050365">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Extraction &gt; should handle case-insensitive mermaid blocks" time="0.0043886">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Extraction &gt; should preserve indentation in diagrams" time="0.0053823">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Type Analysis &gt; should correctly identify flowchart diagrams" time="0.0011691">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Type Analysis &gt; should correctly identify sequence diagrams" time="0.0007673">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Type Analysis &gt; should identify class diagrams" time="0.0005112">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Type Analysis &gt; should handle unknown diagram types" time="0.0005077">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Complexity Calculation &gt; should calculate complexity for simple diagrams" time="0.0005747">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Complexity Calculation &gt; should calculate complexity for complex diagrams" time="0.003911">
+            <system-out>
+Complexity debug: {
+  score: [33m3.6[39m,
+  category: [32m&apos;moderate&apos;[39m,
+  nodeCount: [33m14[39m,
+  connectionCount: [33m9[39m,
+  depth: [33m1[39m
+}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Complexity Calculation &gt; should estimate render time based on complexity" time="0.0004248">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Validation &gt; should validate correct mermaid syntax" time="0.0015121">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Validation &gt; should detect syntax errors" time="0.0007688">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Diagram Validation &gt; should provide helpful warnings" time="0.0005702">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Performance and Caching &gt; should cache file analysis results" time="0.0046513">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService &gt; Performance and Caching &gt; should handle large directory structures efficiently" time="2.8309811">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService Error Handling &gt; should handle non-existent directories gracefully" time="0.015865">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService Error Handling &gt; should handle invalid file paths" time="0.0321528">
+        </testcase>
+        <testcase classname="src/test/unit/services/diagramDiscoveryService.test.ts" name="DiagramDiscoveryService Error Handling &gt; should handle malformed diagram content" time="0.0007315">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/fileProcessor.test.ts" timestamp="2026-01-06T05:22:59.120Z" hostname="Glaptop" tests="2" failures="0" errors="0" skipped="0" time="0.009427">
+        <testcase classname="src/test/unit/services/fileProcessor.test.ts" name="fileProcessor &gt; generates output name from original path and format" time="0.004534">
+        </testcase>
+        <testcase classname="src/test/unit/services/fileProcessor.test.ts" name="fileProcessor &gt; sanitizes format string" time="0.0010291">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/formatPreferenceManager.test.ts" timestamp="2026-01-06T05:22:59.122Z" hostname="Glaptop" tests="33" failures="0" errors="0" skipped="0" time="0.0792967">
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Recording &gt; should record a single format usage" time="0.0102293">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Recording &gt; should record multiple format usages" time="0.0025175">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Recording &gt; should maintain most recent entries at the front" time="0.00214">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Recording &gt; should limit history to MAX_HISTORY_SIZE (20) entries" time="0.002317">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Recording &gt; should record usage source correctly" time="0.0017076">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Preferred Formats &gt; should return default format order when no history" time="0.0031084">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Preferred Formats &gt; should prioritize frequently used formats" time="0.0013811">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Preferred Formats &gt; should weight recent usage more heavily" time="0.0020042">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Preferred Formats &gt; should handle ties by preferring default order" time="0.0017489">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Preferred Formats &gt; should only consider last 10 exports for recency" time="0.0016672">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Most Used Format &gt; should return svg when no history" time="0.0006146">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Most Used Format &gt; should return the most frequently used format" time="0.0005226">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Most Used Format &gt; should reflect recent usage changes" time="0.0008691">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Top Two Formats &gt; should return [svg, png] when no history" time="0.0009078">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Top Two Formats &gt; should return top 2 most used formats" time="0.0009071">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Top Two Formats &gt; should reflect usage changes" time="0.0009403">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage History Detection &gt; should return false when no history" time="0.0009055">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage History Detection &gt; should return false with insufficient history (&lt;3)" time="0.0008917">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage History Detection &gt; should return true with sufficient history (&gt;=3)" time="0.000845">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Statistics &gt; should return empty stats when no history" time="0.0009316">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Statistics &gt; should calculate accurate usage counts" time="0.0013662">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Statistics &gt; should track last used timestamp" time="0.0218838">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Usage Statistics &gt; should sort by usage count descending" time="0.0013974">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; History Reset &gt; should clear all usage history" time="0.0014661">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; History Reset &gt; should reset to default format order" time="0.0015018">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; History Reset &gt; should reset most used format to svg" time="0.0007907">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; File-Specific Preferences &gt; should store file format preference" time="0.0010037">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; File-Specific Preferences &gt; should return undefined for files without preference" time="0.0009664">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; File-Specific Preferences &gt; should handle multiple file preferences" time="0.0011733">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; File-Specific Preferences &gt; should overwrite existing file preference" time="0.0008522">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; File-Specific Preferences &gt; should persist file preferences independently of usage history" time="0.0008236">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Integration Scenarios &gt; should handle real-world usage pattern" time="0.0012767">
+        </testcase>
+        <testcase classname="src/test/unit/services/formatPreferenceManager.test.ts" name="FormatPreferenceManager &gt; Integration Scenarios &gt; should handle workspace state persistence" time="0.0011046">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/onboardingManager.test.ts" timestamp="2026-01-06T05:22:59.138Z" hostname="Glaptop" tests="10" failures="0" errors="0" skipped="1" time="5.0704621">
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Welcome Flow Tests &gt; shows welcome for new users" time="0.0185444">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Welcome Flow Tests &gt; skips welcome for existing users" time="3.0120179">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Welcome Flow Tests &gt; skips onboarding in development mode" time="0.0021922">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Completion Tests &gt; marks onboarding as completed" time="0.0026383">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Completion Tests &gt; shows correct completion message for CLI setup" time="0.0024597">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Completion Tests &gt; shows correct completion message for web-only setup" time="0.0021592">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Validation Tests &gt; validates existing CLI installation silently" time="2.0185664">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Validation Tests &gt; offers reinstall when CLI becomes unavailable" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Configuration Tests &gt; configures web-only mode correctly" time="0.0033857">
+        </testcase>
+        <testcase classname="src/test/unit/services/onboardingManager.test.ts" name="OnboardingManager Tests &gt; Setup Reset Tests &gt; resets onboarding state" time="0.0025851">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/operationTimeoutManager.test.ts" timestamp="2026-01-06T05:22:59.145Z" hostname="Glaptop" tests="32" failures="0" errors="0" skipped="0" time="0.1067487">
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Singleton Pattern &gt; should return same instance" time="0.0114286">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Export Throttling &gt; should allow export when cooldown period has passed" time="0.0018807">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Export Throttling &gt; should prevent exports during cooldown period" time="0.0022636">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Export Throttling &gt; should allow exports after cooldown expires" time="0.0021079">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Export Throttling &gt; should return correct cooldown remaining time" time="0.0027061">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Export Throttling &gt; should return 0 when no cooldown is active" time="0.0016667">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should start operation successfully" time="0.0033933">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should complete operation successfully" time="0.0014629">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should cancel operation successfully" time="0.003275">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should handle completing non-existent operation gracefully" time="0.0012754">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should handle cancelling non-existent operation gracefully" time="0.0023972">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Lifecycle &gt; should replace existing operation with same ID" time="0.0013016">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should trigger soft timeout callback" time="0.0026749">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should trigger medium timeout callback" time="0.0022252">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should trigger hard timeout callback" time="0.002265">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should not trigger nuclear timeout because hard timeout cancels operation first" time="0.004249">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should use different timeouts for batch operations" time="0.0021445">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should use different timeouts for debug operations" time="0.0036678">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should stop escalation when operation completes" time="0.001934">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Timeout Escalation &gt; should stop escalation when operation is cancelled" time="0.0017747">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Progress Reporting &gt; should update progress for active operation" time="0.0058389">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Progress Reporting &gt; should handle progress update for non-existent operation gracefully" time="0.0015314">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Multiple Operations &gt; should handle multiple concurrent operations" time="0.0019967">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Multiple Operations &gt; should cancel specific operation without affecting others" time="0.0024795">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Multiple Operations &gt; should complete specific operation without affecting others" time="0.0029838">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Emergency Cleanup &gt; should clean up all active operations" time="0.0029948">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Emergency Cleanup &gt; should handle emergency cleanup with no active operations" time="0.0021797">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Status &gt; should return all active operations" time="0.0033683">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Status &gt; should return empty array when no operations active" time="0.0020751">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Operation Status &gt; should return operation info with correct structure" time="0.0052289">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Callback Error Handling &gt; should propagate errors from soft timeout callback" time="0.0099036">
+        </testcase>
+        <testcase classname="src/test/unit/services/operationTimeoutManager.test.ts" name="OperationTimeoutManager &gt; Callback Error Handling &gt; should handle completing operation with no callbacks" time="0.0031597">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/progressTrackingService.test.ts" timestamp="2026-01-06T05:22:59.159Z" hostname="Glaptop" tests="6" failures="0" errors="0" skipped="0" time="0.0276336">
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; File Path Truncation &gt; should truncate long file paths in progress messages" time="0.0118008">
+        </testcase>
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; File Path Truncation &gt; should handle simple filenames without modification" time="0.0015432">
+        </testcase>
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; File Path Truncation &gt; should format different export formats correctly" time="0.0027484">
+        </testcase>
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; Progress State Management &gt; should create and manage progress reporters" time="0.0013792">
+        </testcase>
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; Progress State Management &gt; should handle phase updates correctly" time="0.0011966">
+        </testcase>
+        <testcase classname="src/test/unit/services/progressTrackingService.test.ts" name="ProgressTrackingService &gt; Progress State Management &gt; should handle cancellation correctly" time="0.0016201">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/telemetryService.test.ts" timestamp="2026-01-06T05:22:59.162Z" hostname="Glaptop" tests="20" failures="0" errors="0" skipped="0" time="0.1760829">
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Singleton Pattern &gt; should create singleton instance" time="0.0108508">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Singleton Pattern &gt; should initialize correctly" time="0.0015659">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Export Tracking &gt; should track export when enabled" time="0.0054115">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Export Tracking &gt; should not track when disabled" time="0.001458">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Export Tracking &gt; should track multiple exports" time="0.0026999">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Error Tracking &gt; should track errors when enabled" time="0.0018742">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Error Tracking &gt; should aggregate errors by type" time="0.0056159">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Command Tracking &gt; should track command execution" time="0.07501">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Command Tracking &gt; should track commands from different sources" time="0.0038285">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Health Check Tracking &gt; should track health checks" time="0.0037861">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Performance Tracking &gt; should track performance metrics" time="0.0014254">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Summary Generation &gt; should generate empty summary for new service" time="0.0136612">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Summary Generation &gt; should calculate correct statistics" time="0.0021655">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Data Export &gt; should export telemetry data" time="0.0029139">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Data Clearing &gt; should clear all data" time="0.0044135">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Privacy - Error Message Sanitization &gt; should sanitize file paths in error messages" time="0.0011259">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Privacy - Error Message Sanitization &gt; should sanitize email addresses in error messages" time="0.003819">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Privacy - Error Message Sanitization &gt; should truncate long error messages" time="0.0076364">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Configuration Changes &gt; should respond to configuration changes" time="0.0013802">
+        </testcase>
+        <testcase classname="src/test/unit/services/telemetryService.test.ts" name="TelemetryService Unit Tests &gt; Dispose &gt; should dispose cleanly" time="0.0013417">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/services/visualEnhancementManager.test.ts" timestamp="2026-01-06T05:22:59.172Z" hostname="Glaptop" tests="3" failures="0" errors="0" skipped="0" time="0.0158332">
+        <testcase classname="src/test/unit/services/visualEnhancementManager.test.ts" name="VisualEnhancementManager &gt; returns default options when no config is set" time="0.0083263">
+        </testcase>
+        <testcase classname="src/test/unit/services/visualEnhancementManager.test.ts" name="VisualEnhancementManager &gt; enhanceExportOptions returns base options unchanged when disabled" time="0.0015237">
+        </testcase>
+        <testcase classname="src/test/unit/services/visualEnhancementManager.test.ts" name="VisualEnhancementManager &gt; postProcessSvg applies processors when enabled" time="0.0014002">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/strategies/cliExportStrategy.test.ts" timestamp="2026-01-06T05:22:59.175Z" hostname="Glaptop" tests="13" failures="0" errors="0" skipped="0" time="0.0718531">
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; getRequiredDependencies returns expected package" time="0.0077626">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; isAvailable returns true when executeCli resolves" time="0.0074523">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; isAvailable returns false when executeCli rejects" time="0.004511">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; getVersion returns trimmed version string" time="0.0016277">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; testCli returns false when export throws" time="0.0017218">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; buildCliArguments includes theme/dimensions/background and files" time="0.0140874">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; export writes temp files, calls executeCli and returns buffer on success" time="0.0091632">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; export throws MermaidExportError when executeCli fails" time="0.0076316">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; Font Awesome CSS File Generation &gt; should generate CSS file with Font Awesome import when fontAwesomeEnabled is true" time="0.0025498">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; Font Awesome CSS File Generation &gt; should not generate CSS file when fontAwesomeEnabled is false and no customCss" time="0.0034807">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; Font Awesome CSS File Generation &gt; should include custom CSS URLs in generated CSS file" time="0.0016644">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; Font Awesome CSS File Generation &gt; should handle file:// protocol custom CSS by inlining content" time="0.0020775">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/cliExportStrategy.test.ts" name="CLIExportStrategy &gt; Font Awesome CSS File Generation &gt; should combine Font Awesome and custom CSS in single file" time="0.0022684">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/strategies/webExportStrategy.test.ts" timestamp="2026-01-06T05:22:59.181Z" hostname="Glaptop" tests="8" failures="0" errors="0" skipped="0" time="0.1379813">
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; isAvailable returns true when bundled script exists" time="0.0087027">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; isAvailable returns false when bundled script missing" time="0.0055396">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; export returns svg buffer when webview sends svg" time="0.0287586">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; export converts svg to png via conversion message" time="0.01852">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; Font Awesome Integration &gt; should include Font Awesome CDN link when fontAwesomeEnabled is true" time="0.0251622">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; Font Awesome Integration &gt; should not include Font Awesome CDN link when fontAwesomeEnabled is false" time="0.0174584">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; Font Awesome Integration &gt; should include custom CSS links when customCss array is provided" time="0.0137136">
+        </testcase>
+        <testcase classname="src/test/unit/strategies/webExportStrategy.test.ts" name="WebExportStrategy &gt; Font Awesome Integration &gt; should include CSP entries for cdnjs.cloudflare.com" time="0.0151796">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/ui/errorHandler.test.ts" timestamp="2026-01-06T05:22:59.186Z" hostname="Glaptop" tests="5" failures="0" errors="0" skipped="0" time="0.0361241">
+        <testcase classname="src/test/unit/ui/errorHandler.test.ts" name="ErrorHandler &gt; createErrorInfo returns expected object" time="0.0065812">
+        </testcase>
+        <testcase classname="src/test/unit/ui/errorHandler.test.ts" name="ErrorHandler &gt; log methods append lines to output channel" time="0.003993">
+        </testcase>
+        <testcase classname="src/test/unit/ui/errorHandler.test.ts" name="ErrorHandler &gt; handleGenericError shows error message and opens issue reporter when requested" time="0.0148473">
+        </testcase>
+        <testcase classname="src/test/unit/ui/errorHandler.test.ts" name="ErrorHandler &gt; handleGenericError shows log when Show Log is selected" time="0.0023154">
+        </testcase>
+        <testcase classname="src/test/unit/ui/errorHandler.test.ts" name="ErrorHandler &gt; handleMermaidError triggers recovery action when selected" time="0.0032484">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/ui/statusBarManager.test.ts" timestamp="2026-01-06T05:22:59.191Z" hostname="Glaptop" tests="12" failures="0" errors="0" skipped="0" time="0.3080277">
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Display Format Tests &gt; icon-only format shows only icon" time="0.048555">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Display Format Tests &gt; icon-count format shows icon and number" time="0.0363549">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Display Format Tests &gt; text-count format shows icon and &quot;N Mermaids&quot;" time="0.0255598">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Mermaid Detection Tests &gt; detects single mermaid block in markdown" time="0.0125144">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Mermaid Detection Tests &gt; detects multiple mermaid blocks" time="0.0131614">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Mermaid Detection Tests &gt; handles mermaid blocks with extra whitespace" time="0.016441">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Mermaid Detection Tests &gt; ignores non-mermaid code blocks" time="0.0140071">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Status Bar Visibility Tests &gt; shows status bar when mermaid content present" time="0.0145493">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Status Bar Visibility Tests &gt; hides status bar when no mermaid content" time="0.0581278">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Status Bar Visibility Tests &gt; hides status bar when no active editor" time="0.0137217">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Click Handler Tests &gt; executes exportFile command when CLI available" time="0.0351215">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/test/unit/ui/statusBarManager.test.ts" name="StatusBarManager Tests &gt; Click Handler Tests &gt; shows setup options when not configured" time="0.0140291">
+            <system-out>
+[mermaidExportPro] StatusBarManager constructed
+[mermaidExportPro] StatusBarManager initial checkStrategyStatus()
+[mermaidExportPro] StatusBarManager initial updateVisibility()
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/ui/themeStatusBarManager.test.ts" timestamp="2026-01-06T05:22:59.202Z" hostname="Glaptop" tests="10" failures="0" errors="0" skipped="0" time="0.0753148">
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Theme Cycling Tests &gt; cycles through themes in correct order" time="0.0227891">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Theme Cycling Tests &gt; wraps from neutral back to default" time="0.0048911">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Debounced Notification Tests &gt; shows notification after debounce delay" time="0.0101707">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Debounced Notification Tests &gt; cancels previous notification on rapid cycling" time="0.0081447">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Theme Display Tests &gt; sets correct icon for default theme" time="0.0037028">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Theme Display Tests &gt; sets correct icon for dark theme" time="0.0045952">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Theme Display Tests &gt; uses default color for all themes" time="0.0034328">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Visibility Tests &gt; shows when mermaid content present" time="0.0052992">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Visibility Tests &gt; hides when no mermaid content" time="0.0036714">
+        </testcase>
+        <testcase classname="src/test/unit/ui/themeStatusBarManager.test.ts" name="ThemeStatusBarManager Tests &gt; Cleanup Tests &gt; clears notification timer on dispose" time="0.0018446">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/utils/autoNaming.test.ts" timestamp="2026-01-06T05:22:59.210Z" hostname="Glaptop" tests="12" failures="0" errors="0" skipped="0" time="0.0446332">
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateDialogName returns baseName-diagram.format" time="0.0045965">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; getBaseName cleans filename and lowers case" time="0.0011793">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; validateDirectory returns valid true for writable directory" time="0.0057785">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; validateDirectory handles ENOENT error" time="0.0013859">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; ensureDirectory creates when missing" time="0.0057223">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; defaults to versioned mode when mode not specified" time="0.0080837">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; generates versioned name when mode=versioned" time="0.0039544">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; generates simple overwrite name when mode=overwrite" time="0.0012799">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; overwrite mode extracts diagram number from baseName" time="0.0044953">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; overwrite mode defaults to 1 when no number in baseName" time="0.0008171">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; overwrite mode handles different formats" time="0.0007972">
+        </testcase>
+        <testcase classname="src/test/unit/utils/autoNaming.test.ts" name="AutoNaming &gt; generateFileName with naming modes &gt; overwrite mode produces consistent names for same input" time="0.0012272">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/utils/pathUtils.test.ts" timestamp="2026-01-06T05:22:59.216Z" hostname="Glaptop" tests="11" failures="0" errors="0" skipped="0" time="0.0396559">
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; generateOutputPath uses same directory when outputDir not provided" time="0.0058512">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; generateOutputPath resolves relative outputDir against input file dir" time="0.0015624">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; ensureDirectory does not call mkdir when access succeeds" time="0.0053176">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; ensureDirectory calls mkdir when access throws" time="0.0069904">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; sanitizePath normalizes safe path and throws on traversal" time="0.0035654">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; fileExists returns true when access succeeds and false when it throws" time="0.0021915">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; getUniqueFilePath returns same path when not existing" time="0.0013162">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; getUniqueFilePath increments filename when target exists" time="0.0015732">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; getTempDirectory and createTempFilePath produce a path in tmpdir with given extension" time="0.0030417">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; validateOutputPath rejects invalid characters and overly long paths" time="0.0012655">
+        </testcase>
+        <testcase classname="src/test/unit/utils/pathUtils.test.ts" name="PathUtils &gt; getDisplayPath returns relative when shorter and inside workspace" time="0.0012782">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/test/unit/utils/webviewUtils.test.ts" timestamp="2026-01-06T05:22:59.222Z" hostname="Glaptop" tests="18" failures="0" errors="0" skipped="0" time="0.0400877">
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getNonce() &gt; should generate a 32-character nonce" time="0.0075303">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getNonce() &gt; should generate unique nonces" time="0.0031809">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getNonce() &gt; should only contain alphanumeric characters" time="0.0012386">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getNonce() &gt; should generate different nonces on each call" time="0.0009282">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getUri() &gt; should join paths and return webview URI" time="0.0061229">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getUri() &gt; should handle single path element" time="0.0013434">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getUri() &gt; should handle deeply nested paths" time="0.0014996">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getUri() &gt; should return result of asWebviewUri" time="0.000934">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should generate valid HTML with CSP" time="0.0024287">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should include nonce in CSP and script tags" time="0.0021941">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should include webview CSP source" time="0.0012569">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should include script URI from getUri" time="0.0014352">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should include additional scripts when provided" time="0.0011396">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should not include additional script section when omitted" time="0.0009512">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should properly escape HTML entities in title and body" time="0.0006363">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should set proper CSP directives" time="0.0009077">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should include viewport meta tag" time="0.0005292">
+        </testcase>
+        <testcase classname="src/test/unit/utils/webviewUtils.test.ts" name="webviewUtils &gt; getWebviewContent() &gt; should set UTF-8 charset" time="0.0006228">
+        </testcase>
+    </testsuite>
+</testsuites>

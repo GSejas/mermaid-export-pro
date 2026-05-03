@@ -35,7 +35,7 @@ import { ErrorHandler } from '../ui/errorHandler';
  */
 export const DEFAULT_DISCOVERY_OPTIONS: Partial<DiscoveryOptions> = {
   maxDepth: 5,
-  includePatterns: ['*.md', '*.mmd', '*.markdown'],
+  includePatterns: ['*.md', '*.mmd', '*.mermaid', '*.markdown'],
   excludePatterns: ['node_modules/**', '.git/**', '*.min.*', '*.lock'],
   excludeDirectories: ['node_modules', '.git', '.vscode', 'dist', 'build', '.next', '.nuxt'],
   followSymlinks: false,

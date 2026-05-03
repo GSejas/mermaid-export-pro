@@ -161,7 +161,7 @@ class AutoExportWatcher {
       const fileName = document.fileName.toLowerCase();
       
       // Only process mermaid and markdown files
-      if (!fileName.endsWith('.mmd') && !fileName.endsWith('.md') && !fileName.endsWith('.markdown')) {
+      if (!fileName.endsWith('.mmd') && !fileName.endsWith('.mermaid') && !fileName.endsWith('.md') && !fileName.endsWith('.markdown')) {
         return;
       }
 
@@ -244,7 +244,7 @@ class AutoExportWatcher {
     const fileName = document.fileName.toLowerCase();
     const content = document.getText();
 
-    if (fileName.endsWith('.mmd')) {
+    if (fileName.endsWith('.mmd') || fileName.endsWith('.mermaid')) {
       // Pure mermaid file
       return [content.trim()];
     }

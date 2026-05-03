@@ -234,7 +234,7 @@ async function discoverMermaidFiles(directory: string, maxDepth: number = 5): Pr
       } else if (entry.isFile()) {
         const ext = path.extname(entry.name).toLowerCase();
         
-        if (ext === '.mmd') {
+        if (ext === '.mmd' || ext === '.mermaid') {
           // Pure mermaid file
           const content = await fs.promises.readFile(fullPath, 'utf8');
           mermaidFiles.push({

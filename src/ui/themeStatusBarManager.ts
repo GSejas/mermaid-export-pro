@@ -173,7 +173,7 @@ export class ThemeStatusBarManager {
     const fileName = document.fileName.toLowerCase();
     
     // Check file extension
-    if (fileName.endsWith('.mmd')) {
+    if (fileName.endsWith('.mmd') || fileName.endsWith('.mermaid')) {
       return document.getText().trim().length > 0;
     }
     

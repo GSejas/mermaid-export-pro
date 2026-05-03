@@ -320,7 +320,7 @@ export class StatusBarManager {
     const content = document.getText();
     
     // Check file extension
-    if (fileName.endsWith('.mmd')) {
+    if (fileName.endsWith('.mmd') || fileName.endsWith('.mermaid')) {
       // Pure mermaid file - count as 1 diagram if not empty
       return { 
         diagramCount: content.trim() ? 1 : 0, 

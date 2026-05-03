@@ -42,7 +42,8 @@
           "mermaid"
         ],
         "extensions": [
-          ".mmd"
+          ".mmd",
+          ".mermaid"
         ],
         "configuration": "./language-configuration.json"
       }
