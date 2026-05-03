@@ -28,6 +28,7 @@ import * as vscode from 'vscode';
 import { ExportStrategy, ExportOptions, MermaidExportError } from '../types';
 import { PathUtils } from '../utils/pathUtils';
 import { ErrorHandler } from '../ui/errorHandler';
+import { injectSvgBackground, optimizeForLibreOffice } from '../utils/svgUtils';
 
 
 
@@ -59,7 +60,26 @@ export class CLIExportStrategy implements ExportStrategy {
       const args = await this.buildCliArguments(tempInputPath, tempOutputPath, options);
 
       // Execute CLI command
-      const buffer = await this.executeCli(args, tempOutputPath);
+      let buffer = await this.executeCli(args, tempOutputPath);
+
+      // Post-process SVG if needed
+      if (options.format === 'svg') {
+        let svgContent = buffer.toString('utf8');
+        
+        // Inject SVG background if color is specified
+        if (options.backgroundColor && options.backgroundColor !== 'transparent') {
+          ErrorHandler.logInfo(`CLI Export: Injecting SVG background: ${options.backgroundColor}`);
+          svgContent = injectSvgBackground(svgContent, options.backgroundColor);
+        }
+        
+        // Optimize for LibreOffice if requested
+        if (options.targetApplication === 'libreoffice') {
+          ErrorHandler.logInfo('CLI Export: Optimizing SVG for LibreOffice compatibility');
+          svgContent = optimizeForLibreOffice(svgContent);
+        }
+        
+        buffer = Buffer.from(svgContent, 'utf8');
+      }
 
       ErrorHandler.logInfo(`Successfully exported using CLI strategy: ${options.format}`);
       return buffer;
@@ -158,24 +178,30 @@ export class CLIExportStrategy implements ExportStrategy {
     const fontAwesomeEnabled = config.get<boolean>('fontAwesomeEnabled', true);
     const customCssUrls = config.get<string[]>('customCss', []);
     
+    ErrorHandler.logInfo(`CLI Export: Font Awesome ${fontAwesomeEnabled ? 'ENABLED' : 'DISABLED'}`);
+    
     if (fontAwesomeEnabled || customCssUrls.length > 0) {
       // Create temporary CSS file with Font Awesome and custom CSS
       const tempCssPath = PathUtils.createTempFilePath('css');
       let cssContent = '';
       
       if (fontAwesomeEnabled) {
-        cssContent += '@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css");\\n';
+        const faUrl = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css';
+        cssContent += `@import url("${faUrl}");\n`;
+        ErrorHandler.logInfo(`CLI Export: Font Awesome CDN: ${faUrl}`);
       }
       
       for (const cssUrl of customCssUrls) {
         if (cssUrl.startsWith('http://') || cssUrl.startsWith('https://')) {
-          cssContent += `@import url("${cssUrl}");\\n`;
+          cssContent += `@import url("${cssUrl}");\n`;
+          ErrorHandler.logInfo(`CLI Export: Custom CSS URL: ${cssUrl}`);
         } else if (cssUrl.startsWith('file://')) {
           // Local file - read and inline it
           try {
             const localPath = cssUrl.replace('file://', '');
             const localCss = await fs.promises.readFile(localPath, 'utf8');
-            cssContent += `/* ${localPath} */\\n${localCss}\\n`;
+            cssContent += `/* ${localPath} */\n${localCss}\n`;
+            ErrorHandler.logInfo(`CLI Export: Custom CSS file: ${localPath}`);
           } catch (error) {
             ErrorHandler.logWarning(`Failed to read custom CSS file: ${cssUrl}`);
           }

@@ -6,6 +6,7 @@ export type ExportFormat = 'svg' | 'png' | 'pdf' | 'webp' | 'jpg' | 'jpeg';
 export type MermaidTheme = 'default' | 'dark' | 'forest' | 'neutral';
 export type ExportStrategyType = 'cli' | 'web' | 'auto';
 export type AutoNamingMode = 'versioned' | 'overwrite';
+export type TargetApplication = 'browser' | 'libreoffice' | 'inkscape' | 'generic';
 
 export interface ExportOptions {
   format: ExportFormat;
@@ -17,6 +18,9 @@ export interface ExportOptions {
   configFile?: string;
   outputPath?: string;
   mermaidConfig?: any; // Allow custom mermaid configuration
+  fontAwesomeEnabled?: boolean; // Enable Font Awesome icon support
+  customCss?: string[]; // Custom CSS URLs or file paths
+  targetApplication?: TargetApplication; // Target application for export (browser, libreoffice, etc.)
 }
 
 export interface ExportStrategy {

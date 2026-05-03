@@ -144,6 +144,10 @@ export async function runBatchExportV2(
   try {
     ErrorHandler.logInfo('=== Mermaid Export Pro v2.0 - Export Folder Started ===');
     
+    // Check batch export mode (automatic vs interactive)
+    const configManager = new ConfigManager();
+    const batchMode = configManager.getBatchExportMode();
+    
     // Step 1: Get comprehensive export configuration from user
     const config = await getComprehensiveBatchConfig(folderUri);
     if (!config) {
@@ -151,11 +155,16 @@ export async function runBatchExportV2(
       return;
     }
     
-    // Step 2: Show operation summary and get final confirmation
-    const confirmed = await showOperationSummary(config);
-    if (!confirmed) {
-      ErrorHandler.logInfo('Folder export cancelled after summary');
-      return;
+    // Step 2: Show operation summary and get final confirmation (ONLY in interactive mode)
+    // In automatic mode, user explicitly chose no dialogs, so proceed directly to export
+    if (batchMode === 'interactive') {
+      const confirmed = await showOperationSummary(config);
+      if (!confirmed) {
+        ErrorHandler.logInfo('Folder export cancelled after summary');
+        return;
+      }
+    } else {
+      ErrorHandler.logInfo('Batch Export: Skipping confirmation dialog (automatic mode)');
     }
     
     // Step 3: Execute export folder with progress tracking

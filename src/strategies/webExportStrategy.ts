@@ -39,6 +39,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { ExportOptions, ExportStrategy } from '../types';
 import { ErrorHandler } from '../ui/errorHandler';
+import { injectSvgBackground, optimizeForLibreOffice } from '../utils/svgUtils';
 
 /**
  * Represents a message sent between the webview and the extension.
@@ -160,12 +161,24 @@ export class WebExportStrategy implements ExportStrategy {
 
       try {
         // Render using robust handshake protocol
-        const svgContent = await this.renderWithHandshake(panel, cleanContent, options);
+        let svgContent = await this.renderWithHandshake(panel, cleanContent, options);
         
         ErrorHandler.logInfo(`Web export completed successfully: ${svgContent.length} characters`);
         
-        // Return appropriate format
+        // Post-process SVG if needed
         if (options.format === 'svg') {
+          // Inject SVG background if color is specified
+          if (options.backgroundColor && options.backgroundColor !== 'transparent') {
+            ErrorHandler.logInfo(`Web export: Injecting SVG background: ${options.backgroundColor}`);
+            svgContent = injectSvgBackground(svgContent, options.backgroundColor);
+          }
+          
+          // Optimize for LibreOffice if requested
+          if (options.targetApplication === 'libreoffice') {
+            ErrorHandler.logInfo('Web export: Optimizing SVG for LibreOffice compatibility');
+            svgContent = optimizeForLibreOffice(svgContent);
+          }
+          
           return Buffer.from(svgContent, 'utf8');
         } else {
           // Convert SVG to other formats using webview canvas
@@ -330,14 +343,24 @@ export class WebExportStrategy implements ExportStrategy {
     const fontAwesomeEnabled = config.get<boolean>('fontAwesomeEnabled', true);
     const customCssUrls = config.get<string[]>('customCss', []);
     
+    ErrorHandler.logInfo(`Web export: Font Awesome ${fontAwesomeEnabled ? 'ENABLED' : 'DISABLED'}`);
+    
     // Build Font Awesome link
     const fontAwesomeLink = fontAwesomeEnabled 
       ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />'
       : '';
     
+    if (fontAwesomeEnabled) {
+      const faUrl = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css';
+      ErrorHandler.logInfo(`Web export: Font Awesome CDN: ${faUrl}`);
+    }
+    
     // Build custom CSS links
     const customCssLinks = customCssUrls
-      .map(url => `<link rel="stylesheet" href="${url}" />`)
+      .map(url => {
+        ErrorHandler.logInfo(`Web export: Custom CSS URL: ${url}`);
+        return `<link rel="stylesheet" href="${url}" />`;
+      })
       .join('\n    ');
 
     return `<!DOCTYPE html>
