@@ -148,13 +148,14 @@ This extension contributes the following settings:
 
 * `mermaidExportPro.defaultFormat`: Default export format (svg, png, pdf, webp, jpg, jpeg)
 * `mermaidExportPro.theme`: Mermaid theme (default, dark, forest, neutral)
-* `mermaidExportPro.backgroundColor`: Background color for exports (transparent, white, black, custom hex)
-* `mermaidExportPro.fontAwesomeEnabled`: Enable Font Awesome icons in exports (default: true) - **NEW in v1.0.11!**
-* `mermaidExportPro.customCss`: Custom CSS URLs for exports (e.g., additional icon libraries) - **NEW in v1.0.11!**
+* `mermaidExportPro.backgroundColor`: Background color for exports (transparent, white, black, custom hex) - **FIXED in v1.1.0!** Now works with SVG
+* `mermaidExportPro.targetApplication`: Optimize exports for specific applications (generic, libreoffice, browser, inkscape) - **NEW in v1.1.0!**
+* `mermaidExportPro.fontAwesomeEnabled`: Enable Font Awesome icons in exports (default: true) - **Improved debugging in v1.1.0!**
+* `mermaidExportPro.customCss`: Custom CSS URLs for exports (e.g., additional icon libraries)
 * `mermaidExportPro.outputDirectory`: Custom output directory (relative or absolute)
-* `mermaidExportPro.batchExportMode`: Folder export behavior - **NEW in v1.0.11!**
+* `mermaidExportPro.batchExportMode`: Folder export behavior
   - `interactive` (default): Guided wizard with dialogs
-  - `automatic`: Zero-dialog export using your JSON settings (like Quick Export)
+  - `automatic`: Zero-dialog export using your JSON settings (like Quick Export) - **Fixed in v1.1.0!** Now truly skips dialogs
 * `mermaidExportPro.autoExport`: Automatically export on file save
 * `mermaidExportPro.exportStrategy`: Export strategy preference (cli, web, auto)
 * `mermaidExportPro.autoNaming.mode`: File naming strategy (versioned, overwrite) - **NEW in v1.0.8!**
@@ -253,14 +254,15 @@ All telemetry data stays on your machine unless you choose to export and share i
 
 [![Tests](https://github.com/GSejas/mermaid-export-pro/workflows/Tests/badge.svg)](https://github.com/GSejas/mermaid-export-pro/actions/workflows/test.yml) [![Coverage](https://codecov.io/gh/GSejas/mermaid-export-pro/branch/master/graph/badge.svg?flag=merged)](https://codecov.io/gh/GSejas/mermaid-export-pro)
 
-**Test Coverage:** ~46% combined (371 unit tests + 29 E2E integration tests)
+**Test Coverage:** 29.36% lines, 75.45% functions, 62.78% branches (427 unit tests passing)
 
 **Continuous Quality Checks:**
 
 - ✅ **GitHub Actions CI/CD** - Automated testing on every commit
 - ✅ **Multi-Platform Testing** - Windows and Linux validation
-- ✅ **371 Unit Tests** - Commands, strategies, services, and UI components
-- ✅ **29 E2E Tests** - Real VS Code workflows and user scenarios
+- ✅ **427 Unit Tests** - Commands, strategies, services, utilities, and UI components
+- ✅ **30 Test Suites** - Comprehensive test file organization
+- ✅ **72.46% Coverage** - New SVG utility functions (excellent for recent additions)
 - ✅ **Merged Coverage** - Combined unit + integration coverage tracking
 - ✅ **Code Quality** - ESLint strict mode + TypeScript type checking
 - ✅ **Automated Releases** - VSIX package generation on version tags
@@ -272,7 +274,20 @@ All telemetry data stays on your machine unless you choose to export and share i
 
 ## Release Notes
 
-### 1.0.10 (Current)
+### 1.1.0 (Current)
+
+**Security Updates & Critical Bug Fixes:**
+
+- **SVG Background Support** ✨ - Background colors now properly render in SVG exports (Issue #4)
+- **LibreOffice Compatibility** 📄 - New SVG optimizer for text-heavy diagrams (Issue #5)
+- **Font Awesome Debugging** 🔍 - Enhanced logging for visibility into Font Awesome issues (Issue #6)
+- **Batch Export UX** ⚡ - Zero-dialog exports in automatic mode (Issue #7)
+- **.mermaid File Support** 📋 - Now recognizes both `.mmd` and `.mermaid` extensions (Issue #8)
+- **Security Audit** 🛡️ - Updated dependencies with latest security patches
+- **Test Coverage** ✅ - 427 tests passing, 72.46% coverage on new SVG utilities
+- [Full Release Notes](RELEASE-NOTES-v1.1.0.md) - Comprehensive details on all changes
+
+### 1.0.10
 
 **Telemetry Integration & Code Quality:**
 

@@ -2,6 +2,81 @@
 
 All notable changes to the "mermaid-export-pro" extension will be documented in this file.
 
+## [1.1.0] - 2026-05-03
+
+### ✨ Major Fixes & Improvements
+
+#### SVG Export Enhancements - Background Colors & LibreOffice Compatibility
+
+**Resolves GitHub Issues #4, #5**: SVG background transparency and LibreOffice incompatibility
+
+- **SVG Background Support**: Background colors now properly injected into SVG exports via post-processing
+  - Supports transparent, RGBA, and hex color values
+  - Works with both CLI and Web export strategies
+  - No configuration needed - just set `backgroundColor` setting
+  
+- **LibreOffice Optimization**: New `targetApplication: 'libreoffice'` option for text-heavy diagrams
+  - Removes incompatible `<foreignObject>` elements
+  - Converts CSS classes to inline styles
+  - Strips filters and effects for SVG 1.1 Tiny compatibility
+  - Usage: Enable via export options or create a configuration preset
+
+#### Enhanced Debugging & Logging
+
+**Resolves GitHub Issue #6**: Font Awesome support visibility and debugging
+
+- **Comprehensive Logging**: Font Awesome status, CDN URLs, and custom CSS now logged for debugging
+  - View export logs via "Show Export Log" command
+  - Easily diagnose why icons might not rendering
+  - Helps with debugging custom CSS configurations
+
+#### UX Improvements
+
+**Resolves GitHub Issue #7**: Batch export modal behavior
+
+- **Automatic Mode Enhancement**: Zero-dialog exports now truly skip confirmation modals
+  - When `batchExportMode: 'automatic'`, no dialogs appear
+  - Removes friction for automation workflows
+  - User can still get summary via command output
+
+#### File Extension Support
+
+**Resolves GitHub Issue #8**: `.mermaid` file extension support
+
+- **New File Type Recognition**: Both `.mmd` and `.mermaid` file extensions now supported
+- **No Configuration Needed**: Works automatically once extension is installed
+
+### 🛡️ Security & Maintenance
+
+- **Dependency Updates**: All direct dependencies updated with security patches
+  - @types/sinon: Updated to v20.0.2 for compatibility
+  - Development dependencies upgraded with latest patches
+  
+- **Comprehensive Testing**: 
+  - 427 unit tests passing (no regressions)
+  - 72.46% coverage on new SVG utilities
+  - All export strategies verified with new dependencies
+
+- **Documentation**: Added comprehensive security & vulnerability management section to README
+
+### 📋 Technical Details
+
+**New Utilities**:
+- `src/utils/svgUtils.ts`: SVG post-processing functions
+  - `injectSvgBackground()`: Adds background rectangles to SVG
+  - `optimizeForLibreOffice()`: Removes incompatible elements
+  - `validateSvg()`: Validates SVG structure
+  - `minifySvg()`: Removes XML comments and whitespace
+
+**Files Changed**:
+- `src/strategies/cliExportStrategy.ts`: SVG post-processing, Font Awesome logging
+- `src/strategies/webExportStrategy.ts`: SVG post-processing, Font Awesome logging
+- `src/commands/batchExportCommand.v2.ts`: Modal skip logic for automatic mode
+- `src/types/index.ts`: New `TargetApplication` type, extended `ExportOptions`
+- `package.json`: Updated version to 1.1.0, dependency updates
+
+---
+
 ## [1.0.11] - 2026-01-05
 
 ### 🎉 Major Features
